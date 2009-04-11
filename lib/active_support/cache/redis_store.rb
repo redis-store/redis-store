@@ -1,8 +1,16 @@
 module ActiveSupport
   module Cache
     class RedisStore < Store
-      def initialize
-        @data = MarshaledRedis.new
+      # Instantiate the store.
+      #
+      # Example:
+      #   RedisStore.new                       # => host: localhost,   port: 6379,  db: 0
+      #   RedisStore.new "example.com"         # => host: example.com, port: 6379,  db: 0
+      #   RedisStore.new "example.com:23682"   # => host: example.com, port: 23682, db: 0
+      #   RedisStore.new "example.com:23682/1" # => host: example.com, port: 23682, db: 1
+      def initialize(*addresses)
+        addresses = extract_addresses(addresses)
+        @data = MarshaledRedis.new addresses
       end
 
       def write(key, value, options = nil)
@@ -96,6 +104,19 @@ module ActiveSupport
       def stats
         @data.info
       end
+      
+      private
+        def extract_addresses(addresses)
+          addresses = addresses.flatten.compact
+          addresses.inject({}) do |result, address|
+            host, port = address.split /\:/
+            port, db   = port.split /\// if port
+            result[:host] = host if host
+            result[:port] = port if port
+            result[:db]  = db.to_i if db
+            result
+          end
+        end
     end
   end
 end
