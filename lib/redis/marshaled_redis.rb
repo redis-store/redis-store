@@ -3,7 +3,12 @@ class MarshaledRedis < Redis
     val = Marshal.dump val unless raw?(options)
     super key, val, expires_in(options)
   end
-  
+
+  def set_unless_exists(key, val, options = nil)
+    val = Marshal.dump val unless raw?(options)
+    super key, val    
+  end
+
   def get(key, options = nil)
     result = super key
     result = Marshal.load result if result && !raw?(options)

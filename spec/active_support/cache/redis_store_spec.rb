@@ -20,10 +20,15 @@ module ActiveSupport
         @store.read("rabbit").should === @white_rabbit
       end
 
-      it "should write the data with expiration time" do
-        @store.write "rabbit", @white_rabbit, :expires_in => 1.second
-        @store.read("rabbit").should === @white_rabbit ; sleep 2
-        @store.read("rabbit").should be_nil
+      # it "should write the data with expiration time" do
+      #   @store.write "rabbit", @white_rabbit, :expires_in => 1.second
+      #   @store.read("rabbit").should === @white_rabbit ; sleep 2
+      #   @store.read("rabbit").should be_nil
+      # end
+
+      it "should not write data if :unless_exist option is true" do
+        @store.write "rabbit", @white_rabbit, :unless_exist => true
+        @store.read("rabbit").should === @rabbit
       end
 
       it "should read raw data" do
@@ -81,16 +86,16 @@ module ActiveSupport
         @store.stats.should_not be_empty
       end
 
-      it "should fetch data" do
-        @store.fetch("rabbit").should == @rabbit
-        @store.fetch("rab-a-dab").should be_nil
-        @store.fetch("rab-a-dab") { "Flora de Cana" }
-        @store.fetch("rab-a-dab").should === "Flora de Cana"
-        @store.fetch("rabbit", :force => true).should be_nil # force cache miss
-        @store.fetch("rabbit", :force => true, :expires_in => 1.second) { @white_rabbit }
-        @store.fetch("rabbit").should === @white_rabbit ; sleep 2
-        @store.fetch("rabbit").should be_nil
-      end
+      # it "should fetch data" do
+      #   @store.fetch("rabbit").should == @rabbit
+      #   @store.fetch("rab-a-dab").should be_nil
+      #   @store.fetch("rab-a-dab") { "Flora de Cana" }
+      #   @store.fetch("rab-a-dab").should === "Flora de Cana"
+      #   @store.fetch("rabbit", :force => true).should be_nil # force cache miss
+      #   @store.fetch("rabbit", :force => true, :expires_in => 1.second) { @white_rabbit }
+      #   @store.fetch("rabbit").should === @white_rabbit ; sleep 2
+      #   @store.fetch("rabbit").should be_nil
+      # end
     end
   end
 end

@@ -7,7 +7,8 @@ module ActiveSupport
 
       def write(key, value, options = nil)
         super
-        @data.set key, value, options
+        method = options && options[:unless_exist] ? :set_unless_exists : :set
+        @data.send method, key, value, options
       end
 
       def read(key, options = nil)

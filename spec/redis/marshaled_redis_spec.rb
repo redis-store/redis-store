@@ -5,7 +5,8 @@ describe "MarshaledRedis" do
     @mr = MarshaledRedis.new
     @rabbit = OpenStruct.new :name => "bunny"
     @white_rabbit = OpenStruct.new :color => "white"
-    @mr.set "rabbit", @rabbit
+    @mr.set    "rabbit", @rabbit
+    @mr.delete "rabbit2"
   end
 
   it "should unmarshal an object on get" do
@@ -24,5 +25,20 @@ describe "MarshaledRedis" do
   it "should not marshal object on set if raw option is true" do
     @mr.set "rabbit", @white_rabbit, :raw => true
     @mr.get("rabbit", :raw => true).should == %(#<OpenStruct color="white">)
+  end
+
+  it "should not set an object if already exist" do
+    @mr.set_unless_exists "rabbit", @white_rabbit
+    @mr.get("rabbit").should === @rabbit
+  end
+
+  it "should marshal object on set_unless_exists" do
+    @mr.set_unless_exists "rabbit2", @white_rabbit
+    @mr.get("rabbit2").should === @white_rabbit
+  end
+
+  it "should not marshal object on set_unless_exists if raw option is true" do
+    @mr.set_unless_exists "rabbit2", @white_rabbit, :raw => true
+    @mr.get("rabbit2", :raw => true).should == %(#<OpenStruct color="white">)
   end
 end
