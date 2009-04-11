@@ -1,11 +1,12 @@
 class MarshaledRedis < Redis
-  def set(key, val, expiry = nil)
-    val = Marshal.dump val
-    super
+  def set(key, val, options = {})
+    val = Marshal.dump val unless options[:raw]
+    super key, val, options[:expiry]
   end
   
-  def get(key)
-    result = super
-    Marshal.load result if result
+  def get(key, options = {})
+    result = super key
+    result = Marshal.load result if result && !options[:raw]
+    result
   end
 end
