@@ -1,0 +1,28 @@
+h1. Redis store for Rails
+
+h2. Installation
+
+Download and install Redis from http://code.google.com/p/redis/
+
+  wget http://redis.googlecode.com/files/redis-0.091.tar.gz
+  tar -zxvf redis-0.091.tar.gz
+  cd redis-0.091
+  make
+
+Install the gems
+
+  sudo gem install ezmobius-redis-rb -s http://gems.github.com
+  sudo gem install jodosha-redis-rails -s http://gems.github.com
+
+h2. How to use with Rails
+
+In your configuration files:
+
+  config.gem "jodosha-redis-rails", :source => "http://gems.github.com"
+  config.cache_store = :redis_store
+
+Start Redis server, then your application.
+
+h2. Copyright
+
+(c) 2009 Luca Guidi - http://lucaguidi.com, released under the MIT license
