@@ -1,7 +1,7 @@
 class MarshaledRedis < Redis
   def set(key, val, options = nil)
     val = Marshal.dump val unless raw?(options)
-    super key, val, expiry_in(options)
+    super key, val, expires_in(options)
   end
   
   def get(key, options = nil)
@@ -15,7 +15,7 @@ class MarshaledRedis < Redis
       options && options[:raw]
     end
 
-    def expiry_in(options)
-      options[:expiry] if options
+    def expires_in(options)
+      options[:expires_in] if options
     end
 end
