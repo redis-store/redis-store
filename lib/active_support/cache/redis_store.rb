@@ -5,12 +5,12 @@ module ActiveSupport
         @data = MarshaledRedis.new
       end
 
-      def write(key, value, options = {})
+      def write(key, value, options = nil)
         super
         @data.set key, value, options
       end
 
-      def read(key, options = {})
+      def read(key, options = nil)
         super
         @data.get key, options
       end
@@ -46,9 +46,9 @@ module ActiveSupport
       #
       #   cache.increment "rabbit"
       #   cache.read "rabbit", :raw => true       # => "1"
-      def increment(key, options = nil)
-        log "increment", key, options
-        @data.incr key, options
+      def increment(key, amount = 1)
+        log "increment", key, amount
+        @data.incr key, amount
       end
 
       # Decrement a key in the store
@@ -72,9 +72,9 @@ module ActiveSupport
       #
       #   cache.decrement "rabbit"
       #   cache.read "rabbit", :raw => true       # => "-1"
-      def decrement(key, options = nil)
-        log "decrement", key, options
-        @data.decr key, options
+      def decrement(key, amount = 1)
+        log "decrement", key, amount
+        @data.decr key, amount
       end
 
       # Delete objects for matched keys.
