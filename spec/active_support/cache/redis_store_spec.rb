@@ -34,6 +34,11 @@ module ActiveSupport
         @store.read("rabbit").should be_nil
       end
 
+      it "should delete matched data" do
+        @store.delete_matched "rabb*"
+        @store.read("rabbit").should be_nil
+      end
+
       it "should verify existence of an object in the store" do
         @store.exist?("rabbit").should be_true
         @store.exist?("rab-a-dub").should be_false
@@ -59,6 +64,15 @@ module ActiveSupport
         3.times { @store.increment "counter" }
         @store.decrement "counter", 2
         @store.read("counter", :raw => true).to_i.should == 1
+      end
+
+      it "should clear the store" do
+        @store.clear
+        @store.instance_variable_get(:@data).keys("*").should be_empty
+      end
+
+      it "should return store stats" do
+        @store.stats.should_not be_empty
       end
     end
   end

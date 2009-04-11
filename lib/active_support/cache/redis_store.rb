@@ -76,6 +76,25 @@ module ActiveSupport
         log "decrement", key, options
         @data.decr key, options
       end
+
+      # Delete objects for matched keys.
+      #
+      # Example:
+      #   cache.delete_matched "rab*"
+      def delete_matched(matcher, options = nil)
+        super
+        @data.keys(matcher).each { |key| @data.delete key }
+      end
+
+      # Clear all the data from the store.
+      def clear
+        log "clear", nil, nil
+        @data.flush_db
+      end
+
+      def stats
+        @data.info
+      end
     end
   end
 end
