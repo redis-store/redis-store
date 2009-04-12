@@ -12,22 +12,29 @@ module ActiveSupport
       end
 
       it "should accept connection params" do
-        @redis = instantiate_store
-        @redis.instance_variable_get(:@db).should == 0
-        @redis.host.should == "localhost"
-        @redis.port.should == "6379"
+        redis = instantiate_store
+        redis.instance_variable_get(:@db).should == 0
+        redis.host.should == "localhost"
+        redis.port.should == "6379"
 
-        @redis = instantiate_store "redis.com"
-        @redis.host.should == "redis.com"
+        redis = instantiate_store "redis.com"
+        redis.host.should == "redis.com"
         
-        @redis = instantiate_store "redis.com:6380"
-        @redis.host.should == "redis.com"
-        @redis.port.should == "6380"
+        redis = instantiate_store "redis.com:6380"
+        redis.host.should == "redis.com"
+        redis.port.should == "6380"
 
-        @redis = instantiate_store "redis.com:6380/23"
-        @redis.instance_variable_get(:@db).should == 23
-        @redis.host.should == "redis.com"
-        @redis.port.should == "6380"
+        redis = instantiate_store "redis.com:6380/23"
+        redis.instance_variable_get(:@db).should == 23
+        redis.host.should == "redis.com"
+        redis.port.should == "6380"
+      end
+
+      it "should instantiate a ring" do
+        store = RedisStore.new
+        store.instance_variable_get(:@data).should be_kind_of(MarshaledRedis)
+        store = RedisStore.new "localhost:6379/0", "localhost:6379/1"
+        store.instance_variable_get(:@data).should be_kind_of(DistributedMarshaledRedis)
       end
 
       it "should read the data" do
