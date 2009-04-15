@@ -18,7 +18,8 @@ h2. How to use with Rails
 
 In your configuration files:
 
-  config.gem "jodosha-redis-rails", :source => "http://gems.github.com"
+  config.gem "jodosha-redis-rails", :source => "http://gems.github.com", :lib => "redis-rails"
+  require "redis-rails" # HACK Rails tries to instantiate cache first, then load configured gems
   config.cache_store = :redis_store
 
 Start Redis server, then your application.
