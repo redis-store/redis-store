@@ -5,7 +5,7 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 require 'spec/rake/spectask'
 
-REDIS_RAILS_VERSION = "0.0.1"
+REDIS_RAILS_VERSION = "0.0.2"
 
 task :default => :spec
 
