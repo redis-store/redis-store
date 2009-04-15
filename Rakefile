@@ -27,3 +27,24 @@ task :files do
   puts "Files:\n #{Dir['**/*'].reject {|f| File.directory?(f)}.sort.inspect}"
   puts "Test files:\n #{Dir['spec/**/*_spec.rb'].reject {|f| File.directory?(f)}.sort.inspect}"
 end
+
+namespace :redis do
+  desc 'Start the Redis cluster'
+  task :start => :clean do
+    system "redis-server spec/config/master.conf"
+    system "redis-server spec/config/slave.conf"
+  end
+
+  desc 'Stop the Redis cluster'
+  task :stop do
+    # TODO replace with:
+    # system "kill -9 `tmp/redis-master.pid`"
+    # system "kill -9 `tmp/redis-slave.pid`"
+    system "ps -eo pid,comm | grep redis | xargs kill -9"
+  end
+
+  desc 'Clean the tmp/ directory'
+  task :clean do
+    system "rm tmp/*"
+  end
+end
