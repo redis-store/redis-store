@@ -143,16 +143,18 @@ module ActiveSupport
         end
       end
 
-      # it "should fetch data" do
-      #   @store.fetch("rabbit").should == @rabbit
-      #   @store.fetch("rab-a-dab").should be_nil
-      #   @store.fetch("rab-a-dab") { "Flora de Cana" }
-      #   @store.fetch("rab-a-dab").should === "Flora de Cana"
-      #   @store.fetch("rabbit", :force => true).should be_nil # force cache miss
-      #   @store.fetch("rabbit", :force => true, :expires_in => 1.second) { @white_rabbit }
-      #   @store.fetch("rabbit").should === @white_rabbit ; sleep 2
-      #   @store.fetch("rabbit").should be_nil
-      # end
+      it "should fetch data" do
+        with_store_management do |store|
+          store.fetch("rabbit").should == @rabbit
+          store.fetch("rub-a-dub").should be_nil
+          store.fetch("rub-a-dub") { "Flora de Cana" }
+          store.fetch("rub-a-dub").should === "Flora de Cana"
+          store.fetch("rabbit", :force => true).should be_nil # force cache miss
+          # store.fetch("rabbit", :force => true, :expires_in => 1.second) { @white_rabbit }
+          # store.fetch("rabbit").should === @white_rabbit ; sleep 2
+          # store.fetch("rabbit").should be_nil
+        end
+      end
       
       private
         def instantiate_store(address = nil)
