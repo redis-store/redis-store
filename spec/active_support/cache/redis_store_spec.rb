@@ -5,10 +5,13 @@ module ActiveSupport
     describe "RedisStore" do
       before(:each) do
         @store  = RedisStore.new
+        @dstore = RedisStore.new "localhost:6380/1", "localhost:6381/1"
         @rabbit = OpenStruct.new :name => "bunny"
         @white_rabbit = OpenStruct.new :color => "white"
-        @store.write  "rabbit", @rabbit
-        @store.delete "counter"
+        with_store_management do |store|
+          store.write  "rabbit", @rabbit
+          store.delete "counter"
+        end
       end
 
       it "should accept connection params" do
@@ -38,12 +41,16 @@ module ActiveSupport
       end
 
       it "should read the data" do
-        @store.read("rabbit").should === @rabbit
+        with_store_management do |store|
+          store.read("rabbit").should === @rabbit
+        end
       end
 
       it "should write the data" do
-        @store.write "rabbit", @white_rabbit
-        @store.read("rabbit").should === @white_rabbit
+        with_store_management do |store|
+          store.write "rabbit", @white_rabbit
+          store.read("rabbit").should === @white_rabbit
+        end
       end
 
       # it "should write the data with expiration time" do
@@ -53,63 +60,87 @@ module ActiveSupport
       # end
 
       it "should not write data if :unless_exist option is true" do
-        @store.write "rabbit", @white_rabbit, :unless_exist => true
-        @store.read("rabbit").should === @rabbit
+        with_store_management do |store|
+          store.write "rabbit", @white_rabbit, :unless_exist => true
+          store.read("rabbit").should === @rabbit
+        end
       end
 
       it "should read raw data" do
-        @store.read("rabbit", :raw => true).should == "\004\bU:\017OpenStruct{\006:\tname\"\nbunny"
+        with_store_management do |store|
+          store.read("rabbit", :raw => true).should == "\004\bU:\017OpenStruct{\006:\tname\"\nbunny"
+        end
       end
 
       it "should write raw data" do
-        @store.write "rabbit", @white_rabbit, :raw => true
-        @store.read("rabbit", :raw => true).should == %(#<OpenStruct color="white">)
+        with_store_management do |store|
+          store.write "rabbit", @white_rabbit, :raw => true
+          store.read("rabbit", :raw => true).should == %(#<OpenStruct color="white">)
+        end
       end
 
       it "should delete data" do
-        @store.delete "rabbit"
-        @store.read("rabbit").should be_nil
+        with_store_management do |store|
+          store.delete "rabbit"
+          store.read("rabbit").should be_nil
+        end
       end
 
       it "should delete matched data" do
-        @store.delete_matched "rabb*"
-        @store.read("rabbit").should be_nil
+        with_store_management do |store|
+          store.delete_matched "rabb*"
+          store.read("rabbit").should be_nil
+        end
       end
 
       it "should verify existence of an object in the store" do
-        @store.exist?("rabbit").should be_true
-        @store.exist?("rab-a-dub").should be_false
+        with_store_management do |store|
+          store.exist?("rabbit").should be_true
+          store.exist?("rab-a-dub").should be_false
+        end
       end
 
       it "should increment a key" do
-        3.times { @store.increment "counter" }
-        @store.read("counter", :raw => true).to_i.should == 3
+        with_store_management do |store|
+          3.times { store.increment "counter" }
+          store.read("counter", :raw => true).to_i.should == 3
+        end
       end
 
       it "should decrement a key" do
-        3.times { @store.increment "counter" }
-        2.times { @store.decrement "counter" }
-        @store.read("counter", :raw => true).to_i.should == 1
+        with_store_management do |store|
+          3.times { store.increment "counter" }
+          2.times { store.decrement "counter" }
+          store.read("counter", :raw => true).to_i.should == 1
+        end
       end
 
       it "should increment a key by given value" do
-        @store.increment "counter", 3
-        @store.read("counter", :raw => true).to_i.should == 3
+        with_store_management do |store|
+          store.increment "counter", 3
+          store.read("counter", :raw => true).to_i.should == 3
+        end
       end
 
       it "should decrement a key by given value" do
-        3.times { @store.increment "counter" }
-        @store.decrement "counter", 2
-        @store.read("counter", :raw => true).to_i.should == 1
+        with_store_management do |store|
+          3.times { store.increment "counter" }
+          store.decrement "counter", 2
+          store.read("counter", :raw => true).to_i.should == 1
+        end
       end
 
       it "should clear the store" do
-        @store.clear
-        @store.instance_variable_get(:@data).keys("*").should be_empty
+        with_store_management do |store|
+          store.clear
+          store.instance_variable_get(:@data).keys("*").should be_empty
+        end
       end
 
       it "should return store stats" do
-        @store.stats.should_not be_empty
+        with_store_management do |store|
+          store.stats.should_not be_empty
+        end
       end
 
       # it "should fetch data" do
@@ -126,6 +157,11 @@ module ActiveSupport
       private
         def instantiate_store(address = nil)
           RedisStore.new(address).instance_variable_get(:@data)
+        end
+
+        def with_store_management
+          yield @store
+          yield @dstore
         end
     end
   end
