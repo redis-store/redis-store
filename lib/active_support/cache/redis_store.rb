@@ -8,6 +8,7 @@ module ActiveSupport
       #   RedisStore.new "example.com"         # => host: example.com, port: 6379,  db: 0
       #   RedisStore.new "example.com:23682"   # => host: example.com, port: 23682, db: 0
       #   RedisStore.new "example.com:23682/1" # => host: example.com, port: 23682, db: 1
+      #   RedisStore.new "localhost:6379/0", "localhost:6380/0" # => instantiate a cluster
       def initialize(*addresses)
         addresses = extract_addresses(addresses)
         @data = if addresses.size > 1
