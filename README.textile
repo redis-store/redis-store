@@ -4,9 +4,9 @@ h2. Installation
 
 Download and install Redis from http://code.google.com/p/redis/
 
-  wget http://redis.googlecode.com/files/redis-0.093.tar.gz
-  tar -zxvf redis-0.093.tar.gz
-  cd redis-0.093
+  wget http://redis.googlecode.com/files/redis-0.094.tar.gz
+  tar -zxvf redis-0.094.tar.gz
+  cd redis-0.094
   make
 
 Install the gems
