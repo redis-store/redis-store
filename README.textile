@@ -4,22 +4,22 @@ h2. Installation
 
 Download and install Redis from http://code.google.com/p/redis/
 
-  wget http://redis.googlecode.com/files/redis-0.091.tar.gz
-  tar -zxvf redis-0.091.tar.gz
-  cd redis-0.091
+  wget http://redis.googlecode.com/files/redis-0.093.tar.gz
+  tar -zxvf redis-0.093.tar.gz
+  cd redis-0.093
   make
 
 Install the gems
 
   sudo gem install ezmobius-redis-rb -s http://gems.github.com
-  sudo gem install jodosha-redis-rails -s http://gems.github.com
+  sudo gem install jodosha-redis-store -s http://gems.github.com
 
 h2. How to use with Rails
 
 In your configuration files:
 
-  config.gem "jodosha-redis-rails", :source => "http://gems.github.com", :lib => "redis-rails"
-  require "redis-rails" # HACK Rails tries to instantiate cache first, then load configured gems
+  config.gem "jodosha-redis-store", :source => "http://gems.github.com", :lib => "redis-store"
+  require "redis-store" # HACK Rails tries to instantiate cache first, then load configured gems
   config.cache_store = :redis_store
 
 h2. How to use with Merb
