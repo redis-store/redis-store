@@ -34,10 +34,10 @@ module ActiveSupport
       end
 
       it "should instantiate a ring" do
-        store = RedisStore.new
-        store.instance_variable_get(:@data).should be_kind_of(MarshaledRedis)
-        store = RedisStore.new "localhost:6379/0", "localhost:6379/1"
-        store.instance_variable_get(:@data).should be_kind_of(DistributedMarshaledRedis)
+        store = instantiate_store
+        store.should be_kind_of(MarshaledRedis)
+        store = instantiate_store ["localhost:6379/0", "localhost:6379/1"]
+        store.should be_kind_of(DistributedMarshaledRedis)
       end
 
       it "should read the data" do
@@ -157,8 +157,8 @@ module ActiveSupport
       end
       
       private
-        def instantiate_store(address = nil)
-          RedisStore.new(address).instance_variable_get(:@data)
+        def instantiate_store(addresses = nil)
+          RedisStore.new(addresses).instance_variable_get(:@data)
         end
 
         def with_store_management

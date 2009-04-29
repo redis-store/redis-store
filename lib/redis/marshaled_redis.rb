@@ -21,6 +21,8 @@ class MarshaledRedis < Redis
     end
 
     def expires_in(options)
-      options[:expires_in] if options
+      if options
+        options[:expires_in] || options[:expire_in]
+      end
     end
 end
