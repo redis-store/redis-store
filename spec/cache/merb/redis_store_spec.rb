@@ -76,10 +76,27 @@ module Merb
       end
 
       it "should fetch data"
-      it "should verify existence"
-      it "should delete data"
-      it "should delete all the data"
-      it "should delete all the data with the bang!"
+
+      it "should verify existence" do
+        with_store_management do |store|
+          store.exists?("rabbit").should be_true
+          store.exists?("rab-a-dub").should be_false
+        end
+      end
+
+      it "should delete data" do
+        with_store_management do |store|
+          store.delete "rabbit"
+          store.read("rabbit").should be_nil
+        end
+      end
+
+      it "should delete all the data" do
+        with_store_management do |store|
+          store.delete_all
+          store.instance_variable_get(:@data).keys("*").should be_empty
+        end
+      end
 
       private
         def instantiate_store(addresses = nil)

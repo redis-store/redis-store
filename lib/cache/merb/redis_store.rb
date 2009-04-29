@@ -42,15 +42,15 @@ module Merb
       end
 
       def exists?(key, parameters = {})
-        raise NotImplementedError
+        @data.key? normalize(key, parameters)
       end
 
       def delete(key, parameters = {})
-        @data.delete key
+        @data.delete normalize(key, parameters)
       end
 
       def delete_all
-        raise NotImplementedError
+        @data.flush_db
       end
 
       def delete_all!
