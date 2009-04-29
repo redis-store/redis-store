@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name               = "redis-rails"
+  s.name               = "redis-store"
   s.version            = "0.0.2"
   s.date               = "2009-04-16"
   s.summary            = "Redis cache and session stores for Ruby web frameworks"
