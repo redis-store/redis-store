@@ -1,4 +1,4 @@
-h1. Redis store for Rails
+h1. Redis cache and session stores for Ruby web frameworks
 
 h2. Installation
 
@@ -22,7 +22,13 @@ In your configuration files:
   require "redis-rails" # HACK Rails tries to instantiate cache first, then load configured gems
   config.cache_store = :redis_store
 
-Start Redis server, then your application.
+h2. How to use with Merb
+
+  dependency "merb-cache" do
+    Merb::Cache.setup do
+      register(:redis, RedisStore, :servers => ["127.0.0.1:6379"])
+    end
+  end
 
 h2. Copyright
 
