@@ -10,7 +10,7 @@ module Merb
         @white_rabbit = OpenStruct.new :color => "white"
         with_store_management do |store|
           store.write  "rabbit", @rabbit
-          store.delete "counter"
+          store.delete "rub-a-dub"
         end
       end
 
@@ -75,7 +75,17 @@ module Merb
         end
       end
 
-      it "should fetch data"
+      it "should fetch data" do
+        with_store_management do |store|
+          store.fetch("rabbit").should == @rabbit
+          store.fetch("rub-a-dub").should be_nil
+          store.fetch("rub-a-dub") { "Flora de Cana" }
+          store.fetch("rub-a-dub").should === "Flora de Cana"
+          # store.fetch("rabbit", {}, :force => true, :expires_in => 1.second) { @white_rabbit }
+          # store.fetch("rabbit").should === @white_rabbit ; sleep 2
+          # store.fetch("rabbit").should be_nil
+        end
+      end
 
       it "should verify existence" do
         with_store_management do |store|

@@ -38,7 +38,13 @@ module Merb
       end
 
       def fetch(key, parameters = {}, conditions = {}, &blk)
-        raise NotImplementedError
+        if data = read(key, parameters)
+          data
+        elsif block_given?
+          data = yield
+          write(key, data, parameters)
+          data
+        end
       end
 
       def exists?(key, parameters = {})
