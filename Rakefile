@@ -5,16 +5,16 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 require 'spec/rake/spectask'
 
-REDIS_RAILS_VERSION = "0.0.2"
+REDIS_STORE_VERSION = "0.0.2"
 
 task :default => :spec
 
 desc 'Build and install the gem (useful for development purposes).'
 task :install do
-  system "gem build redis-rails.gemspec"
-  system "sudo gem uninstall redis-rails"
-  system "sudo gem install --local --no-rdoc --no-ri redis-rails-#{REDIS_RAILS_VERSION}.gem"
-  system "rm redis-rails-*.gem"
+  system "gem build redis-store.gemspec"
+  system "sudo gem uninstall redis-store"
+  system "sudo gem install --local --no-rdoc --no-ri redis-store-#{REDIS_STORE_VERSION}.gem"
+  system "rm redis-store-*.gem"
 end
 
 Spec::Rake::SpecTask.new do |t|
