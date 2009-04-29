@@ -47,6 +47,6 @@ namespace :redis do
 
   desc 'Clean the tmp/ directory'
   task :clean do
-    system "rm tmp/*"
+    system "rm tmp/*" rescue nil
   end
 end
