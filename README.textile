@@ -19,7 +19,7 @@ h2. Cache store
 Provides a cache store for your Ruby web framework of choice.
 
 h3. How to use with Rails
-  
+
   config.gem "jodosha-redis-store", :source => "http://gems.github.com", :lib => "redis-store"
   require "redis-store" # HACK Rails tries to instantiate cache first, then load configured gems
   config.cache_store = :redis_store
