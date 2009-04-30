@@ -24,10 +24,24 @@ In your configuration files:
 
 h2. How to use with Merb
 
-  dependency "redis-store", "0.0.3"
+  dependency "jodosha-redis-store", "0.0.3"
   dependency("merb-cache", merb_gems_version) do
     Merb::Cache.setup do
       register(:redis, Merb::Cache::RedisStore, :servers => ["127.0.0.1:6379"])
+    end
+  end
+
+h2. How to use with Sinatra
+
+  require 'rubygems'
+  require 'sinatra'
+  require 'jodosha-redis-store'
+
+  class MyApp < Sinatra::Base
+    register Sinatra::Cache
+
+    get '/hi' do
+      cache.fetch("greet") { "Hello, World!" }
     end
   end
 

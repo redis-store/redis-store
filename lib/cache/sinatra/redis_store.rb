@@ -1,0 +1,131 @@
+module Sinatra
+  module Cache
+    class << self
+      def register(app)
+        app.set :cache, RedisStore.new
+      end
+    end
+
+    class RedisStore
+      # Instantiate the store.
+      #
+      # Example:
+      #   RedisStore.new                       # => host: localhost,   port: 6379,  db: 0
+      #   RedisStore.new "example.com"         # => host: example.com, port: 6379,  db: 0
+      #   RedisStore.new "example.com:23682"   # => host: example.com, port: 23682, db: 0
+      #   RedisStore.new "example.com:23682/1" # => host: example.com, port: 23682, db: 1
+      #   RedisStore.new "localhost:6379/0", "localhost:6380/0" # => instantiate a cluster
+      def initialize(*addresses)
+        addresses = extract_addresses(addresses)
+        @data = if addresses.size > 1
+          DistributedMarshaledRedis.new addresses
+        else
+          MarshaledRedis.new addresses.first || {}
+        end
+      end
+
+      def write(key, value, options = nil)
+        method = options && options[:unless_exist] ? :set_unless_exists : :set
+        @data.send method, key, value, options
+      end
+
+      def read(key, options = nil)
+        @data.get key, options
+      end
+
+      def delete(key, options = nil)
+        @data.delete key
+      end
+
+      def exist?(key, options = nil)
+        @data.key? key
+      end
+
+      # Increment a key in the store.
+      #
+      # If the key doesn't exist it will be initialized on 0.
+      # If the key exist but it isn't a Fixnum it will be initialized on 0.
+      #
+      # Example:
+      #   We have two objects in cache:
+      #     counter # => 23
+      #     rabbit  # => #<Rabbit:0x5eee6c>
+      #
+      #   cache.increment "counter"
+      #   cache.read "counter", :raw => true      # => "24"
+      #
+      #   cache.increment "counter", 6
+      #   cache.read "counter", :raw => true      # => "30"
+      #
+      #   cache.increment "a counter"
+      #   cache.read "a counter", :raw => true    # => "1"
+      #
+      #   cache.increment "rabbit"
+      #   cache.read "rabbit", :raw => true       # => "1"
+      def increment(key, amount = 1)
+        @data.incr key, amount
+      end
+
+      # Decrement a key in the store
+      #
+      # If the key doesn't exist it will be initialized on 0.
+      # If the key exist but it isn't a Fixnum it will be initialized on 0.
+      #
+      # Example:
+      #   We have two objects in cache:
+      #     counter # => 23
+      #     rabbit  # => #<Rabbit:0x5eee6c>
+      #
+      #   cache.decrement "counter"
+      #   cache.read "counter", :raw => true      # => "22"
+      #
+      #   cache.decrement "counter", 2
+      #   cache.read "counter", :raw => true      # => "20"
+      #
+      #   cache.decrement "a counter"
+      #   cache.read "a counter", :raw => true    # => "-1"
+      #
+      #   cache.decrement "rabbit"
+      #   cache.read "rabbit", :raw => true       # => "-1"
+      def decrement(key, amount = 1)
+        @data.decr key, amount
+      end
+
+      # Delete objects for matched keys.
+      #
+      # Example:
+      #   cache.delete_matched "rab*"
+      def delete_matched(matcher, options = nil)
+        @data.keys(matcher).each { |key| @data.delete key }
+      end
+
+      def fetch(key, options = {})
+        (!options[:force] && data = read(key, options)) || (write key, yield, options if block_given?)
+      end
+
+      # Clear all the data from the store.
+      def clear
+        @data.flush_db
+      end
+
+      def stats
+        @data.info
+      end
+
+      private
+        def extract_addresses(addresses) # TODO extract in a module or a class
+          addresses = addresses.flatten.compact
+          addresses.inject([]) do |result, address|
+            host, port = address.split /\:/
+            port, db   = port.split /\// if port
+            address = {}
+            address[:host] = host if host
+            address[:port] = port if port
+            address[:db]  = db.to_i if db
+            result << address
+            result
+          end
+        end
+    end
+  end
+end

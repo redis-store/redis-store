@@ -1,6 +1,20 @@
 require File.join(File.dirname(__FILE__), "/../../spec_helper")
 
-module ActiveSupport
+class App
+  def initialize
+    @values = {}
+  end
+
+  def set(key, value)
+    @values[key] = value
+  end
+  
+  def get(key)
+    @values[key]
+  end
+end
+
+module Sinatra
   module Cache
     describe "RedisStore" do
       before(:each) do
@@ -13,6 +27,13 @@ module ActiveSupport
           store.delete "counter"
           store.delete "rub-a-dub"
         end
+      end
+
+      it "should register as extension" do
+        app = App.new
+        Sinatra::Cache.register(app)
+        store = app.get(:cache)
+        store.should be_kind_of(RedisStore)
       end
 
       it "should accept connection params" do
@@ -156,7 +177,7 @@ module ActiveSupport
           # store.fetch("rabbit").should be_nil
         end
       end
-      
+
       private
         def instantiate_store(addresses = nil)
           RedisStore.new(addresses).instance_variable_get(:@data)
