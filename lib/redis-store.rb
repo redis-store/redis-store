@@ -10,8 +10,7 @@ elsif defined?(Merb)
   # HACK for cyclic dependency: redis-store is required before merb-cache
   module Merb; module Cache; class AbstractStore; end end end
   require "cache/merb/redis_store"
-else # rails or ruby application
-  require "activesupport"
+elsif defined?(Rails)
   require "cache/rails/redis_store"
 end
 
