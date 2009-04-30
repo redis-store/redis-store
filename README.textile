@@ -10,19 +10,19 @@ Download and install Redis from http://code.google.com/p/redis/
   make
 
 Install the gems
-  
+
   sudo gem install ezmobius-redis-rb -s http://gems.github.com
   sudo gem install jodosha-redis-store -s http://gems.github.com
-  
+
 h2. Cache store
+
+Provides a cache store for your Ruby web framework of choice.
 
 h3. How to use with Rails
   
   config.gem "jodosha-redis-store", :source => "http://gems.github.com", :lib => "redis-store"
-  # HACK Rails tries to instantiate cache first, then load configured gems
-  require "redis-store"
+  require "redis-store" # HACK Rails tries to instantiate cache first, then load configured gems
   config.cache_store = :redis_store
-  
 
 h3. How to use with Merb
   
@@ -32,9 +32,9 @@ h3. How to use with Merb
       register(:redis, Merb::Cache::RedisStore, :servers => ["127.0.0.1:6379"])
     end
   end
-  
+
 h3. How to use with Sinatra
-  
+
   require 'rubygems'
   require 'sinatra'
   require 'jodosha-redis-store'
@@ -46,9 +46,10 @@ h3. How to use with Sinatra
       cache.fetch("greet") { "Hello, World!" }
     end
   end
-  
+
 h2. Rack::Cache
-See (http://github.com/rtomayko/rack-cache)
+
+Provides a Redis store for HTTP caching. See http://github.com/rtomayko/rack-cache
 
   require "rubygems"
   require "rack"
