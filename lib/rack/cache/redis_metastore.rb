@@ -35,6 +35,8 @@ module Rack
           nil
         end
       end
+
+      REDIS = Redis
     end
   end
 end

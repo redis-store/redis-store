@@ -8,6 +8,10 @@ module Rack
           @store = Redis.resolve uri("redis://127.0.0.1")
         end
 
+        it "should have the class referenced by homonym constant" do
+          Rack::Cache::MetaStore::REDIS.should be(Rack::Cache::MetaStore::Redis)
+        end
+
         it "should resolve the connection uri" do
           cache = Redis.resolve(uri("redis://127.0.0.1")).cache
           cache.should be_kind_of(::MarshaledRedis)
