@@ -38,10 +38,8 @@ h3. How to use with Sinatra
   require 'rubygems'
   require 'sinatra'
   require 'jodosha-redis-store'
-  
   class MyApp < Sinatra::Base
     register Sinatra::Cache
-    
     get '/hi' do
       cache.fetch("greet") { "Hello, World!" }
     end
@@ -56,11 +54,9 @@ Provides a Redis store for HTTP caching. See http://github.com/rtomayko/rack-cac
   require "rack/cache"
   require "jodosha-redis-store"
   require "application"
-
   use Rack::Cache,
     :metastore   => 'redis://localhost:6379/0',
     :entitystore => 'redis://localhost:6380/1'
-
   run Application.new
 
 h2. Copyright
