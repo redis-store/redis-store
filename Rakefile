@@ -5,7 +5,7 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 require 'spec/rake/spectask'
 
-REDIS_STORE_VERSION = "0.0.2"
+REDIS_STORE_VERSION = "0.0.3"
 
 task :default => :spec
 

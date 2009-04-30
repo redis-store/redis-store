@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name               = "redis-store"
-  s.version            = "0.0.2"
-  s.date               = "2009-04-16"
+  s.version            = "0.0.3"
+  s.date               = "2009-04-30"
   s.summary            = "Redis cache and session stores for Ruby web frameworks"
   s.author             = "Luca Guidi"
   s.email              = "guidi.luca@gmail.com"
