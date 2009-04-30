@@ -24,9 +24,10 @@ In your configuration files:
 
 h2. How to use with Merb
 
-  dependency "merb-cache" do
+  dependency "redis-store", "0.0.3"
+  dependency("merb-cache", merb_gems_version) do
     Merb::Cache.setup do
-      register(:redis, RedisStore, :servers => ["127.0.0.1:6379"])
+      register(:redis, Merb::Cache::RedisStore, :servers => ["127.0.0.1:6379"])
     end
   end
 
