@@ -34,17 +34,11 @@ module Merb
       end
 
       def write_all(key, data = nil, parameters = {}, conditions = {})
-        write(key, data, parameters, conditions)
+        write key, data, parameters, conditions
       end
 
       def fetch(key, parameters = {}, conditions = {}, &blk)
-        if data = read(key, parameters)
-          data
-        elsif block_given?
-          data = yield
-          write(key, data, parameters)
-          data
-        end
+        read(key, parameters) || (write key, yield, parameters, conditions if block_given?)
       end
 
       def exists?(key, parameters = {})
