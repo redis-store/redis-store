@@ -40,7 +40,11 @@ module Merb
         store.should be_kind_of(DistributedMarshaledRedis)
       end
 
-      it "should verify if writeable"
+      it "should verify if writable" do
+        with_store_management do |store|
+          store.writable?("rabbit").should be_true
+        end
+      end
 
       it "should read the data" do
         with_store_management do |store|
@@ -67,6 +71,12 @@ module Merb
           store.read("rabbit", {}, :raw => true).should == %(#<OpenStruct color="white">)
         end
       end
+
+      # it "should write the data with expiration time" do
+      #   @store.write "rabbit", @white_rabbit, :expires_in => 1.second
+      #   @store.read("rabbit").should === @white_rabbit ; sleep 2
+      #   @store.read("rabbit").should be_nil
+      # end
 
       it "should not write data if :unless_exist option is true" do
         with_store_management do |store|
