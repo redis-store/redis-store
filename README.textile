@@ -4,7 +4,7 @@ h2. Installation
 
 Download and install Redis from http://code.google.com/p/redis/
 
-  wget http://redis.googlecode.com/files/redis-0.094.tar.gz
+  wget "http://redis.googlecode.com/files/redis-0.094.tar.gz":http://redis.googlecode.com/files/redis-0.094.tar.gz
   tar -zxvf redis-0.094.tar.gz
   cd redis-0.094
   make
@@ -47,7 +47,7 @@ h3. How to use with Sinatra
 
 h2. Rack::Cache
 
-Provides a Redis store for HTTP caching. See http://github.com/rtomayko/rack-cache
+Provides a Redis store for HTTP caching. See "http://github.com/rtomayko/rack-cache":http://github.com/rtomayko/rack-cache
 
   require "rubygems"
   require "rack"
@@ -61,4 +61,4 @@ Provides a Redis store for HTTP caching. See http://github.com/rtomayko/rack-cac
 
 h2. Copyright
 
-(c) 2009 Luca Guidi - http://lucaguidi.com, released under the MIT license
+(c) 2009 Luca Guidi - "http://lucaguidi.com":http://lucaguidi.com, released under the MIT license
