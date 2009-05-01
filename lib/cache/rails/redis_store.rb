@@ -10,12 +10,7 @@ module ActiveSupport
       #   RedisStore.new "example.com:23682/1" # => host: example.com, port: 23682, db: 1
       #   RedisStore.new "localhost:6379/0", "localhost:6380/0" # => instantiate a cluster
       def initialize(*addresses)
-        addresses = extract_addresses(addresses)
-        @data = if addresses.size > 1
-          DistributedMarshaledRedis.new addresses
-        else
-          MarshaledRedis.new addresses.first || {}
-        end
+        @data = RedisFactory.create(addresses)
       end
 
       def write(key, value, options = nil)
@@ -109,21 +104,6 @@ module ActiveSupport
       def stats
         @data.info
       end
-      
-      private
-        def extract_addresses(addresses)
-          addresses = addresses.flatten.compact
-          addresses.inject([]) do |result, address|
-            host, port = address.split /\:/
-            port, db   = port.split /\// if port
-            address = {}
-            address[:host] = host if host
-            address[:port] = port if port
-            address[:db]  = db.to_i if db
-            result << address
-            result
-          end
-        end
     end
   end
 end

@@ -10,12 +10,7 @@ module Merb
       #   RedisStore.new :servers => ["example.com:23682/1"] # => host: example.com, port: 23682, db: 1
       #   RedisStore.new :servers => ["localhost:6379/0", "localhost:6380/0"] # => instantiate a cluster
       def initialize(config = {})
-        addresses = extract_addresses(config[:servers])
-        @data = if addresses.size > 1
-          DistributedMarshaledRedis.new addresses
-        else
-          MarshaledRedis.new addresses.first || {}
-        end
+        @data = RedisFactory.create config[:servers]
       end
 
       def writable?(key, parameters = {}, conditions = {})
@@ -58,21 +53,6 @@ module Merb
       end
 
       private
-        def extract_addresses(addresses) # TODO extract in a module or a class
-          return [] unless addresses
-          addresses = addresses.flatten.compact
-          addresses.inject([]) do |result, address|
-            host, port = address.split /\:/
-            port, db   = port.split /\// if port
-            address = {}
-            address[:host] = host if host
-            address[:port] = port if port
-            address[:db]  = db.to_i if db
-            result << address
-            result
-          end
-        end
-
         # Returns cache key calculated from base key
         # and SHA2 hex from parameters.
         def normalize(key, parameters = {})
