@@ -14,6 +14,12 @@ elsif defined?(Rails)
   require "cache/rails/redis_store"
 end
 
+# Rack::Session
+if defined?(Rack::Session)
+  require "rack/session/abstract/id"
+  require "rack/session/redis"
+end
+
 # Rack::Cache
 if defined?(Rack::Cache)
   require "rack/cache/redis_metastore"
