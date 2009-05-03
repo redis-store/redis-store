@@ -12,4 +12,4 @@ require "activesupport"
 require "cache/rails/redis_store"
 require "cache/sinatra/redis_store"
 
-class MarshaledRedis; attr_reader :db end
+class Redis; attr_reader :db end

@@ -2,8 +2,8 @@ require File.join(File.dirname(__FILE__), "/../../../spec_helper")
 
 module Rack
   module Cache
-    class MetaStore
-      describe "Redis" do
+    class EntityStore
+      describe "Rack::Cache::EntityStore::Redis" do
         before(:each) do
           @store = Rack::Cache::EntityStore::Redis.new :host => "localhost"
         end
@@ -13,16 +13,16 @@ module Rack
         end
 
         it "should resolve the connection uri" do
-          cache = Redis.resolve(uri("redis://127.0.0.1")).cache
-          cache.should be_kind_of(::MarshaledRedis)
+          cache = Rack::Cache::EntityStore::Redis.resolve(uri("redis://127.0.0.1")).cache
+          cache.should be_kind_of(::Redis)
           cache.host.should == "127.0.0.1"
           cache.port.should == "6379"
           cache.db.should == "0"
 
-          cache = Redis.resolve(uri("redis://127.0.0.1:6380")).cache
+          cache = Rack::Cache::EntityStore::Redis.resolve(uri("redis://127.0.0.1:6380")).cache
           cache.port.should == 6380
 
-          cache = Redis.resolve(uri("redis://127.0.0.1/11")).cache
+          cache = Rack::Cache::EntityStore::Redis.resolve(uri("redis://127.0.0.1/11")).cache
           cache.db.should == "11"
         end
 

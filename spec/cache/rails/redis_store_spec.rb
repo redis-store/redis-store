@@ -2,10 +2,10 @@ require File.join(File.dirname(__FILE__), "/../../spec_helper")
 
 module ActiveSupport
   module Cache
-    describe "RedisStore" do
+    describe "ActiveSupport::Cache::RedisStore" do
       before(:each) do
-        @store  = RedisStore.new
-        @dstore = RedisStore.new "localhost:6380/1", "localhost:6381/1"
+        @store  = ActiveSupport::Cache::RedisStore.new
+        @dstore = ActiveSupport::Cache::RedisStore.new "localhost:6380/1", "localhost:6381/1"
         @rabbit = OpenStruct.new :name => "bunny"
         @white_rabbit = OpenStruct.new :color => "white"
         with_store_management do |store|
@@ -159,7 +159,7 @@ module ActiveSupport
       
       private
         def instantiate_store(addresses = nil)
-          RedisStore.new(addresses).instance_variable_get(:@data)
+          ActiveSupport::Cache::RedisStore.new(addresses).instance_variable_get(:@data)
         end
 
         def with_store_management

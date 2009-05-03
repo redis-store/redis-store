@@ -16,10 +16,10 @@ end
 
 module Sinatra
   module Cache
-    describe "RedisStore" do
+    describe "Sinatra::Cache::RedisStore" do
       before(:each) do
-        @store  = RedisStore.new
-        @dstore = RedisStore.new "localhost:6380/1", "localhost:6381/1"
+        @store  = Sinatra::Cache::RedisStore.new
+        @dstore = Sinatra::Cache::RedisStore.new "localhost:6380/1", "localhost:6381/1"
         @rabbit = OpenStruct.new :name => "bunny"
         @white_rabbit = OpenStruct.new :color => "white"
         with_store_management do |store|
@@ -180,7 +180,7 @@ module Sinatra
 
       private
         def instantiate_store(addresses = nil)
-          RedisStore.new(addresses).instance_variable_get(:@data)
+          Sinatra::Cache::RedisStore.new(addresses).instance_variable_get(:@data)
         end
 
         def with_store_management

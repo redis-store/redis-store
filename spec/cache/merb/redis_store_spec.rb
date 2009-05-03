@@ -2,10 +2,10 @@ require File.join(File.dirname(__FILE__), "/../../spec_helper")
 
 module Merb
   module Cache
-    describe "RedisStore" do
+    describe "Merb::Cache::RedisStore" do
       before(:each) do
-        @store  = RedisStore.new
-        @dstore = RedisStore.new :servers => ["localhost:6380/1", "localhost:6381/1"]
+        @store  = Merb::Cache::RedisStore.new
+        @dstore = Merb::Cache::RedisStore.new :servers => ["localhost:6380/1", "localhost:6381/1"]
         @rabbit = OpenStruct.new :name => "bunny"
         @white_rabbit = OpenStruct.new :color => "white"
         with_store_management do |store|
@@ -120,7 +120,7 @@ module Merb
 
       private
         def instantiate_store(addresses = nil)
-          RedisStore.new(:servers => [addresses].flatten).instance_variable_get(:@data)
+          Merb::Cache::RedisStore.new(:servers => [addresses].flatten).instance_variable_get(:@data)
         end
 
         def with_store_management

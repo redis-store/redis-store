@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), "/../../spec_helper")
 
 module Rack
   module Session
-    describe "Redis" do
+    describe "Rack::Session::Redis" do
       before(:each) do
         @session_key = Rack::Session::Redis::DEFAULT_OPTIONS[:key]
         @session_match = /#{@session_key}=[0-9a-fA-F]+;/

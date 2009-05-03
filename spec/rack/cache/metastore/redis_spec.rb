@@ -3,9 +3,9 @@ require File.join(File.dirname(__FILE__), "/../../../spec_helper")
 module Rack
   module Cache
     class MetaStore
-      describe "Redis" do
+      describe "Rack::Cache::MetaStore::Redis" do
         before(:each) do
-          @store = Redis.resolve uri("redis://127.0.0.1")
+          @store = Rack::Cache::MetaStore::Redis.resolve uri("redis://127.0.0.1")
         end
 
         it "should have the class referenced by homonym constant" do
@@ -13,16 +13,16 @@ module Rack
         end
 
         it "should resolve the connection uri" do
-          cache = Redis.resolve(uri("redis://127.0.0.1")).cache
+          cache = Rack::Cache::MetaStore::Redis.resolve(uri("redis://127.0.0.1")).cache
           cache.should be_kind_of(::MarshaledRedis)
           cache.host.should == "127.0.0.1"
           cache.port.should == "6379"
           cache.db.should == "0"
 
-          cache = Redis.resolve(uri("redis://127.0.0.1:6380")).cache
+          cache = Rack::Cache::MetaStore::Redis.resolve(uri("redis://127.0.0.1:6380")).cache
           cache.port.should == 6380
 
-          cache = Redis.resolve(uri("redis://127.0.0.1/11")).cache
+          cache = Rack::Cache::MetaStore::Redis.resolve(uri("redis://127.0.0.1/11")).cache
           cache.db.should == "11"
         end
 
