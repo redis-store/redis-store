@@ -76,9 +76,11 @@ module Sinatra
       end
 
       it "should write the data with expiration time" do
-        @store.write "rabbit", @white_rabbit, :expires_in => 1.second
-        @store.read("rabbit").should === @white_rabbit ; sleep 2
-        @store.read("rabbit").should be_nil
+        with_store_management do |store|
+          store.write "rabbit", @white_rabbit, :expires_in => 1.second
+          store.read("rabbit").should === @white_rabbit ; sleep 2
+          store.read("rabbit").should be_nil
+        end
       end
 
       it "should not write data if :unless_exist option is true" do
