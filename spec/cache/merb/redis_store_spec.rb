@@ -72,11 +72,13 @@ module Merb
         end
       end
 
-      # it "should write the data with expiration time" do
-      #   @store.write "rabbit", @white_rabbit, :expires_in => 1.second
-      #   @store.read("rabbit").should === @white_rabbit ; sleep 2
-      #   @store.read("rabbit").should be_nil
-      # end
+      it "should write the data with expiration time" do
+        with_store_management do |store|
+          store.write "rabbit", @white_rabbit, {}, :expires_in => 1.second
+          store.read("rabbit").should === @white_rabbit ; sleep 2
+          store.read("rabbit").should be_nil
+        end
+      end
 
       it "should not write data if :unless_exist option is true" do
         with_store_management do |store|
@@ -91,9 +93,6 @@ module Merb
           store.fetch("rub-a-dub").should be_nil
           store.fetch("rub-a-dub") { "Flora de Cana" }
           store.fetch("rub-a-dub").should === "Flora de Cana"
-          # store.fetch("rabbit", {}, :force => true, :expires_in => 1.second) { @white_rabbit }
-          # store.fetch("rabbit").should === @white_rabbit ; sleep 2
-          # store.fetch("rabbit").should be_nil
         end
       end
 
