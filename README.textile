@@ -1,8 +1,8 @@
-h1. Redis cache and session stores for Ruby web frameworks
+h1. Rack::Session, Rack::Cache and cache Redis stores for Ruby web frameworks
 
 h2. Installation
 
-Download and install Redis from http://code.google.com/p/redis/
+Download and install Redis from "http://code.google.com/p/redis/":http://code.google.com/p/redis/
 
   wget "http://redis.googlecode.com/files/redis-0.094.tar.gz":http://redis.googlecode.com/files/redis-0.094.tar.gz
   tar -zxvf redis-0.094.tar.gz
