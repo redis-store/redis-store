@@ -22,7 +22,8 @@ class MarshaledRedis < Redis
 
     def expires_in(options)
       if options
-        options[:expires_in] || options[:expire_in]
+        # Rack::Session           Merb                    Rails/Sinatra
+        options[:expire_after] || options[:expires_in] || options[:expire_in]
       end
     end
 end

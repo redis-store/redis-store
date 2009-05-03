@@ -37,7 +37,6 @@ module Rack
         @mutex.unlock if env['rack.multithread']
       end
 
-      # TODO expire option
       def set_session(env, session_id, new_session, options)
         @mutex.lock if env['rack.multithread']
         session = @pool.get(session_id) rescue {}
@@ -49,7 +48,7 @@ module Rack
         end
         old_session = new_session.instance_variable_get('@old') || {}
         session = merge_sessions session_id, old_session, new_session, session
-        @pool.set session_id, session
+        @pool.set session_id, session, options
         return session_id
       rescue RedisError, Errno::ECONNREFUSED
         warn "#{self} is unable to find server."
