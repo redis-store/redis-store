@@ -9,6 +9,74 @@ module Rack
         @mutex = Mutex.new
         @pool = RedisFactory.create options[:redis_server] || @default_options[:redis_server]
       end
+
+      def generate_sid
+        loop do
+          sid = super
+          break sid unless @pool.get(sid)
+        end
+      end
+
+      def get_session(env, sid)
+        session = @pool.get(sid) if sid
+        @mutex.lock if env['rack.multithread']
+        unless sid and session
+          env['rack.errors'].puts("Session '#{sid.inspect}' not found, initializing...") if $VERBOSE and not sid.nil?
+          session = {}
+          sid = generate_sid
+          ret = @pool.set sid, session
+          raise "Session collision on '#{sid.inspect}'" unless ret
+        end
+        session.instance_variable_set('@old', {}.merge(session))
+        return [sid, session]
+      rescue RedisError, Errno::ECONNREFUSED
+        warn "#{self} is unable to find server."
+        warn $!.inspect
+        return [ nil, {} ]
+      ensure
+        @mutex.unlock if env['rack.multithread']
+      end
+
+      # TODO expire option
+      def set_session(env, session_id, new_session, options)
+        @mutex.lock if env['rack.multithread']
+        session = @pool.get(session_id) rescue {}
+        if options[:renew] or options[:drop]
+          @pool.delete session_id
+          return false if options[:drop]
+          session_id = generate_sid
+          @pool.set session_id, 0
+        end
+        old_session = new_session.instance_variable_get('@old') || {}
+        session = merge_sessions session_id, old_session, new_session, session
+        @pool.set session_id, session
+        return session_id
+      rescue RedisError, Errno::ECONNREFUSED
+        warn "#{self} is unable to find server."
+        warn $!.inspect
+        return false
+      ensure
+        @mutex.unlock if env['rack.multithread']
+      end
+      
+      private
+        def merge_sessions(sid, old, new, cur=nil)
+          cur ||= {}
+          unless Hash === old and Hash === new
+            warn 'Bad old or new sessions provided.'
+            return cur
+          end
+
+          delete = old.keys - new.keys
+          warn "//@#{sid}: dropping #{delete*','}" if $DEBUG and not delete.empty?
+          delete.each{|k| cur.delete k }
+
+          update = new.keys.select{|k| new[k] != old[k] }
+          warn "//@#{sid}: updating #{update*','}" if $DEBUG and not update.empty?
+          update.each{|k| cur[k] = new[k] }
+
+          cur
+        end
     end
   end
 end
