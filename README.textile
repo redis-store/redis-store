@@ -19,7 +19,7 @@ h2. Cache store
 Provides a cache store for your Ruby web framework of choice.
 
 h3. How to use with Rails
-  
+
   #config/environment.rb
   config.gem "jodosha-redis-store", :source => "http://gems.github.com", :lib => "redis-store"
   #HACK Rails tries to instantiate cache first, then load configured gems
@@ -27,7 +27,7 @@ h3. How to use with Rails
   config.cache_store = :redis_store
 
 h3. How to use with Merb
-  
+
   #config/dependecies.rb
   dependency "jodosha-redis-store", "0.2.0"
   dependency("merb-cache", merb_gems_version) do
@@ -69,7 +69,7 @@ h3. How to use with Rails
   ActionController::Base.session_store = Rack::Session::Redis
 
 h3. How to use with Merb
-  
+
   #config/dependecies
   dependency "jodosha-redis-store", "0.2.0"
   #config/init.rb
