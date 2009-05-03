@@ -20,15 +20,15 @@ Provides a cache store for your Ruby web framework of choice.
 
 h3. How to use with Rails
 
-  #config/environment.rb
+  #-config/environment.rb
   config.gem "jodosha-redis-store", :source => "http://gems.github.com", :lib => "redis-store"
-  #HACK Rails tries to instantiate cache first, then load configured gems
+  #-HACK Rails tries to instantiate cache first, then load configured gems
   require "redis-store"
   config.cache_store = :redis_store
 
 h3. How to use with Merb
 
-  #config/dependecies.rb
+  #-config/dependecies.rb
   dependency "jodosha-redis-store", "0.2.0"
   dependency("merb-cache", merb_gems_version) do
     Merb::Cache.setup do
@@ -63,16 +63,16 @@ h3. How to use with a generic Rack application
 
 h3. How to use with Rails
 
-  #config/environment.rb
+  #-config/environment.rb
   config.gem "jodosha-redis-store", :source => "http://gems.github.com", :lib => "redis-store"
-  #config/initializers/session_store.rb
+  #-config/initializers/session_store.rb
   ActionController::Base.session_store = Rack::Session::Redis
 
 h3. How to use with Merb
 
-  #config/dependecies
+  #-config/dependecies
   dependency "jodosha-redis-store", "0.2.0"
-  #config/init.rb
+  #-config/init.rb
   Merb::Config.use do |c|
     c[:session_store] = 'redis'
   end
