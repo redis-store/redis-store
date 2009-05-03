@@ -21,7 +21,7 @@ describe "DistributedMarshaledRedis" do
     mr = dmr.ring.nodes.first
     mr.host.should == "redis.com"
     mr.port.should == "6380"
-    mr.instance_variable_get(:@db).should == 1
+    mr.db.should == 1
   end
 
   it "should set an object" do

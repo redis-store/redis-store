@@ -17,13 +17,13 @@ module Rack
           cache.should be_kind_of(::MarshaledRedis)
           cache.host.should == "127.0.0.1"
           cache.port.should == "6379"
-          cache.instance_variable_get(:@db).should == "0"
+          cache.db.should == "0"
 
           cache = Redis.resolve(uri("redis://127.0.0.1:6380")).cache
           cache.port.should == 6380
 
           cache = Redis.resolve(uri("redis://127.0.0.1/11")).cache
-          cache.instance_variable_get(:@db).should == "11"
+          cache.db.should == "11"
         end
 
         it 'responds to all required messages' do

@@ -16,9 +16,9 @@ module Merb
 
       it "should accept connection params" do
         redis = instantiate_store
-        redis.instance_variable_get(:@db).should == 0
         redis.host.should == "localhost"
         redis.port.should == "6379"
+        redis.db.should == 0
 
         redis = instantiate_store "redis.com"
         redis.host.should == "redis.com"
@@ -28,9 +28,9 @@ module Merb
         redis.port.should == "6380"
 
         redis = instantiate_store "redis.com:6380/23"
-        redis.instance_variable_get(:@db).should == 23
         redis.host.should == "redis.com"
         redis.port.should == "6380"
+        redis.db.should == 23
       end
       
       it "should instantiate a ring" do
