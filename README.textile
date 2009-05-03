@@ -45,6 +45,26 @@ h3. How to use with Sinatra
     end
   end
 
+h2. Rack::Session
+
+Provides a Redis store for Rack::Session. See "http://rack.rubyforge.org/doc/Rack/Session.html":http://rack.rubyforge.org/doc/Rack/Session.html
+
+h3. How to use with a generic Rack application
+
+  require "rubygems"
+  require "rack"
+  require "jodosha-redis-store"
+  require "application"
+  use Rack::Session::Redis
+  run Application.new
+
+h3. How to use with Rails
+
+  #config/environment.rb
+  config.gem "jodosha-redis-store", :source => "http://gems.github.com", :lib => "redis-store"
+  #config/initializers/session_store.rb
+  ActionController::Base.session_store = Rack::Session::Redis
+
 h2. Rack::Cache
 
 Provides a Redis store for HTTP caching. See "http://github.com/rtomayko/rack-cache":http://github.com/rtomayko/rack-cache
