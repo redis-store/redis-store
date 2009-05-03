@@ -20,6 +20,9 @@ end
 if defined?(Rack::Session)
   require "rack/session/abstract/id"
   require "rack/session/redis"
+  if defined?(Merb)
+    require "rack/session/merb"
+  end
 end
 
 # Rack::Cache
