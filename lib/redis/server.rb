@@ -1,9 +1,9 @@
 class Server
-  def initialize_with_connection_pool(host, port = DEFAULT_PORT, timeout = 10)
+  def initialize_with_connection_pool(host, port = DEFAULT_PORT, timeout = 10, size = 5)
     initialize_without_connection_pool(host, port) # timeout?!
 
-    @size = 5 # TODO make configurable
-    @timeout = 5 # TODO make configurable
+    @size = size
+    @timeout = timeout
     @reserved_connections = {}
 
     @connection_mutex = Monitor.new
