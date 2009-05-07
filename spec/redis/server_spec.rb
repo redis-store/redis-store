@@ -6,7 +6,7 @@ describe "Redis::Server" do
   end
 
   it "should have a connection pool" do
-    @server.instance_variable_get(:@connections).should_not be_nil
+    @server.instance_variable_get(:@sockets).should_not be_nil
   end
 
   it "should checkout active connections" do

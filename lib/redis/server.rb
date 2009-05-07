@@ -4,12 +4,12 @@ class Server
 
     @size = size
     @timeout = timeout
-    @reserved_connections = {}
+    @reserved_sockets = {}
 
-    @connection_mutex = Monitor.new
-    @queue = @connection_mutex.new_cond
+    @mutex = Monitor.new
+    @queue = @mutex.new_cond
 
-    @connections = []
+    @sockets = []
     @checked_out = []
   end
 
@@ -18,29 +18,29 @@ class Server
 
   alias_method :new_socket, :socket
   def socket
-    if socket = @reserved_connections[current_connection_id]
+    if socket = @reserved_sockets[current_connection_id]
       socket
     else
-      @reserved_connections[current_connection_id] = checkout
+      @reserved_sockets[current_connection_id] = checkout
     end
   end
 
   protected
     def checkout
-      @connection_mutex.synchronize do
+      @mutex.synchronize do
         loop do
-          socket = if @checked_out.size < @connections.size
+          socket = if @checked_out.size < @sockets.size
                    checkout_existing_socket
-                 elsif @connections.size < @size
+                 elsif @sockets.size < @size
                    checkout_new_socket
                  end
           return socket if socket
-          # No connections available; wait for one
+          # No sockets available; wait for one
           if @queue.wait(@timeout)
             next
           else
             # try looting dead threads
-            clear_stale_cached_connections!
+            clear_stale_cached_sockets!
             if @size == @checked_out.size
               raise RedisError, "could not obtain a socket connection#{" within #{@timeout} seconds" if @timeout}.  The max pool size is currently #{@size}; consider increasing it."
             end
@@ -50,7 +50,7 @@ class Server
     end
 
     def checkin(socket)
-      @connection_mutex.synchronize do
+      @mutex.synchronize do
         @checked_out.delete socket
         @queue.signal
       end
@@ -58,17 +58,17 @@ class Server
 
     def checkout_new_socket
       s = new_socket
-      @connections << s
+      @sockets << s
       checkout_and_verify(s)
     end
 
     def checkout_existing_socket
-      s = (@connections - @checked_out).first
+      s = (@sockets - @checked_out).first
       checkout_and_verify(s)
     end
 
-    def clear_stale_cached_connections!
-      remove_stale_cached_threads!(@reserved_connections) do |name, socket|
+    def clear_stale_cached_sockets!
+      remove_stale_cached_threads!(@reserved_sockets) do |name, socket|
         checkin socket
       end
     end
