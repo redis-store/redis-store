@@ -1,9 +1,50 @@
-class Server
-  def initialize_with_connection_pool(host, port = DEFAULT_PORT, timeout = 1, size = 5)
-    initialize_without_connection_pool(host, port)
+require 'monitor'
+##
+# This class represents a redis server instance.
 
-    @size = size
+class Server
+
+  ##
+  # The host the redis server is running on.
+
+  attr_reader :host
+
+  ##
+  # The port the redis server is listening on.
+
+  attr_reader :port
+  
+  ##
+  #
+  
+  attr_reader :replica
+
+  ##
+  # The time of next retry if the connection is dead.
+
+  attr_reader :retry
+
+  ##
+  # A text status string describing the state of the server.
+
+  attr_reader :status
+
+  ##
+  # Create a new Redis::Server object for the redis instance
+  # listening on the given host and port.
+
+  def initialize(host, port = DEFAULT_PORT, timeout = 10, size = 5)
+    raise ArgumentError, "No host specified" if host.nil? or host.empty?
+    raise ArgumentError, "No port specified" if port.nil? or port.to_i.zero?
+
+    @host   = host
+    @port   = port.to_i
+
+    @retry  = nil
+    @status = 'NOT CONNECTED'
     @timeout = timeout
+    @size = size
+    
     @reserved_sockets = {}
 
     @mutex = Monitor.new
@@ -13,10 +54,16 @@ class Server
     @checked_out = []
   end
 
-  alias_method :initialize_without_connection_pool, :initialize
-  alias_method :initialize, :initialize_with_connection_pool
+  ##
+  # Return a string representation of the server object.
+  def inspect
+    "<Redis::Server: %s:%d (%s)>" % [@host, @port, @status]
+  end
 
-  alias_method :new_socket, :socket
+  ##
+  # Try to connect to the redis server targeted by this object.
+  # Returns the connected socket object on success or nil on failure.
+
   def socket
     if socket = @reserved_sockets[current_connection_id]
       socket
@@ -25,7 +72,68 @@ class Server
     end
   end
 
+  def connect_to(host, port, timeout=nil)
+    addrs = Socket.getaddrinfo(host, nil)
+    addr = addrs.detect { |ad| ad[0] == 'AF_INET' }
+    sock = Socket.new(Socket::AF_INET, Socket::SOCK_STREAM, 0)
+    if timeout
+      secs = Integer(timeout)
+      usecs = Integer((timeout - secs) * 1_000_000)
+      optval = [secs, usecs].pack("l_2")
+      sock.setsockopt Socket::SOL_SOCKET, Socket::SO_RCVTIMEO, optval
+      sock.setsockopt Socket::SOL_SOCKET, Socket::SO_SNDTIMEO, optval
+    end
+    sock.connect(Socket.pack_sockaddr_in(port, addr[3]))
+    sock
+  end
+
+  ##
+  # Close the connection to the redis server targeted by this
+  # object.  The server is not considered dead.
+
+  def close
+    @reserved_sockets.each do |name,sock|
+      checkin sock
+    end
+    @reserved_sockets = {}
+    @sockets.each do |sock|
+      sock.close
+    end
+    @sockets = []
+    @status = "NOT CONNECTED"
+  end
+
+  ##
+  # Mark the server as dead and close its socket.
+  def mark_dead(sock, error)
+    sock.close if sock && !sock.closed?
+    sock   = nil
+
+    reason = "#{error.class.name}: #{error.message}"
+    @status = sprintf "%s:%s DEAD (%s)", @host, @port, reason
+    puts @status
+  end
+
   protected
+    def new_socket
+      sock = nil
+      begin
+        sock = connect_to(@host, @port, @timeout)
+        sock.setsockopt Socket::IPPROTO_TCP, Socket::TCP_NODELAY, 1
+        @status = 'CONNECTED'
+      rescue Errno::EPIPE, Errno::ECONNREFUSED => e
+        if sock
+          puts "Socket died... socket: #{sock.inspect}\n" if $debug
+          sock.close
+        end
+      rescue SocketError, SystemCallError, IOError => err
+        puts "Unable to open socket: #{err.class.name}, #{err.message}" if $debug
+        mark_dead sock, err
+      end
+
+      return sock
+    end
+
     def checkout
       @mutex.synchronize do
         loop do
@@ -96,7 +204,7 @@ class Server
       @checked_out << s
       s
     end
-    
+
     def verify!(s)
       reconnect!(s) unless active?(s)
     end
