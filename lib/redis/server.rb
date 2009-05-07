@@ -107,9 +107,9 @@ class Server
     end
 
     def active?(s)
-      s.write("\0")
       begin
-        Timeout.timeout(0.1){s.read}
+        s.write("\0")
+        Timeout.timeout(0.1){ s.read }
       rescue Exception
         false
       end
