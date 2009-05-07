@@ -26,7 +26,7 @@ h3. How to use with Rails
 
 h3. How to use with Merb
 
-  dependency "jodosha-redis-store", "0.3.0"
+  dependency "jodosha-redis-store", "0.3.5"
   dependency("merb-cache", merb_gems_version) do
     Merb::Cache.setup do
       register(:redis, Merb::Cache::RedisStore, :servers => ["127.0.0.1:6379"])
@@ -65,7 +65,7 @@ h3. How to use with Rails
 
 h3. How to use with Merb
 
-  dependency "jodosha-redis-store", "0.3.0"
+  dependency "jodosha-redis-store", "0.3.5"
   Merb::Config.use do |c|
     c[:session_store] = 'redis'
   end
