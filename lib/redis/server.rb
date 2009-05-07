@@ -1,6 +1,6 @@
 class Server
-  def initialize_with_connection_pool(host, port = DEFAULT_PORT, timeout = 10, size = 5)
-    initialize_without_connection_pool(host, port) # timeout?!
+  def initialize_with_connection_pool(host, port = DEFAULT_PORT, timeout = 1, size = 5)
+    initialize_without_connection_pool(host, port)
 
     @size = size
     @timeout = timeout
