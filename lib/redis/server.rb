@@ -33,7 +33,7 @@ class Server
   # Create a new Redis::Server object for the redis instance
   # listening on the given host and port.
 
-  def initialize(host, port = DEFAULT_PORT, timeout = 10, size = 5)
+  def initialize(host, port = DEFAULT_PORT, timeout = 0.1, size = 5)
     raise ArgumentError, "No host specified" if host.nil? or host.empty?
     raise ArgumentError, "No port specified" if port.nil? or port.to_i.zero?
 
@@ -217,7 +217,7 @@ class Server
     def active?(s)
       begin
         s.write("\0")
-        Timeout.timeout(0.1){ s.read }
+        Timeout.timeout(@timeout){ s.read }
       rescue Exception
         false
       end
