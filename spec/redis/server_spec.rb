@@ -5,10 +5,6 @@ describe "Redis::Server" do
     @server = Server.new 'localhost', '6379'
   end
 
-  it "should have a connection pool" do
-    @server.instance_variable_get(:@sockets).should_not be_nil
-  end
-
   it "should checkout active connections" do
     threads = []
     100.times do
