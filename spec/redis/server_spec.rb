@@ -18,4 +18,8 @@ describe "Redis::Server" do
       end
     end
   end
+
+  it "should have many observers" do
+    @server.observers.should be_kind_of(Array)
+  end
 end
