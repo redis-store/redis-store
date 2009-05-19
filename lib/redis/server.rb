@@ -15,10 +15,6 @@ class Server
     @observers.delete observer
   end
 
-  def notify_observers
-    @observers.each { |observer| observer.after_connect }
-  end
-
   def socket
     return @sock if socket_active?
 
@@ -49,5 +45,9 @@ class Server
   private
     def socket_active?
       @sock and not @sock.closed? and @sock.stat.readable?
+    end
+
+    def notify_observers
+      @observers.each { |observer| observer.after_connect }
     end
 end
