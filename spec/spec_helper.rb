@@ -13,6 +13,3 @@ require "cache/rails/redis_store"
 require "cache/sinatra/redis_store"
 
 class Redis; attr_reader :host, :port, :db end
-
-# TODO this class should be deleted when fixed conflicts with redis-rb
-class RedisError < StandardError; end

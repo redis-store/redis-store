@@ -29,7 +29,7 @@ module Rack
         end
         session.instance_variable_set('@old', {}.merge(session))
         return [sid, session]
-      rescue RedisError, Errno::ECONNREFUSED
+      rescue Errno::ECONNREFUSED
         warn "#{self} is unable to find server."
         warn $!.inspect
         return [ nil, {} ]
@@ -50,7 +50,7 @@ module Rack
         session = merge_sessions session_id, old_session, new_session, session
         @pool.set session_id, session, options
         return session_id
-      rescue RedisError, Errno::ECONNREFUSED
+      rescue Errno::ECONNREFUSED
         warn "#{self} is unable to find server."
         warn $!.inspect
         return false
