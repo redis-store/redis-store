@@ -16,11 +16,11 @@ describe "DistributedMarshaledRedis" do
   end
 
   it "should accept connection params" do
-    dmr = DistributedMarshaledRedis.new [ :host => "redis.com", :port => "6380", :db => 1 ]
+    dmr = DistributedMarshaledRedis.new [ :host => "localhost", :port => "6380", :db => "1" ]
     dmr.ring.should have(1).node
     mr = dmr.ring.nodes.first
-    mr.host.should == "redis.com"
-    mr.port.should == "6380"
+    mr.host.should == "localhost"
+    mr.port.should == 6380
     mr.db.should == 1
   end
 
