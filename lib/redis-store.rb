@@ -1,6 +1,5 @@
 require "redis"
 require "dist_redis"
-require "redis/redis"
 require "redis/redis_factory"
 require "redis/marshaled_redis"
 require "redis/distributed_marshaled_redis"
