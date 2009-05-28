@@ -16,21 +16,21 @@ module Merb
 
       it "should accept connection params" do
         redis = instantiate_store
-        redis.host.should == "localhost"
-        redis.port.should == "6379"
+        redis.host.should == "127.0.0.1"
+        redis.port.should == 6379
         redis.db.should == 0
 
-        redis = instantiate_store "redis.com"
-        redis.host.should == "redis.com"
-        
-        redis = instantiate_store "redis.com:6380"
-        redis.host.should == "redis.com"
-        redis.port.should == "6380"
+        redis = instantiate_store "localhost"
+        redis.host.should == "localhost"
 
-        redis = instantiate_store "redis.com:6380/23"
-        redis.host.should == "redis.com"
-        redis.port.should == "6380"
-        redis.db.should == 23
+        redis = instantiate_store "localhost:6380"
+        redis.host.should == "localhost"
+        redis.port.should == 6380
+
+        redis = instantiate_store "localhost:6380/13"
+        redis.host.should == "localhost"
+        redis.port.should == 6380
+        redis.db.should == 13
       end
       
       it "should instantiate a ring" do

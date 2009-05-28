@@ -16,14 +16,14 @@ module Rack
           cache = Rack::Cache::EntityStore::Redis.resolve(uri("redis://127.0.0.1")).cache
           cache.should be_kind_of(::Redis)
           cache.host.should == "127.0.0.1"
-          cache.port.should == "6379"
-          cache.db.should == "0"
+          cache.port.should == 6379
+          cache.db.should == 0
 
           cache = Rack::Cache::EntityStore::Redis.resolve(uri("redis://127.0.0.1:6380")).cache
           cache.port.should == 6380
 
-          cache = Rack::Cache::EntityStore::Redis.resolve(uri("redis://127.0.0.1/11")).cache
-          cache.db.should == "11"
+          cache = Rack::Cache::EntityStore::Redis.resolve(uri("redis://127.0.0.1/13")).cache
+          cache.db.should == 13
         end
 
         it 'responds to all required messages' do

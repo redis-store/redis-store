@@ -14,7 +14,7 @@ class MarshaledRedis < Redis
     result = Marshal.load result if result && !raw?(options)
     result
   end
-  
+
   private
     def raw?(options)
       options && options[:raw]
