@@ -14,12 +14,12 @@ Install the gems
   -sudo gem install ezmobius-redis-rb -s http://gems.github.com-
   -sudo gem install jodosha-redis-store -s http://gems.github.com-
 
-  # redis-rb
+  #redis-rb
   git clone git://github.com/jodosha/redis-rb.git
   cd redis-rb
   sudo rake install
 
-  # redis-store
+  #redis-store
   git clone git://github.com/jodosha/redis-store.git
   cd redis-rb
   sudo rake install
