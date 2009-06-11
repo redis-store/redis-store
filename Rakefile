@@ -28,6 +28,12 @@ task :files do
   puts "Test files:\n #{Dir['spec/**/*_spec.rb'].reject {|f| File.directory?(f)}.sort.inspect}"
 end
 
+desc "Run all examples with RCov"
+Spec::Rake::SpecTask.new(:rcov) do |t|
+  t.spec_files = FileList['spec/**/*_spec.rb']
+  t.rcov = true
+end
+
 namespace :redis do
   desc 'Start the Redis cluster'
   task :start => :clean do
