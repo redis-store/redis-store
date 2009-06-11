@@ -13,3 +13,4 @@ require "cache/rails/redis_store"
 require "cache/sinatra/redis_store"
 
 class Redis; attr_reader :host, :port, :db end
+$DEBUG = ENV["DEBUG"] === "true"
