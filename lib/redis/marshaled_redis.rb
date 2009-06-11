@@ -11,11 +11,15 @@ class MarshaledRedis < Redis
 
   def get(key, options = nil)
     result = super key
-    result = Marshal.load result if result && !raw?(options)
+    result = Marshal.load result if unmarshal?(result, options)
     result
   end
 
   private
+    def unmarshal?(result, options)
+      result && result.size > 0 && !raw?(options)
+    end
+
     def raw?(options)
       options && options[:raw]
     end

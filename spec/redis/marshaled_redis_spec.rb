@@ -27,6 +27,11 @@ describe "MarshaledRedis" do
     @mr.get("rabbit", :raw => true).should == %(#<OpenStruct color="white">)
   end
 
+  it "should not unmarshal object if getting an empty string" do
+    @mr.set "empty_string", ""
+    lambda { @mr.get("empty_string").should == "" }.should_not raise_error
+  end
+
   it "should not set an object if already exist" do
     @mr.set_unless_exists "rabbit", @white_rabbit
     @mr.get("rabbit").should === @rabbit
