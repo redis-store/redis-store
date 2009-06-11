@@ -153,7 +153,7 @@ module Rack
       # anyone know how to do this better?
       specify "multithread: should cleanly merge sessions" do
         next unless $DEBUG
-        warn 'Running multithread test for Session::Memcache'
+        warn 'Running multithread test for Session::Redis'
         pool = Rack::Session::Redis.new(@incrementor)
         req = Rack::MockRequest.new(pool)
 
