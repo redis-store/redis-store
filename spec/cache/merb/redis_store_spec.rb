@@ -87,6 +87,13 @@ module Merb
         end
       end
 
+      it "should write all the data" do
+        with_store_management do |store|
+          store.write_all "rabbit", @white_rabbit
+          store.read("rabbit").should === @white_rabbit
+        end
+      end
+
       it "should fetch data" do
         with_store_management do |store|
           store.fetch("rabbit").should == @rabbit
@@ -113,6 +120,13 @@ module Merb
       it "should delete all the data" do
         with_store_management do |store|
           store.delete_all
+          store.instance_variable_get(:@data).keys("*").should be_empty
+        end
+      end
+
+      it "should delete all the data with bang method" do
+        with_store_management do |store|
+          store.delete_all!
           store.instance_variable_get(:@data).keys("*").should be_empty
         end
       end
