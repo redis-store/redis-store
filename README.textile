@@ -4,23 +4,21 @@ h2. Installation
 
 Download and install Redis from "http://code.google.com/p/redis/":http://code.google.com/p/redis/
 
-  wget "http://redis.googlecode.com/files/redis-0.100.tar.gz":http://redis.googlecode.com/files/redis-0.100.tar.gz
-  tar -zxvf redis-0.100.tar.gz
-  cd redis-0.100
+  curl -OL "http://redis.googlecode.com/files/redis-0.900_2.tar.gz":http://redis.googlecode.com/files/redis-0.900_2.tar.gz
+  tar -zxvf redis-0.900_2.tar.gz
+  mv redis-0.900_2 redis
+  cd redis
   make
 
 Install the gems
 
   -sudo gem install ezmobius-redis-rb -s http://gems.github.com-
-  -sudo gem install jodosha-redis-store -s http://gems.github.com-
-
-  git clone git://github.com/jodosha/redis-rb.git
+  
+  git clone git://github.com/ezmobius/redis-rb.git
   cd redis-rb
   sudo rake install
 
-  git clone git://github.com/jodosha/redis-store.git
-  cd redis-rb
-  sudo rake install
+  sudo gem install jodosha-redis-store -s http://gems.github.com
 
 h2. Cache store
 
