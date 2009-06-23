@@ -12,12 +12,7 @@ Download and install Redis from "http://code.google.com/p/redis/":http://code.go
 
 Install the gems
 
-  -sudo gem install ezmobius-redis-rb -s http://gems.github.com-
-  
-  git clone git://github.com/ezmobius/redis-rb.git
-  cd redis-rb
-  sudo rake install
-
+  sudo gem install ezmobius-redis-rb -s http://gems.github.com  
   sudo gem install jodosha-redis-store -s http://gems.github.com
 
 h2. Cache store
