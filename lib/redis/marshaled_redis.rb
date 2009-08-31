@@ -10,7 +10,7 @@ class MarshaledRedis < Redis
   end
 
   def get(key, options = nil)
-    result = super key
+    result = call_command([:get, key])
     result = Marshal.load result if unmarshal?(result, options)
     result
   end
