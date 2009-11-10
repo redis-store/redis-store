@@ -1,9 +1,9 @@
 $: << File.join(File.dirname(__FILE__), "/../lib")
-require "rubygems"
+require "vendor/gems/environment"
 require "ostruct"
 require "spec"
 require "redis"
-require "merb"
+#require "merb"
 require "rack/cache"
 require "rack/cache/metastore"
 require "rack/cache/entitystore"

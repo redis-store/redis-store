@@ -1,3 +1,5 @@
 *.swp
+bin/*
 coverage/*
+vendor/*
 tmp
