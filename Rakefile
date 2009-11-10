@@ -9,6 +9,20 @@ REDIS_STORE_VERSION = "0.3.6"
 
 task :default => :spec
 
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gemspec|
+    gemspec.name        = "redis-store"
+    gemspec.summary     = "Rack::Session, Rack::Cache and cache Redis stores for Ruby web frameworks."
+    gemspec.description = "Rack::Session, Rack::Cache and cache Redis stores for Ruby web frameworks."
+    gemspec.email       = "guidi.luca@gmail.com"
+    gemspec.homepage    = "http://github.com/jodosha/redis-store"
+    gemspec.authors     = [ "Luca Guidi" ]
+  end
+rescue LoadError
+  puts "Jeweler not available. Install it with: sudo gem install jeweler" 
+end
+
 desc 'Build and install the gem (useful for development purposes).'
 task :install do
   system "gem build redis-store.gemspec"
