@@ -47,25 +47,5 @@ Spec::Rake::SpecTask.new(:rcov) do |t|
   t.rcov = true
 end
 
-namespace :redis do
-  desc 'Start the Redis cluster'
-  task :start => :clean do
-    system "redis-server spec/config/single.conf"
-    system "redis-server spec/config/master.conf"
-    system "redis-server spec/config/slave.conf"
-  end
+load "tasks/redis.tasks.rb"
 
-  desc 'Stop the Redis cluster'
-  task :stop do
-    # TODO replace with:
-    # system "kill -9 `tmp/redis-single.pid`"
-    # system "kill -9 `tmp/redis-master.pid`"
-    # system "kill -9 `tmp/redis-slave.pid`"
-    system "ps -eo pid,comm | grep redis | xargs kill -9"
-  end
-
-  desc 'Clean the tmp/ directory'
-  task :clean do
-    system "rm tmp/*" rescue nil
-  end
-end
