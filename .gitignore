@@ -1,3 +1,4 @@
+*.rdb
 *.swp
 bin/*
 coverage/*
