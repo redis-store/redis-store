@@ -4,12 +4,10 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 require 'spec/rake/spectask'
 
-REDIS_STORE_VERSION = "0.3.6"
-
 task :default => "spec:suite"
 
 begin
-  require 'jeweler'
+  require "jeweler"
   Jeweler::Tasks.new do |gemspec|
     gemspec.name        = "redis-store"
     gemspec.summary     = "Rack::Session, Rack::Cache and cache Redis stores for Ruby web frameworks."
@@ -18,16 +16,10 @@ begin
     gemspec.homepage    = "http://github.com/jodosha/redis-store"
     gemspec.authors     = [ "Luca Guidi" ]
   end
+
+  Jeweler::GemcutterTasks.new
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install jeweler" 
-end
-
-desc 'Build and install the gem (useful for development purposes).'
-task :install do
-  system "gem build redis-store.gemspec"
-  system "sudo gem uninstall redis-store"
-  system "sudo gem install --local --no-rdoc --no-ri redis-store-#{REDIS_STORE_VERSION}.gem"
-  system "rm redis-store-*.gem"
 end
 
 namespace :spec do
@@ -54,7 +46,6 @@ end
 
 # courtesy of http://github.com/ezmobius/redis-rb team
 load "tasks/redis.tasks.rb"
-
 def invoke_with_redis_cluster(task_name)
   begin
     result = RedisClusterRunner.start_detached
