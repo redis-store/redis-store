@@ -90,7 +90,7 @@ Provides a Redis store for HTTP caching. See [http://github.com/rtomayko/rack-ca
 
 ## Running specs
 
-    gem install bundle
+    gem install jeweler bundler
     git clone git://github.com/jodosha/redis-store.git
     cd redis-store
     gem bundle
