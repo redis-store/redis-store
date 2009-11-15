@@ -23,7 +23,7 @@ rescue LoadError
 end
 
 namespace :spec do
-  desc "Run all the examples by staring a detached Redis instance"
+  desc "Run all the examples by starting a detached Redis instance"
   task :suite do
     invoke_with_redis_cluster "spec:run"
   end
