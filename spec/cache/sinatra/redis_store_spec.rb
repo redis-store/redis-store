@@ -157,7 +157,7 @@ module Sinatra
       it "should clear the store" do
         with_store_management do |store|
           store.clear
-          store.instance_variable_get(:@data).keys("*").should be_empty
+          store.instance_variable_get(:@data).keys("*").flatten.should be_empty
         end
       end
 

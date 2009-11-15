@@ -120,14 +120,14 @@ module Merb
       it "should delete all the data" do
         with_store_management do |store|
           store.delete_all
-          store.instance_variable_get(:@data).keys("*").should be_empty
+          store.instance_variable_get(:@data).keys("*").flatten.should be_empty
         end
       end
 
       it "should delete all the data with bang method" do
         with_store_management do |store|
           store.delete_all!
-          store.instance_variable_get(:@data).keys("*").should be_empty
+          store.instance_variable_get(:@data).keys("*").flatten.should be_empty
         end
       end
 
