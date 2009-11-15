@@ -65,4 +65,3 @@ class RedisClusterRunner
     end
   end
 end
-
