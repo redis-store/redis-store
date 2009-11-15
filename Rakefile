@@ -30,19 +30,10 @@ task :install do
   system "rm redis-store-*.gem"
 end
 
-# courtesy of http://github.com/ezmobius/redis-rb team
-load "tasks/redis.tasks.rb"
-
 namespace :spec do
   desc "Run all the examples by staring a detached Redis instance"
   task :suite do
-    begin
-      result = RedisClusterRunner.start_detached
-      raise("Could not start redis-server, aborting.") unless result
-      Rake::Task["spec:run"].invoke
-    ensure
-      RedisClusterRunner.stop
-    end
+    invoke_with_redis_cluster "spec:run"
   end
 
   Spec::Rake::SpecTask.new(:run) do |t|
@@ -52,8 +43,24 @@ namespace :spec do
 end
 
 desc "Run all examples with RCov"
-Spec::Rake::SpecTask.new(:rcov) do |t|
+task :rcov do
+  invoke_with_redis_cluster "rcov_run"
+end
+
+Spec::Rake::SpecTask.new(:rcov_run) do |t|
   t.spec_files = FileList['spec/**/*_spec.rb']
   t.rcov = true
 end
 
+# courtesy of http://github.com/ezmobius/redis-rb team
+load "tasks/redis.tasks.rb"
+
+def invoke_with_redis_cluster(task_name)
+  begin
+    result = RedisClusterRunner.start_detached
+    raise("Could not start redis-server, aborting.") unless result
+    Rake::Task[task_name].invoke
+  ensure
+    RedisClusterRunner.stop
+  end
+end
