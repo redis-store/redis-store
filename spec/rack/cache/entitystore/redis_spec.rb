@@ -1,12 +1,21 @@
 require File.join(File.dirname(__FILE__), "/../../../spec_helper")
 
+class Object
+  def sha_like?
+    length == 40 && self =~ /^[0-9a-z]+$/
+  end
+end
+
 module Rack
   module Cache
     class EntityStore
+      # courtesy of http://github.com/rtomayko/rack-cache team
       describe "Rack::Cache::EntityStore::Redis" do
         before(:each) do
           @store = Rack::Cache::EntityStore::Redis.new :host => "localhost"
         end
+
+        # Redis store specific examples ===========================================
 
         it "should have the class referenced by homonym constant" do
           Rack::Cache::EntityStore::REDIS.should be(Rack::Cache::EntityStore::Redis)
@@ -26,6 +35,8 @@ module Rack
           cache.db.should == 13
         end
 
+        # Entity store shared examples ===========================================
+
         it 'responds to all required messages' do
           %w[read open write exist?].each do |message|
             @store.should respond_to(message)
@@ -35,7 +46,7 @@ module Rack
         it 'stores bodies with #write' do
           key, size = @store.write(['My wild love went riding,'])
           key.should_not be_nil
-          # key.should be_sha_like TODO re-enable
+          key.should be_sha_like
 
           data = @store.read(key)
           data.should == 'My wild love went riding,'
@@ -98,10 +109,11 @@ module Rack
           @store.read(key).should be_nil
         end
 
-        private
-          def uri(uri)
-            URI.parse uri
-          end
+        # Helper Methods =============================================================
+
+        define_method :uri do |uri|
+          URI.parse uri
+        end
       end
     end
   end
