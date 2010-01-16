@@ -1,6 +1,9 @@
 # steal the cool tasks from redis-rb
 begin
-  load File.join(File.dirname(__FILE__), "/../vendor/gems/gems/redis-rb-0.1/tasks/redis.tasks.rb")
+  require 'rbconfig'
+  engine  = defined?(RUBY_ENGINE) ? RUBY_ENGINE : 'ruby'
+  version = Config::CONFIG['ruby_version']
+  load File.expand_path("../../vendor/gems/#{engine}/#{version}/gems/redis-0.1.1/tasks/redis.tasks.rb", __FILE__)
 rescue LoadError
 end
 
