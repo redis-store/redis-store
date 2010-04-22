@@ -41,7 +41,7 @@ module Rack
         @mutex.lock if env['rack.multithread']
         session = @pool.get(session_id) rescue {}
         if options[:renew] or options[:drop]
-          @pool.delete session_id
+          @pool.del session_id
           return false if options[:drop]
           session_id = generate_sid
           @pool.set session_id, 0

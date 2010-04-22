@@ -13,8 +13,8 @@ module Rack
         end
 
         after :each do
-          @store.cache.flush_all
-          @entity_store.cache.flush_all
+          @store.cache.flushall
+          @entity_store.cache.flushall
         end
 
         it "should have the class referenced by homonym constant" do

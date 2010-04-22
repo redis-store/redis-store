@@ -1,13 +1,13 @@
-gem "redis", "0.1.1"
+source :gemcutter
+gem "redis", "1.0.5"
 
 # testing gems
-only :testing do
-  gem "ruby-debug"
+group :testing do
+  #gem "ruby-debug"
   gem "rspec"
+  gem "methopara"
   gem "rack", "1.1.0"
   gem "rack-cache"
   gem "activesupport"
   gem "merb"
 end
-
-disable_system_gems

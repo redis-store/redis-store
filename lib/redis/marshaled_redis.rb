@@ -1,10 +1,13 @@
-class MarshaledRedis < Redis
+class MarshaledRedis < Redis::Client
   def set(key, val, options = nil)
-    val = Marshal.dump val unless raw?(options)
-    super key, val, expires_in(options)
+    if options && expires_in(options)
+      set_with_expire key, val, expires_in(options)
+    else
+      super key, (raw?(options) ? val : Marshal.dump(val) )
+    end
   end
 
-  def set_unless_exists(key, val, options = nil)
+  def setnx(key, val, options = nil)
     val = Marshal.dump val unless raw?(options)
     super key, val    
   end
@@ -14,7 +17,9 @@ class MarshaledRedis < Redis
     result = Marshal.load result if unmarshal?(result, options)
     result
   end
-
+  def multi(&blk)
+    yield(self)
+  end
   private
     def unmarshal?(result, options)
       result && result.size > 0 && !raw?(options)

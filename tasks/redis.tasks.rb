@@ -3,7 +3,7 @@ begin
   require 'rbconfig'
   engine  = defined?(RUBY_ENGINE) ? RUBY_ENGINE : 'ruby'
   version = Config::CONFIG['ruby_version']
-  load File.expand_path("../../vendor/gems/#{engine}/#{version}/gems/redis-0.1.1/tasks/redis.tasks.rb", __FILE__)
+  load File.expand_path("../../vendor/gems/gems/redis-1.0.5/tasks/redis.tasks.rb", __FILE__)
 rescue LoadError
 end
 

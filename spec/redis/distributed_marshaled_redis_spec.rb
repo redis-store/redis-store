@@ -12,7 +12,7 @@ describe "DistributedMarshaledRedis" do
   end
 
   after(:all) do
-    @dmr.ring.nodes.each { |server| server.flush_db }
+    @dmr.ring.nodes.each { |server| server.flushdb }
   end
 
   it "should accept connection params" do

@@ -23,7 +23,7 @@ module Rack
 
         it "should resolve the connection uri" do
           cache = Rack::Cache::EntityStore::Redis.resolve(uri("redis://127.0.0.1")).cache
-          cache.should be_kind_of(::Redis)
+          cache.should be_kind_of(::Redis::Client)
           cache.host.should == "127.0.0.1"
           cache.port.should == 6379
           cache.db.should == 0

@@ -20,7 +20,7 @@ module Sinatra
       end
 
       def write(key, value, options = nil)
-        method = options && options[:unless_exist] ? :set_unless_exists : :set
+        method = options && options[:unless_exist] ? :setnx : :set
         @data.send method, key, value, options
       end
 
@@ -29,11 +29,11 @@ module Sinatra
       end
 
       def delete(key, options = nil)
-        @data.delete key
+        @data.del key
       end
 
       def exist?(key, options = nil)
-        @data.key? key
+        @data.exists key
       end
 
       # Increment a key in the store.
@@ -58,7 +58,7 @@ module Sinatra
       #   cache.increment "rabbit"
       #   cache.read "rabbit", :raw => true       # => "1"
       def increment(key, amount = 1)
-        @data.incr key, amount
+        @data.incrby key, amount
       end
 
       # Decrement a key in the store
@@ -83,7 +83,7 @@ module Sinatra
       #   cache.decrement "rabbit"
       #   cache.read "rabbit", :raw => true       # => "-1"
       def decrement(key, amount = 1)
-        @data.decr key, amount
+        @data.decrby key, amount
       end
 
       # Delete objects for matched keys.
@@ -91,7 +91,7 @@ module Sinatra
       # Example:
       #   cache.delete_matched "rab*"
       def delete_matched(matcher, options = nil)
-        @data.keys(matcher).each { |key| @data.delete key }
+        @data.keys(matcher).each { |key| @data.del key }
       end
 
       def fetch(key, options = {})
@@ -100,7 +100,7 @@ module Sinatra
 
       # Clear all the data from the store.
       def clear
-        @data.flush_db
+        @data.flushdb
       end
 
       def stats

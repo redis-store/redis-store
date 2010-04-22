@@ -1,5 +1,8 @@
 $: << File.join(File.dirname(__FILE__), "/../lib")
-require "vendor/gems/environment"
+require "bundler"
+Bundler.setup
+
+#require "vendor/gems/environment"
 require "ostruct"
 require "spec"
 require "redis"
@@ -12,5 +15,5 @@ require "active_support"
 require "cache/rails/redis_store"
 require "cache/sinatra/redis_store"
 
-class Redis; attr_reader :host, :port, :db end
+class Redis::Client; attr_reader :host, :port, :db end
 $DEBUG = ENV["DEBUG"] === "true"
