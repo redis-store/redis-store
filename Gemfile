@@ -1,7 +1,7 @@
-gem "redis", "0.1.1"
+gem "redis", "1.0.4"
 
 # testing gems
-only :testing do
+group :testing do
   gem "ruby-debug"
   gem "rspec"
   gem "rack", "1.1.0"
@@ -9,5 +9,3 @@ only :testing do
   gem "activesupport"
   gem "merb"
 end
-
-disable_system_gems

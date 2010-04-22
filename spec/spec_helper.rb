@@ -1,7 +1,12 @@
-$: << File.join(File.dirname(__FILE__), "/../lib")
-require "vendor/gems/environment"
+$:.unshift(File.join(File.dirname(__FILE__), "/../lib"))
+require "rubygems"
+require "bundler"
+Bundler.setup
+
+#require "vendor/gems/environment"
 require "ostruct"
 require "spec"
+require "spec/autorun"
 require "redis"
 require "merb"
 require "rack/cache"

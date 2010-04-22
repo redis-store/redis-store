@@ -1,11 +1,19 @@
 # steal the cool tasks from redis-rb
-begin
-  require 'rbconfig'
-  engine  = defined?(RUBY_ENGINE) ? RUBY_ENGINE : 'ruby'
-  version = Config::CONFIG['ruby_version']
-  load File.expand_path("../../vendor/gems/#{engine}/#{version}/gems/redis-0.1.1/tasks/redis.tasks.rb", __FILE__)
-rescue LoadError
-end
+require 'rbconfig'
+require "rubygems"
+require "bundler"
+Bundler.setup
+redis_path = $:.
+  find {|path| path =~ /redis-/ }.
+  split("/").
+  tap do |array|
+    array.replace(
+      array[0..array.index(array.find {|segment| segment =~ /redis-/})]
+    )
+  end.
+  join("/")
+
+load "#{redis_path}/tasks/redis.tasks.rb"
 
 class RedisRunner
   def self.port
@@ -46,7 +54,7 @@ class SlaveRedisRunner < RedisRunner
     "/tmp/redis_slave.dtach"
   end
 
-  def self.port 
+  def self.port
     6381
   end
 end
