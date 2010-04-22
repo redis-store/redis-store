@@ -31,7 +31,7 @@ module Rack
         end
 
         def purge(key)
-          cache.delete(hexdigest(key))
+          cache.del(hexdigest(key))
           nil
         end
       end

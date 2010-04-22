@@ -41,7 +41,7 @@ module Rack
         @mutex.lock if env['rack.multithread']
         session = @pool.get(session_id) rescue {}
         if options[:renew] or options[:drop]
-          @pool.delete session_id
+          @pool.del session_id
           return false if options[:drop]
           session_id = generate_sid
           @pool.set session_id, 0
@@ -57,7 +57,7 @@ module Rack
       ensure
         @mutex.unlock if env['rack.multithread']
       end
-      
+
       private
         def merge_sessions(sid, old, new, cur=nil)
           cur ||= {}
@@ -68,7 +68,7 @@ module Rack
 
           delete = old.keys - new.keys
           warn "//@#{sid}: dropping #{delete*','}" if $DEBUG and not delete.empty?
-          delete.each{|k| cur.delete k }
+          delete.each{|k| cur.del k }
 
           update = new.keys.select{|k| new[k] != old[k] }
           warn "//@#{sid}: updating #{update*','}" if $DEBUG and not update.empty?

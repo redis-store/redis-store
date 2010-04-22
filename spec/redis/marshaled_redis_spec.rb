@@ -6,7 +6,7 @@ describe "MarshaledRedis" do
     @rabbit = OpenStruct.new :name => "bunny"
     @white_rabbit = OpenStruct.new :color => "white"
     @store.set    "rabbit", @rabbit
-    @store.delete "rabbit2"
+    @store.del "rabbit2"
   end
 
   after :each do
@@ -27,7 +27,7 @@ describe "MarshaledRedis" do
   end
 
   it "should not marshal object on set if raw option is true" do
-    @store.set "rabbit", @white_rabbit, :raw => true
+    @store.set_with_expire "rabbit", @white_rabbit, :raw => true
     @store.get("rabbit", :raw => true).should == %(#<OpenStruct color="white">)
   end
 
@@ -37,17 +37,17 @@ describe "MarshaledRedis" do
   end
 
   it "should not set an object if already exist" do
-    @store.set_unless_exists "rabbit", @white_rabbit
+    @store.setnx "rabbit", @white_rabbit
     @store.get("rabbit").should === @rabbit
   end
 
   it "should marshal object on set_unless_exists" do
-    @store.set_unless_exists "rabbit2", @white_rabbit
+    @store.setnx "rabbit2", @white_rabbit
     @store.get("rabbit2").should === @white_rabbit
   end
 
   it "should not marshal object on set_unless_exists if raw option is true" do
-    @store.set_unless_exists "rabbit2", @white_rabbit, :raw => true
+    @store.setnx "rabbit2", @white_rabbit, :raw => true
     @store.get("rabbit2", :raw => true).should == %(#<OpenStruct color="white">)
   end
 end

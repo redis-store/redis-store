@@ -10,8 +10,8 @@ module ActiveSupport
         @white_rabbit = OpenStruct.new :color => "white"
         with_store_management do |store|
           store.write  "rabbit", @rabbit
-          store.delete "counter"
-          store.delete "rub-a-dub"
+          store.del "counter"
+          store.del "rub-a-dub"
         end
       end
 
@@ -23,7 +23,7 @@ module ActiveSupport
 
         redis = instantiate_store "localhost"
         redis.host.should == "localhost"
-        
+
         redis = instantiate_store "localhost:6380"
         redis.host.should == "localhost"
         redis.port.should == 6380
@@ -84,14 +84,14 @@ module ActiveSupport
 
       it "should delete data" do
         with_store_management do |store|
-          store.delete "rabbit"
+          store.del "rabbit"
           store.read("rabbit").should be_nil
         end
       end
 
       it "should delete matched data" do
         with_store_management do |store|
-          store.delete_matched "rabb*"
+          store.del_matched "rabb*"
           store.read("rabbit").should be_nil
         end
       end
@@ -158,7 +158,7 @@ module ActiveSupport
           store.fetch("rabbit").should be_nil
         end
       end
-      
+
       private
         def instantiate_store(addresses = nil)
           ActiveSupport::Cache::RedisStore.new(addresses).instance_variable_get(:@data)

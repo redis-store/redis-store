@@ -26,7 +26,7 @@ module Rack
         end
 
         def exist?(key)
-          cache.key? key
+          cache.exists key
         end
 
         def read(key)
@@ -40,7 +40,7 @@ module Rack
         end
 
         def purge(key)
-          cache.delete key
+          cache.del key
           nil
         end
       end

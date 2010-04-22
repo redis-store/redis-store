@@ -26,7 +26,7 @@ module ActiveSupport
 
       def delete(key, options = nil)
         super
-        @data.delete key
+        @data.del key
       end
 
       def exist?(key, options = nil)
@@ -89,10 +89,10 @@ module ActiveSupport
       # Delete objects for matched keys.
       #
       # Example:
-      #   cache.delete_matched "rab*"
+      #   cache.del_matched "rab*"
       def delete_matched(matcher, options = nil)
         super
-        @data.keys(matcher).each { |key| @data.delete key }
+        @data.keys(matcher).each { |key| @data.del key }
       end
 
       # Clear all the data from the store.

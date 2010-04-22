@@ -20,7 +20,7 @@ module Sinatra
       end
 
       def write(key, value, options = nil)
-        method = options && options[:unless_exist] ? :set_unless_exists : :set
+        method = options && options[:unless_exist] ? :set_unless_exists : :set_with_expire
         @data.send method, key, value, options
       end
 
@@ -29,7 +29,7 @@ module Sinatra
       end
 
       def delete(key, options = nil)
-        @data.delete key
+        @data.del key
       end
 
       def exist?(key, options = nil)
@@ -89,9 +89,9 @@ module Sinatra
       # Delete objects for matched keys.
       #
       # Example:
-      #   cache.delete_matched "rab*"
+      #   cache.del_matched "rab*"
       def delete_matched(matcher, options = nil)
-        @data.keys(matcher).each { |key| @data.delete key }
+        @data.keys(matcher).each { |key| @data.del key }
       end
 
       def fetch(key, options = {})

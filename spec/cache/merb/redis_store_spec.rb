@@ -10,7 +10,7 @@ module Merb
         @white_rabbit = OpenStruct.new :color => "white"
         with_store_management do |store|
           store.write  "rabbit", @rabbit
-          store.delete "rub-a-dub"
+          store.del "rub-a-dub"
         end
       end
 
@@ -32,7 +32,7 @@ module Merb
         redis.port.should == 6380
         redis.db.should == 13
       end
-      
+
       it "should instantiate a ring" do
         store = instantiate_store
         store.should be_kind_of(MarshaledRedis)
@@ -112,21 +112,21 @@ module Merb
 
       it "should delete data" do
         with_store_management do |store|
-          store.delete "rabbit"
+          store.del "rabbit"
           store.read("rabbit").should be_nil
         end
       end
 
       it "should delete all the data" do
         with_store_management do |store|
-          store.delete_all
+          store.del_all
           store.instance_variable_get(:@data).keys("*").flatten.should be_empty
         end
       end
 
       it "should delete all the data with bang method" do
         with_store_management do |store|
-          store.delete_all!
+          store.del_all!
           store.instance_variable_get(:@data).keys("*").flatten.should be_empty
         end
       end

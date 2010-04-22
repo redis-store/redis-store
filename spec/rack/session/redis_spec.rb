@@ -53,7 +53,7 @@ module Rack
         req.get("/", "HTTP_COOKIE" => cookie).
           body.should == '{"counter"=>3}'
       end
-      
+
       it "survives nonexistant cookies" do
         bad_cookie = "rack.session=blarghfasel"
         pool = Rack::Session::Redis.new(@incrementor)
@@ -211,7 +211,7 @@ module Rack
         session['counter'].should == 3
 
         drop_counter = proc do |env|
-          env['rack.session'].delete 'counter'
+          env['rack.session'].del 'counter'
           env['rack.session']['foo'] = 'bar'
           [200, {'Content-Type'=>'text/plain'}, env['rack.session'].inspect]
         end

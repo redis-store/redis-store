@@ -23,7 +23,7 @@ module Merb
 
       def write(key, data = nil, parameters = {}, conditions = {})
         if writable?(key, parameters, conditions)
-          method = conditions && conditions[:unless_exist] ? :set_unless_exists : :set
+          method = conditions && conditions[:unless_exist] ? :set_unless_exists : :set_with_expire
           @data.send method, normalize(key, parameters), data, conditions
         end
       end
@@ -41,7 +41,7 @@ module Merb
       end
 
       def delete(key, parameters = {})
-        @data.delete normalize(key, parameters)
+        @data.del normalize(key, parameters)
       end
 
       def delete_all
