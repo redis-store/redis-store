@@ -1,5 +1,7 @@
 *.rdb
 *.swp
+*.gem
+*-redis-store.gemspec
 bin/
 coverage/
 pkg/
