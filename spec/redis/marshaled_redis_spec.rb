@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), "/../spec_helper")
 
 describe "MarshaledRedis" do
   before(:each) do
-    @store = MarshaledRedis.new
+    @store = ::MarshaledRedis.new
     @rabbit = OpenStruct.new :name => "bunny"
     @white_rabbit = OpenStruct.new :color => "white"
     @store.marshalled_set "rabbit", @rabbit

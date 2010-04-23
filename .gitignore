@@ -8,4 +8,4 @@ pkg/
 vendor/
 tmp/
 .idea
-.bundle
+.bundle/

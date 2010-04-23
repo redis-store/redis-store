@@ -52,7 +52,7 @@ module ActiveSupport
       it "should write the data with expiration time" do
         with_store_management do |store|
           store.write "rabbit", @white_rabbit, :expires_in => 1.second
-          store.read("rabbit").should === @white_rabbit ; sleep 2
+          store.read("rabbit").should == @white_rabbit ; sleep 2
           store.read("rabbit").should be_nil
         end
       end
@@ -60,13 +60,13 @@ module ActiveSupport
       it "should not write data if :unless_exist option is true" do
         with_store_management do |store|
           store.write "rabbit", @white_rabbit, :unless_exist => true
-          store.read("rabbit").should === @rabbit
+          store.read("rabbit").should == @rabbit
         end
       end
 
       it "should read raw data" do
         with_store_management do |store|
-          store.read("rabbit", :raw => true).should == "\004\bU:\017OpenStruct{\006:\tname\"\nbunny"
+          store.read("rabbit", :raw => true).should == Marshal.dump(@rabbit)
         end
       end
 
@@ -149,7 +149,8 @@ module ActiveSupport
           store.fetch("rub-a-dub").should === "Flora de Cana"
           store.fetch("rabbit", :force => true).should be_nil # force cache miss
           store.fetch("rabbit", :force => true, :expires_in => 1.second) { @white_rabbit }
-          store.fetch("rabbit").should === @white_rabbit ; sleep 2
+          store.fetch("rabbit").should == @white_rabbit 
+          sleep 2
           store.fetch("rabbit").should be_nil
         end
       end

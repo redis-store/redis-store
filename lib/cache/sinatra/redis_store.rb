@@ -20,14 +20,10 @@ module Sinatra
       end
 
       def write(key, value, options = nil)
-        if options
-          if options[:unless_exist]
-            @data.marshalled_setnx key, value, options
-          else
-            @data.marshalled_set key, value, options
-          end
+        if options && options[:unless_exist]
+          @data.marshalled_setnx key, value, options
         else
-          @data.marshalled_set key, value
+          @data.marshalled_set key, value, options
         end
       end
 

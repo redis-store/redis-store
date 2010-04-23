@@ -49,7 +49,7 @@ module Merb
 
       it "should read raw data" do
         with_store_management do |store|
-          store.read("rabbit", {}, :raw => true).should == "\004\bU:\017OpenStruct{\006:\tname\"\nbunny"
+          store.read("rabbit", {}, :raw => true).should == Marshal.dump(@rabbit)
         end
       end
 

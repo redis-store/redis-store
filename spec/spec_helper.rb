@@ -1,4 +1,4 @@
-$:.unshift(File.join(File.dirname(__FILE__), "/../lib"))
+$:.unshift(File.expand_path(File.join(File.dirname(__FILE__), "/../lib")))
 ARGV << "-b"
 require "rubygems"
 require "bundler"
@@ -20,5 +20,4 @@ require "cache/rails/redis_store"
 require "rack/session/rails"
 require "cache/sinatra/redis_store"
 
-class Redis; attr_reader :host, :port, :db end
 $DEBUG = ENV["DEBUG"] === "true"
