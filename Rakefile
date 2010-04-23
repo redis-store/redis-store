@@ -9,7 +9,7 @@ task :default => "spec:suite"
 begin
   require "jeweler"
   Jeweler::Tasks.new do |gemspec|
-    gemspec.name        = "redis-store"
+    gemspec.name        = "#{ENV["GEM_PREFIX"]}redis-store"
     gemspec.summary     = "Rack::Session, Rack::Cache and cache Redis stores for Ruby web frameworks."
     gemspec.description = "Rack::Session, Rack::Cache and cache Redis stores for Ruby web frameworks."
     gemspec.email       = "guidi.luca@gmail.com"
