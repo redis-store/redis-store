@@ -17,7 +17,7 @@ require "redis-store"
 require "active_support"
 require "action_controller/session/abstract_store"
 require "cache/rails/redis_store"
-require "cache/rails/redis_session_store"
+require "rack/session/rails"
 require "cache/sinatra/redis_store"
 
 class Redis; attr_reader :host, :port, :db end
