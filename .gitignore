@@ -5,3 +5,5 @@ coverage/
 pkg/
 vendor/
 tmp/
+.idea
+.bundle
