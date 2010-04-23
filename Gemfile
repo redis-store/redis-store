@@ -8,4 +8,6 @@ group :testing do
   gem "rack-cache"
   gem "activesupport"
   gem "merb"
+  gem "jeweler"
+  gem "git"
 end
