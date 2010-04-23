@@ -1,4 +1,4 @@
-gem "redis", "1.0.4"
+gem "redis", "1.0.5"
 
 # testing gems
 group :testing do
