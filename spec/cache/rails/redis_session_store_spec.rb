@@ -3,15 +3,21 @@ require File.join(File.dirname(__FILE__), "/../../spec_helper")
 module ActionController
   module Session
     describe "ActionController::Session::RedisSessionStore" do
+      attr_reader :app
       before(:each) do
-        @store  = ActionController::Session::RedisSessionStore.new
-        @dstore = ActionController::Session::RedisSessionStore.new :servers => ["localhost:6380/1", "localhost:6381/1"]
+        @app = Object.new
+        @store  = ActionController::Session::RedisSessionStore.new(app)
+        @dstore = ActionController::Session::RedisSessionStore.new app, :servers => ["localhost:6380/1", "localhost:6381/1"]
         @rabbit = OpenStruct.new :name => "bunny"
         @white_rabbit = OpenStruct.new :color => "white"
         with_store_management do |store|
-          store.write  "rabbit", @rabbit
-          store.delete "counter"
-          store.delete "rub-a-dub"
+          class << store
+            attr_reader :pool
+            public :get_session, :set_session
+          end
+          store.set_session({'rack.session.options' => {}}, "rabbit", @rabbit)
+          store.pool.del "counter"
+          store.pool.del "rub-a-dub"
         end
       end
 
@@ -38,125 +44,28 @@ module ActionController
 
       it "should read the data" do
         with_store_management do |store|
-          store.read("rabbit").should === @rabbit
+          store.get_session({}, "rabbit").should === ["rabbit", @rabbit]
         end
       end
 
       it "should write the data" do
         with_store_management do |store|
-          store.write "rabbit", @white_rabbit
-          store.read("rabbit").should === @white_rabbit
+          store.set_session({"rack.session.options" => {}}, "rabbit", @white_rabbit)
+          store.get_session({}, "rabbit").should === ["rabbit", @white_rabbit]
         end
       end
 
       it "should write the data with expiration time" do
         with_store_management do |store|
-          store.write "rabbit", @white_rabbit, :expires_in => 1.second
-          store.read("rabbit").should === @white_rabbit ; sleep 2
-          store.read("rabbit").should be_nil
-        end
-      end
-
-      it "should not write data if :unless_exist option is true" do
-        with_store_management do |store|
-          store.write "rabbit", @white_rabbit, :unless_exist => true
-          store.read("rabbit").should === @rabbit
-        end
-      end
-
-      it "should read raw data" do
-        with_store_management do |store|
-          store.read("rabbit", :raw => true).should == "\004\bU:\017OpenStruct{\006:\tname\"\nbunny"
-        end
-      end
-
-      it "should write raw data" do
-        with_store_management do |store|
-          store.write "rabbit", @white_rabbit, :raw => true
-          store.read("rabbit", :raw => true).should == %(#<OpenStruct color="white">)
-        end
-      end
-
-      it "should delete data" do
-        with_store_management do |store|
-          store.delete "rabbit"
-          store.read("rabbit").should be_nil
-        end
-      end
-
-      it "should delete matched data" do
-        with_store_management do |store|
-          store.delete_matched "rabb*"
-          store.read("rabbit").should be_nil
-        end
-      end
-
-      it "should verify existence of an object in the store" do
-        with_store_management do |store|
-          store.exist?("rabbit").should be_true
-          store.exist?("rab-a-dub").should be_false
-        end
-      end
-
-      it "should increment a key" do
-        with_store_management do |store|
-          3.times { store.increment "counter" }
-          store.read("counter", :raw => true).to_i.should == 3
-        end
-      end
-
-      it "should decrement a key" do
-        with_store_management do |store|
-          3.times { store.increment "counter" }
-          2.times { store.decrement "counter" }
-          store.read("counter", :raw => true).to_i.should == 1
-        end
-      end
-
-      it "should increment a key by given value" do
-        with_store_management do |store|
-          store.increment "counter", 3
-          store.read("counter", :raw => true).to_i.should == 3
-        end
-      end
-
-      it "should decrement a key by given value" do
-        with_store_management do |store|
-          3.times { store.increment "counter" }
-          store.decrement "counter", 2
-          store.read("counter", :raw => true).to_i.should == 1
-        end
-      end
-
-      it "should clear the store" do
-        with_store_management do |store|
-          store.clear
-          store.instance_variable_get(:@data).keys("*").flatten.should be_empty
-        end
-      end
-
-      it "should return store stats" do
-        with_store_management do |store|
-          store.stats.should_not be_empty
-        end
-      end
-
-      it "should fetch data" do
-        with_store_management do |store|
-          store.fetch("rabbit").should == @rabbit
-          store.fetch("rub-a-dub").should be_nil
-          store.fetch("rub-a-dub") { "Flora de Cana" }
-          store.fetch("rub-a-dub").should === "Flora de Cana"
-          store.fetch("rabbit", :force => true).should be_nil # force cache miss
-          store.fetch("rabbit", :force => true, :expires_in => 1.second) { @white_rabbit }
-          store.fetch("rabbit").should === @white_rabbit ; sleep 2
-          store.fetch("rabbit").should be_nil
+          store.set_session({"rack.session.options" => {:expires_in => 1.second}}, "rabbit", @white_rabbit)
+          store.get_session({}, "rabbit").should === ["rabbit", @white_rabbit]; sleep 2
+          store.get_session({}, "rabbit").should === ["rabbit", {}]
         end
       end
 
       private
         def instantiate_store(params={})
-          ActionController::Session::RedisSessionStore.new(params).instance_variable_get(:@data)
+          ActionController::Session::RedisSessionStore.new(app, params).instance_variable_get(:@pool)
         end
 
         def with_store_management

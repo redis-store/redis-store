@@ -27,7 +27,7 @@ module ActionController
             :host => 'localhost',
             :port => '6379',
             :db => 0
-          }.update(server_options)
+          }.update(RedisFactory.convert_to_redis_client_options(server_options))
         end
 
         @pool = RedisFactory.create(*servers)
@@ -41,7 +41,7 @@ module ActionController
       def get_session(env, sid)
         sid ||= generate_sid
         begin
-          session = @pool.call_command([:marshalled_get, prefixed(sid)]) || {}
+          session = @pool.marshalled_get(prefixed(sid)) || {}
         rescue Errno::ECONNREFUSED
           session = {}
         end
@@ -50,13 +50,7 @@ module ActionController
 
       def set_session(env, sid, session_data)
         options = env['rack.session.options']
-        expiry  = options[:expire_after] || nil
-
-        @pool.pipelined do |redis|
-          redis.marshalled_set(prefixed(sid), session_data)
-          redis.expire(prefixed(sid), expiry) if expiry
-        end
-
+        @pool.marshalled_set(prefixed(sid), session_data, options)
         return true
       rescue Errno::ECONNREFUSED
         return false
