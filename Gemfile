@@ -7,6 +7,7 @@ group :testing do
   gem "rack", "1.1.0"
   gem "rack-cache"
   gem "activesupport"
+  gem "actionpack"
   gem "merb"
   gem "jeweler"
   gem "git"

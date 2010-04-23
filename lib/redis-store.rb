@@ -13,6 +13,7 @@ elsif defined?(Merb)
   require "cache/merb/redis_store"
 elsif defined?(Rails)
   require "cache/rails/redis_store"
+  require "cache/rails/redis_session_store"
 end
 
 # Rack::Session
