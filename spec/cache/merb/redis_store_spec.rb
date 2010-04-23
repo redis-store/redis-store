@@ -9,28 +9,23 @@ module Merb
         @rabbit = OpenStruct.new :name => "bunny"
         @white_rabbit = OpenStruct.new :color => "white"
         with_store_management do |store|
-          store.write  "rabbit", @rabbit
-          store.del "rub-a-dub"
+          store.write "rabbit", @rabbit
+          store.delete "rub-a-dub"
         end
       end
 
       it "should accept connection params" do
         redis = instantiate_store
-        redis.host.should == "127.0.0.1"
-        redis.port.should == 6379
-        redis.db.should == 0
+        redis.to_s.should == "Redis Client connected to 127.0.0.1:6379 against DB 0"
 
         redis = instantiate_store "localhost"
-        redis.host.should == "localhost"
+        redis.to_s.should == "Redis Client connected to localhost:6379 against DB 0"
 
         redis = instantiate_store "localhost:6380"
-        redis.host.should == "localhost"
-        redis.port.should == 6380
+        redis.to_s.should == "Redis Client connected to localhost:6380 against DB 0"
 
         redis = instantiate_store "localhost:6380/13"
-        redis.host.should == "localhost"
-        redis.port.should == 6380
-        redis.db.should == 13
+        redis.to_s.should == "Redis Client connected to localhost:6380 against DB 13"
       end
 
       it "should instantiate a ring" do
@@ -112,21 +107,21 @@ module Merb
 
       it "should delete data" do
         with_store_management do |store|
-          store.del "rabbit"
+          store.delete "rabbit"
           store.read("rabbit").should be_nil
         end
       end
 
       it "should delete all the data" do
         with_store_management do |store|
-          store.del_all
+          store.delete_all
           store.instance_variable_get(:@data).keys("*").flatten.should be_empty
         end
       end
 
       it "should delete all the data with bang method" do
         with_store_management do |store|
-          store.del_all!
+          store.delete_all!
           store.instance_variable_get(:@data).keys("*").flatten.should be_empty
         end
       end

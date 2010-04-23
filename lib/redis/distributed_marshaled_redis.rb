@@ -6,5 +6,5 @@ class DistributedMarshaledRedis < DistRedis
     @ring = Redis::HashRing.new nodes
   end
 
-  alias_method :flush_db, :delete_cloud!
+  alias_method :flushdb, :delete_cloud!
 end

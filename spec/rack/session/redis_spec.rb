@@ -28,9 +28,7 @@ module Rack
       it "should specify connection params" do
         pool = Rack::Session::Redis.new(@incrementor, :redis_server => "localhost:6380/1").pool
         pool.should be_kind_of(MarshaledRedis)
-        pool.host.should == "localhost"
-        pool.port.should == 6380
-        pool.db.should == 1
+        pool.to_s.should == "Redis Client connected to localhost:6380 against DB 1"
 
         pool = Rack::Session::Redis.new(@incrementor, :redis_server => ["localhost:6379", "localhost:6380"]).pool
         pool.should be_kind_of(DistributedMarshaledRedis)
@@ -48,10 +46,8 @@ module Rack
         req = Rack::MockRequest.new(pool)
         res = req.get("/")
         cookie = res["Set-Cookie"]
-        req.get("/", "HTTP_COOKIE" => cookie).
-          body.should == '{"counter"=>2}'
-        req.get("/", "HTTP_COOKIE" => cookie).
-          body.should == '{"counter"=>3}'
+        req.get("/", "HTTP_COOKIE" => cookie).body.should == '{"counter"=>2}'
+        req.get("/", "HTTP_COOKIE" => cookie).body.should == '{"counter"=>3}'
       end
 
       it "survives nonexistant cookies" do

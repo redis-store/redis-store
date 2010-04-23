@@ -8,7 +8,7 @@ class RedisFactory
         MarshaledRedis.new addresses.first || {}
       end
     end
-    
+
     private
       def extract_addresses(addresses)
         addresses = addresses.flatten.compact

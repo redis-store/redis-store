@@ -13,18 +13,18 @@ module Rack
       def generate_sid
         loop do
           sid = super
-          break sid unless @pool.get(sid)
+          break sid unless @pool.marshalled_get(sid)
         end
       end
 
       def get_session(env, sid)
-        session = @pool.get(sid) if sid
+        session = @pool.marshalled_get(sid) if sid
         @mutex.lock if env['rack.multithread']
         unless sid and session
           env['rack.errors'].puts("Session '#{sid.inspect}' not found, initializing...") if $VERBOSE and not sid.nil?
           session = {}
           sid = generate_sid
-          ret = @pool.set sid, session
+          ret = @pool.marshalled_set sid, session
           raise "Session collision on '#{sid.inspect}'" unless ret
         end
         session.instance_variable_set('@old', {}.merge(session))
@@ -39,16 +39,16 @@ module Rack
 
       def set_session(env, session_id, new_session, options)
         @mutex.lock if env['rack.multithread']
-        session = @pool.get(session_id) rescue {}
+        session = @pool.marshalled_get(session_id) rescue {}
         if options[:renew] or options[:drop]
           @pool.del session_id
           return false if options[:drop]
           session_id = generate_sid
-          @pool.set session_id, 0
+          @pool.marshalled_set session_id, 0
         end
         old_session = new_session.instance_variable_get('@old') || {}
         session = merge_sessions session_id, old_session, new_session, session
-        @pool.set session_id, session, options
+        @pool.marshalled_set session_id, session, options
         return session_id
       rescue Errno::ECONNREFUSED
         warn "#{self} is unable to find server."

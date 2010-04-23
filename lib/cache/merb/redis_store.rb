@@ -18,12 +18,12 @@ module Merb
       end
 
       def read(key, parameters = {}, conditions = {})
-        @data.get normalize(key, parameters), conditions
+        @data.marshalled_get normalize(key, parameters), conditions
       end
 
       def write(key, data = nil, parameters = {}, conditions = {})
         if writable?(key, parameters, conditions)
-          method = conditions && conditions[:unless_exist] ? :set_unless_exists : :set_with_expire
+          method = conditions && conditions[:unless_exist] ? :marshalled_setnx : :marshalled_set
           @data.send method, normalize(key, parameters), data, conditions
         end
       end
@@ -37,7 +37,7 @@ module Merb
       end
 
       def exists?(key, parameters = {})
-        @data.key? normalize(key, parameters)
+        @data.exists normalize(key, parameters)
       end
 
       def delete(key, parameters = {})
@@ -45,7 +45,7 @@ module Merb
       end
 
       def delete_all
-        @data.flush_db
+        @data.flushdb
       end
 
       def delete_all!

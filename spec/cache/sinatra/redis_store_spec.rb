@@ -24,8 +24,8 @@ module Sinatra
         @white_rabbit = OpenStruct.new :color => "white"
         with_store_management do |store|
           store.write  "rabbit", @rabbit
-          store.del "counter"
-          store.del "rub-a-dub"
+          store.delete "counter"
+          store.delete "rub-a-dub"
         end
       end
 
@@ -38,21 +38,16 @@ module Sinatra
 
       it "should accept connection params" do
         redis = instantiate_store
-        redis.host.should == "127.0.0.1"
-        redis.port.should == 6379
-        redis.db.should == 0
+        redis.to_s.should == "Redis Client connected to 127.0.0.1:6379 against DB 0"
 
         redis = instantiate_store "localhost"
-        redis.host.should == "localhost"
+        redis.to_s.should == "Redis Client connected to localhost:6379 against DB 0"
 
         redis = instantiate_store "localhost:6380"
-        redis.host.should == "localhost"
-        redis.port.should == 6380
+        redis.to_s.should == "Redis Client connected to localhost:6380 against DB 0"
 
         redis = instantiate_store "localhost:6380/13"
-        redis.host.should == "localhost"
-        redis.port.should == 6380
-        redis.db.should == 13
+        redis.to_s.should == "Redis Client connected to localhost:6380 against DB 13"
       end
 
       it "should instantiate a ring" do
@@ -105,14 +100,14 @@ module Sinatra
 
       it "should delete data" do
         with_store_management do |store|
-          store.del "rabbit"
+          store.delete "rabbit"
           store.read("rabbit").should be_nil
         end
       end
 
       it "should delete matched data" do
         with_store_management do |store|
-          store.del_matched "rabb*"
+          store.delete_matched "rabb*"
           store.read("rabbit").should be_nil
         end
       end

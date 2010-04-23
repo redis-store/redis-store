@@ -15,13 +15,13 @@ module ActiveSupport
 
       def write(key, value, options = nil)
         super
-        method = options && options[:unless_exist] ? :set_unless_exists : :set
+        method = options && options[:unless_exist] ? :marshalled_setnx : :marshalled_set
         @data.send method, key, value, options
       end
 
       def read(key, options = nil)
         super
-        @data.get key, options
+        @data.marshalled_get key, options
       end
 
       def delete(key, options = nil)
@@ -31,7 +31,7 @@ module ActiveSupport
 
       def exist?(key, options = nil)
         super
-        @data.key? key
+        @data.exists key
       end
 
       # Increment a key in the store.
@@ -57,7 +57,7 @@ module ActiveSupport
       #   cache.read "rabbit", :raw => true       # => "1"
       def increment(key, amount = 1)
         log "increment", key, amount
-        @data.incr key, amount
+        @data.incrby key, amount
       end
 
       # Decrement a key in the store
@@ -83,7 +83,7 @@ module ActiveSupport
       #   cache.read "rabbit", :raw => true       # => "-1"
       def decrement(key, amount = 1)
         log "decrement", key, amount
-        @data.decr key, amount
+        @data.decrby key, amount
       end
 
       # Delete objects for matched keys.
@@ -98,7 +98,7 @@ module ActiveSupport
       # Clear all the data from the store.
       def clear
         log "clear", nil, nil
-        @data.flush_db
+        @data.flushdb
       end
 
       def stats

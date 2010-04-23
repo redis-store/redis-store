@@ -22,12 +22,12 @@ module Rack
 
         def read(key)
           key = hexdigest(key)
-          cache.get(key) || []
+          cache.marshalled_get(key) || []
         end
 
         def write(key, entries)
           key = hexdigest(key)
-          cache.set(key, entries)
+          cache.marshalled_set(key, entries)
         end
 
         def purge(key)

@@ -20,12 +20,19 @@ module Sinatra
       end
 
       def write(key, value, options = nil)
-        method = options && options[:unless_exist] ? :set_unless_exists : :set_with_expire
-        @data.send method, key, value, options
+        if options
+          if options[:unless_exist]
+            @data.marshalled_setnx key, value, options
+          else
+            @data.marshalled_set key, value, options
+          end
+        else
+          @data.marshalled_set key, value
+        end
       end
 
       def read(key, options = nil)
-        @data.get key, options
+        @data.marshalled_get(key, options)
       end
 
       def delete(key, options = nil)
@@ -33,7 +40,7 @@ module Sinatra
       end
 
       def exist?(key, options = nil)
-        @data.key? key
+        @data.exists key
       end
 
       # Increment a key in the store.
@@ -58,7 +65,7 @@ module Sinatra
       #   cache.increment "rabbit"
       #   cache.read "rabbit", :raw => true       # => "1"
       def increment(key, amount = 1)
-        @data.incr key, amount
+        @data.incrby key, amount
       end
 
       # Decrement a key in the store
@@ -83,7 +90,7 @@ module Sinatra
       #   cache.decrement "rabbit"
       #   cache.read "rabbit", :raw => true       # => "-1"
       def decrement(key, amount = 1)
-        @data.decr key, amount
+        @data.decrby key, amount
       end
 
       # Delete objects for matched keys.
@@ -100,7 +107,7 @@ module Sinatra
 
       # Clear all the data from the store.
       def clear
-        @data.flush_db
+        @data.flushdb
       end
 
       def stats
