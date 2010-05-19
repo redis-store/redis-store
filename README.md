@@ -73,7 +73,17 @@ Provides a Redis store for Rack::Session. See [http://rack.rubyforge.org/doc/Rac
 
 ### Sinatra
 
-Sorry, but Sinatra application boot system [hardcode](http://github.com/sinatra/sinatra/blob/0f02bafe86f8dd9bba9ab425468cb1067caa83ff/lib/sinatra/base.rb#L785) `Rack::Session::Cookie`
+    require "sinatra"
+    require "redis-store"
+
+    class MyApp < Sinatra::Base
+      use Rack::Session::Redis
+
+      get "/" do
+        session[:visited_at] = DateTime.now.to_s # This is stored in Redis
+        "Hello, visitor."
+      end
+    end
 
 ## Rack::Cache
 
