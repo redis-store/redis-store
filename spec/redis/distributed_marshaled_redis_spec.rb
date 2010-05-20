@@ -1,8 +1,8 @@
 require File.join(File.dirname(__FILE__), "/../spec_helper")
 
-describe "DistributedMarshaledRedis" do
+describe "Redis::DistributedMarshaled" do
   before(:each) do
-    @dmr = DistributedMarshaledRedis.new [
+    @dmr = Redis::DistributedMarshaled.new [
       {:host => "localhost", :port => "6380", :db => 0},
       {:host => "localhost", :port => "6381", :db => 0}
     ]
@@ -16,7 +16,7 @@ describe "DistributedMarshaledRedis" do
   end
 
   it "should accept connection params" do
-    dmr = DistributedMarshaledRedis.new [ :host => "localhost", :port => "6380", :db => "1" ]
+    dmr = Redis::DistributedMarshaled.new [ :host => "localhost", :port => "6380", :db => "1" ]
     dmr.ring.should have(1).node
     mr = dmr.ring.nodes.first
     mr.to_s.should == "Redis Client connected to localhost:6380 against DB 1"

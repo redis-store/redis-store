@@ -27,11 +27,11 @@ module Rack
 
       it "should specify connection params" do
         pool = Rack::Session::Redis.new(@incrementor, :redis_server => "localhost:6380/1").pool
-        pool.should be_kind_of(MarshaledRedis)
+        pool.should be_kind_of(::Redis::MarshaledClient)
         pool.to_s.should == "Redis Client connected to localhost:6380 against DB 1"
 
         pool = Rack::Session::Redis.new(@incrementor, :redis_server => ["localhost:6379", "localhost:6380"]).pool
-        pool.should be_kind_of(DistributedMarshaledRedis)
+        pool.should be_kind_of(::Redis::DistributedMarshaled)
       end
 
       it "creates a new cookie" do

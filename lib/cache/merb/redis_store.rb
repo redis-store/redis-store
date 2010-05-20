@@ -10,7 +10,7 @@ module Merb
       #   RedisStore.new :servers => ["example.com:23682/1"] # => host: example.com, port: 23682, db: 1
       #   RedisStore.new :servers => ["localhost:6379/0", "localhost:6380/0"] # => instantiate a cluster
       def initialize(config = {})
-        @data = RedisFactory.create config[:servers]
+        @data = Redis::Factory.create config[:servers]
       end
 
       def writable?(key, parameters = {}, conditions = {})

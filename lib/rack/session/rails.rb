@@ -27,10 +27,10 @@ module ActionController
             :host => 'localhost',
             :port => '6379',
             :db => 0
-          }.update(RedisFactory.convert_to_redis_client_options(server_options))
+          }.update(Redis::Factory.convert_to_redis_client_options(server_options))
         end
 
-        @pool = RedisFactory.create(*servers)
+        @pool = Redis::Factory.create(*servers)
       end
 
       private

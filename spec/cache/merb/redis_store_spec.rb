@@ -30,9 +30,9 @@ module Merb
 
       it "should instantiate a ring" do
         store = instantiate_store
-        store.should be_kind_of(MarshaledRedis)
+        store.should be_kind_of(Redis::MarshaledClient)
         store = instantiate_store ["localhost:6379/0", "localhost:6379/1"]
-        store.should be_kind_of(DistributedMarshaledRedis)
+        store.should be_kind_of(Redis::DistributedMarshaled)
       end
 
       it "should verify if writable" do
