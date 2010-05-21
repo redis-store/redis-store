@@ -59,7 +59,7 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{Rack::Session, Rack::Cache and cache Redis stores for Ruby web frameworks.}
   s.test_files = [
-     "spec/cache/merb/redis_store_spec.rb",
+    "spec/cache/merb/redis_store_spec.rb",
      "spec/cache/rails/redis_session_store_spec.rb",
      "spec/cache/rails/redis_store_spec.rb",
      "spec/cache/sinatra/redis_store_spec.rb",

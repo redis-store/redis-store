@@ -16,6 +16,7 @@ begin
     gemspec.email       = "guidi.luca@gmail.com"
     gemspec.homepage    = "http://github.com/jodosha/redis-store"
     gemspec.authors     = [ "Luca Guidi" ]
+    gemspec.executables = [ ]
   end
 
   Jeweler::GemcutterTasks.new
