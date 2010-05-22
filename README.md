@@ -4,15 +4,15 @@
 
 Download and install Redis from [http://code.google.com/p/redis/](http://code.google.com/p/redis/)
 
-    curl -OL http://redis.googlecode.com/files/redis-1.02.tar.gz
-    tar -zxvf redis-1.02.tar.gz
-    mv redis-1.02 redis
+    wget http://redis.googlecode.com/files/redis-2.0.0-rc1.tar.gz
+    tar -zxf redis-2.0.0-rc1.tar.gz
+    mv redis-2.0.0-rc1 redis
     cd redis
     make
 
-Install the gems
+Install the gem
 
-    sudo gem install redis-rb redis-store
+    sudo gem install redis-store
 
 ## Cache store
 
@@ -20,7 +20,7 @@ Provides a cache store for your Ruby web framework of choice.
 
 ### Rails
 
-    config.gem "redis-store", :source => "http://gemcutter.org", :lib => "redis-store"
+    config.gem "redis-store", :lib => "redis-store"
     require "redis-store"
     config.cache_store = :redis_store
 
@@ -58,7 +58,7 @@ Provides a Redis store for Rack::Session. See [http://rack.rubyforge.org/doc/Rac
 
 ### Rails
 
-    config.gem "redis-store", :source => "http://gemcutter.org", :lib => "redis-store"
+    config.gem "redis-store", :lib => "redis-store"
     ActionController::Base.session_store = Rack::Session::Redis
 
 ### Merb
@@ -103,13 +103,13 @@ Provides a Redis store for HTTP caching. See [http://github.com/rtomayko/rack-ca
     gem install jeweler bundler
     git clone git://github.com/jodosha/redis-store.git
     cd redis-store
-    gem bundle
+    bundle install
     rake dtach:install
     rake redis:install
     rake
 
-If you are on **Snow Leopard** you have to run `env ARCHFLAGS="-arch x86_64" gem bundle`
+If you are on **Snow Leopard** you have to run `env ARCHFLAGS="-arch x86_64" bundle install`
 
 ## Copyright
 
-(c) 2009 Luca Guidi - [http://lucaguidi.com](http://lucaguidi.com), released under the MIT license
+(c) 2010 Luca Guidi - [http://lucaguidi.com](http://lucaguidi.com), released under the MIT license
