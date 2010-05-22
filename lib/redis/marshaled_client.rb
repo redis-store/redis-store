@@ -1,9 +1,9 @@
 class Redis
-  class MarshaledClient < Client
+  class MarshaledClient < self
     def marshalled_set(key, val, options = nil)
       val = marshal_value(val, options)
-      if expires_in = expires_in(options)
-        set_with_expire key, val, expires_in
+      if ttl = expires_in(options)
+        setex key, ttl, val
       else
         set key, val
       end
@@ -26,9 +26,13 @@ class Redis
     end
 
     def marshalled_get(key, options = nil)
-      result = call_command([:get, key])
+      result = @client.call(:get, key)
       result = Marshal.load result if unmarshal?(result, options)
       result
+    end
+
+    def to_s
+      "Redis Client connected to #{@client.host}:#{@client.port} against DB #{@client.db}"
     end
 
     private
