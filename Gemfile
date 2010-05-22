@@ -1,5 +1,5 @@
 source :gemcutter
-gem "redis", "1.0.5"
+gem "redis", "2.0.0"
 
 # testing gems
 group :testing do
