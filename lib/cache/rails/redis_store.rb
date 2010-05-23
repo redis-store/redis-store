@@ -1,18 +1,6 @@
-module ActiveSupport
+module RedisStore
   module Cache
-    class RedisStore < Store
-      # Instantiate the store.
-      #
-      # Example:
-      #   RedisStore.new                       # => host: localhost,   port: 6379,  db: 0
-      #   RedisStore.new "example.com"         # => host: example.com, port: 6379,  db: 0
-      #   RedisStore.new "example.com:23682"   # => host: example.com, port: 23682, db: 0
-      #   RedisStore.new "example.com:23682/1" # => host: example.com, port: 23682, db: 1
-      #   RedisStore.new "localhost:6379/0", "localhost:6380/0" # => instantiate a cluster
-      def initialize(*addresses)
-        @data = Redis::Factory.create(addresses)
-      end
-
+    module Rails2
       def write(key, value, options = nil)
         super
         method = options && options[:unless_exist] ? :marshalled_setnx : :marshalled_set
@@ -27,6 +15,47 @@ module ActiveSupport
       def delete(key, options = nil)
         super
         @data.del key
+      end
+    end
+
+    module Rails3
+      protected
+        def write_entry(key, entry, options)
+          method = options && options[:unless_exist] ? :marshalled_setnx : :marshalled_set
+          @data.send method, key, entry, options
+        end
+
+        def read_entry(key, options)
+          entry = @data.marshalled_get key, options
+          entry.is_a?(ActiveSupport::Cache::Entry) ? entry : ActiveSupport::Cache::Entry.new(entry)
+        end
+
+        def delete_entry(key, options)
+          @data.del key
+        end
+    end
+
+    module Store
+      include RedisStore.rails3? ? Rails3 : Rails2
+    end
+  end
+end
+
+module ActiveSupport
+  module Cache
+    class RedisStore < Store
+      include ::RedisStore::Cache::Store
+
+      # Instantiate the store.
+      #
+      # Example:
+      #   RedisStore.new                       # => host: localhost,   port: 6379,  db: 0
+      #   RedisStore.new "example.com"         # => host: example.com, port: 6379,  db: 0
+      #   RedisStore.new "example.com:23682"   # => host: example.com, port: 23682, db: 0
+      #   RedisStore.new "example.com:23682/1" # => host: example.com, port: 23682, db: 1
+      #   RedisStore.new "localhost:6379/0", "localhost:6380/0" # => instantiate a cluster
+      def initialize(*addresses)
+        @data = Redis::Factory.create(addresses)
       end
 
       def exist?(key, options = nil)

@@ -4,6 +4,12 @@ require "redis/factory"
 require "redis/marshaled_client"
 require "redis/distributed_marshaled"
 
+module RedisStore
+  def self.rails3? #:nodoc:
+    defined?(::Rails) && ::Rails::VERSION.to_s =~ /3\.0\.0/
+  end
+end
+
 # Cache store
 if defined?(Sinatra)
   require "cache/sinatra/redis_store"

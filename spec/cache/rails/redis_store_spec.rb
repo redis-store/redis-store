@@ -9,7 +9,7 @@ module ActiveSupport
         @rabbit = OpenStruct.new :name => "bunny"
         @white_rabbit = OpenStruct.new :color => "white"
         with_store_management do |store|
-          store.write  "rabbit", @rabbit
+          store.write "rabbit", @rabbit
           store.delete "counter"
           store.delete "rub-a-dub"
         end
