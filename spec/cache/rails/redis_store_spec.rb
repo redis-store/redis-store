@@ -2,8 +2,8 @@ require File.join(File.dirname(__FILE__), "/../../spec_helper")
 
 module ActiveSupport
   module Cache
-    describe "ActiveSupport::Cache::RedisStore" do
-      before(:each) do
+    describe RedisStore do
+      before :each do
         @store  = ActiveSupport::Cache::RedisStore.new
         @dstore = ActiveSupport::Cache::RedisStore.new "localhost:6380/1", "localhost:6381/1"
         @rabbit = OpenStruct.new :name => "bunny"
@@ -64,16 +64,33 @@ module ActiveSupport
         end
       end
 
-      it "should read raw data" do
-        with_store_management do |store|
-          store.read("rabbit", :raw => true).should == Marshal.dump(@rabbit)
+      if ::RedisStore.rails3?
+        it "should read raw data" do
+          with_store_management do |store|
+            result = store.read("rabbit", :raw => true)
+            result.should include("ActiveSupport::Cache::Entry")
+            result.should include("\017OpenStruct{\006:\tname\"\nbunny:")
+          end
         end
-      end
 
-      it "should write raw data" do
-        with_store_management do |store|
-          store.write "rabbit", @white_rabbit, :raw => true
-          store.read("rabbit", :raw => true).should == %(#<OpenStruct color="white">)
+        it "should write raw data" do
+          with_store_management do |store|
+            store.write "rabbit", @white_rabbit, :raw => true
+            store.read("rabbit", :raw => true).should include("ActiveSupport::Cache::Entry")
+          end
+        end
+      else
+        it "should read raw data" do
+          with_store_management do |store|
+            store.read("rabbit", :raw => true).should == Marshal.dump(@rabbit)
+          end
+        end
+
+        it "should write raw data" do
+          with_store_management do |store|
+            store.write "rabbit", @white_rabbit, :raw => true
+            store.read("rabbit", :raw => true).should == %(#<OpenStruct color="white">)
+          end
         end
       end
 
@@ -149,7 +166,7 @@ module ActiveSupport
           store.fetch("rub-a-dub").should === "Flora de Cana"
           store.fetch("rabbit", :force => true).should be_nil # force cache miss
           store.fetch("rabbit", :force => true, :expires_in => 1.second) { @white_rabbit }
-          store.fetch("rabbit").should == @white_rabbit 
+          store.fetch("rabbit").should == @white_rabbit
           sleep 2
           store.fetch("rabbit").should be_nil
         end

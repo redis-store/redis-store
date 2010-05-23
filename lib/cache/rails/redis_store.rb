@@ -120,7 +120,7 @@ module ActiveSupport
       # Example:
       #   cache.del_matched "rab*"
       def delete_matched(matcher, options = nil)
-        super
+        log "delete_matched", matcher
         @data.keys(matcher).each { |key| @data.del key }
       end
 
