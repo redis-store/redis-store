@@ -156,7 +156,7 @@ namespace :redis do
   desc "Open an IRb session"
   task :console do
     RedisRunner.start_detached
-    system "irb -I lib -I extra -r redis.rb"
+    system "bundle exec irb -I lib -I extra -r redis-store.rb"
     RedisRunner.stop
   end
 end
