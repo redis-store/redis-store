@@ -59,6 +59,12 @@ namespace :redis_cluster do
   end
 end
 
+namespace :bundle do
+  task :clean do
+    system "rm -rf ~/.bundle/ ~/.gem/ .bundle/ Gemfile.lock"
+  end
+end
+
 # courtesy of http://github.com/ezmobius/redis-rb team
 load "tasks/redis.tasks.rb"
 def invoke_with_redis_cluster(task_name)
