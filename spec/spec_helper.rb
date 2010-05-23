@@ -15,7 +15,11 @@ require "rack/cache/metastore"
 require "rack/cache/entitystore"
 require "redis-store"
 require "active_support"
-require "action_controller/session/abstract_store"
+begin
+  require "action_controller/session/abstract_store" # Rails 2.3.x
+rescue LoadError
+  require "action_dispatch/middleware/session/abstract_store" # Rails 3.x
+end
 require "cache/rails/redis_store"
 require "rack/session/rails"
 require "cache/sinatra/redis_store"
