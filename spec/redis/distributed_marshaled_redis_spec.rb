@@ -17,7 +17,7 @@ describe "Redis::DistributedMarshaled" do
 
   it "should accept connection params" do
     dmr = Redis::DistributedMarshaled.new [ :host => "localhost", :port => "6380", :db => "1" ]
-    dmr.ring.should have(1).node
+    dmr.ring.nodes.size == 1
     mr = dmr.ring.nodes.first
     mr.to_s.should == "Redis Client connected to localhost:6380 against DB 1"
   end
