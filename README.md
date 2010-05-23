@@ -4,15 +4,15 @@
 
 Download and install Redis from [http://code.google.com/p/redis/](http://code.google.com/p/redis/)
 
-    curl -OL http://redis.googlecode.com/files/redis-1.02.tar.gz
-    tar -zxvf redis-1.02.tar.gz
-    mv redis-1.02 redis
+    curl -OL http://redis.googlecode.com/files/redis-1.2.5.tar.gz
+    tar -zxvf redis-1.2.5.tar.gz
+    mv redis-1.2.5 redis
     cd redis
     make
 
 Install the gems
 
-    sudo gem install redis-rb redis-store
+    sudo gem install redis redis-store
 
 ## Cache store
 
@@ -26,7 +26,7 @@ Provides a cache store for your Ruby web framework of choice.
 
 ### Merb
 
-    dependency "redis-store", "0.3.7"
+    dependency "redis-store", "0.3.8"
     dependency("merb-cache", merb_gems_version) do
       Merb::Cache.setup do
         register(:redis, Merb::Cache::RedisStore, :servers => ["127.0.0.1:6379"])
@@ -63,7 +63,7 @@ Provides a Redis store for Rack::Session. See [http://rack.rubyforge.org/doc/Rac
 
 ### Merb
 
-    dependency "redis-store", "0.3.7"
+    dependency "redis-store", "0.3.8"
     Merb::Config.use do |c|
       c[:session_store] = "redis"
     end
@@ -103,13 +103,13 @@ Provides a Redis store for HTTP caching. See [http://github.com/rtomayko/rack-ca
     gem install jeweler bundler
     git clone git://github.com/jodosha/redis-store.git
     cd redis-store
-    gem bundle
+    bundle install
     rake dtach:install
     rake redis:install
     rake
 
-If you are on **Snow Leopard** you have to run `env ARCHFLAGS="-arch x86_64" gem bundle`
+If you are on **Snow Leopard** you have to run `env ARCHFLAGS="-arch x86_64" bundle install`
 
 ## Copyright
 
-(c) 2009 Luca Guidi - [http://lucaguidi.com](http://lucaguidi.com), released under the MIT license
+(c) 2010 Luca Guidi - [http://lucaguidi.com](http://lucaguidi.com), released under the MIT license
