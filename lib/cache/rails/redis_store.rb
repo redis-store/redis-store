@@ -27,7 +27,9 @@ module RedisStore
 
         def read_entry(key, options)
           entry = @data.marshalled_get key, options
-          entry.is_a?(ActiveSupport::Cache::Entry) ? entry : ActiveSupport::Cache::Entry.new(entry)
+          if entry
+            entry.is_a?(ActiveSupport::Cache::Entry) ? entry : ActiveSupport::Cache::Entry.new(entry)
+          end
         end
 
         def delete_entry(key, options)
