@@ -1,3 +1,4 @@
+source :gemcutter
 gem "redis", "2.0.0"
 
 group :development do
@@ -15,8 +16,10 @@ end
 if ENV["REDIS_STORE_ENV"] == "rails3"
   group :rails3 do
     gem "rack", "1.1.0"
-    gem "activesupport", "3.0.0.beta3"
-    gem "actionpack", "3.0.0.beta3"
+    git "git://github.com/rails/rails.git" do
+      gem "activesupport", "3.0.0.beta3"
+      gem "actionpack", "3.0.0.beta3"
+    end
   end
 else
   group :test do
