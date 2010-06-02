@@ -34,7 +34,6 @@ Gem::Specification.new do |s|
      "lib/redis/distributed_marshaled.rb",
      "lib/redis/factory.rb",
      "lib/redis/marshaled_client.rb",
-     "lib/redis/namespace.rb",
      "redis-store.gemspec",
      "spec/cache/merb/redis_store_spec.rb",
      "spec/cache/rails/redis_session_store_spec.rb",
@@ -77,9 +76,12 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<redis>, [">= 2.0.0"])
     else
+      s.add_dependency(%q<redis>, [">= 2.0.0"])
     end
   else
+    s.add_dependency(%q<redis>, [">= 2.0.0"])
   end
 end
 
