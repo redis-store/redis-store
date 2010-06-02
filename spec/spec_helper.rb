@@ -19,7 +19,7 @@ begin
   require "action_controller/session/abstract_store" # Rails 2.3.x
 rescue LoadError
   require "action_dispatch/middleware/session/abstract_store" # Rails 3.x
-  module Rails; VERSION = "3.0.0.beta3"; end unless defined?(Rails)
+  module Rails; module VERSION; STRING = "3.0.0.beta3"; end end unless defined?(Rails)
 end
 require "cache/rails/redis_store"
 require "rack/session/rails"
