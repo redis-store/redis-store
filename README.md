@@ -68,8 +68,8 @@ Provides a Redis store for Rack::Session. See [http://rack.rubyforge.org/doc/Rac
 
 ### Rails 2.x
 
-    config.gem "redis-store", :lib => "redis-store"
-    ActionController::Base.session_store = Rack::Session::Redis
+    config.gem "redis-store"
+    ActionController::Base.session_store = :redis_session_store
 
 ### Rails 3.x
 
