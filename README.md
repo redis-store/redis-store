@@ -18,10 +18,20 @@ Install the gem
 
 Provides a cache store for your Ruby web framework of choice.
 
-### Rails
+### Rails 2.x
 
     config.gem "redis-store", :lib => "redis-store"
     require "redis-store"
+    config.cache_store = :redis_store
+
+### Rails 3.x
+
+    # Gemfile
+    gem 'rails', :git => 'git://github.com/rails/rails.git' # use Rails edge, instead of 3.0.0.beta3
+    gem 'redis'
+    gem 'redis-store', :git => 'git://github.com/jodosha/redis-store.git', :branch => 'rails3' # use 'rails3' branch
+
+    # config/environments/production.rb
     config.cache_store = :redis_store
 
 ### Merb
@@ -56,10 +66,20 @@ Provides a Redis store for Rack::Session. See [http://rack.rubyforge.org/doc/Rac
     use Rack::Session::Redis
     run Application.new
 
-### Rails
+### Rails 2.x
 
     config.gem "redis-store", :lib => "redis-store"
     ActionController::Base.session_store = Rack::Session::Redis
+
+### Rails 3.x
+
+    # Gemfile
+    gem 'rails', :git => 'git://github.com/rails/rails.git' # use Rails edge, instead of 3.0.0.beta3
+    gem 'redis'
+    gem 'redis-store', :git => 'git://github.com/jodosha/redis-store.git', :branch => 'rails3' # use 'rails3' branch
+
+    # config/initializers/session_store.rb
+    Rails.application.config.session_store :redis_session_store
 
 ### Merb
 
