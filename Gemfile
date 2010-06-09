@@ -16,10 +16,8 @@ end
 if ENV["REDIS_STORE_ENV"] == "rails3"
   group :rails3 do
     gem "rack", "1.1.0"
-    git "git://github.com/rails/rails.git" do
-      gem "activesupport", "3.0.0.beta3"
-      gem "actionpack", "3.0.0.beta3"
-    end
+    gem "activesupport", "3.0.0.beta4"
+    gem "actionpack", "3.0.0.beta4"
   end
 else
   group :test do

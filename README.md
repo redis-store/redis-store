@@ -27,7 +27,7 @@ Provides a cache store for your Ruby web framework of choice.
 ### Rails 3.x
 
     # Gemfile
-    gem 'rails', :git => 'git://github.com/rails/rails.git' # use Rails edge, instead of 3.0.0.beta3
+    gem 'rails', '3.0.0.beta4'
     gem 'redis'
     gem 'redis-store', :git => 'git://github.com/jodosha/redis-store.git', :branch => 'rails3' # use 'rails3' branch
 
@@ -74,7 +74,7 @@ Provides a Redis store for Rack::Session. See [http://rack.rubyforge.org/doc/Rac
 ### Rails 3.x
 
     # Gemfile
-    gem 'rails', :git => 'git://github.com/rails/rails.git' # use Rails edge, instead of 3.0.0.beta3
+    gem 'rails', '3.0.0.beta4'
     gem 'redis'
     gem 'redis-store', :git => 'git://github.com/jodosha/redis-store.git', :branch => 'rails3' # use 'rails3' branch
 
