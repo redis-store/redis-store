@@ -123,9 +123,11 @@ Provides a Redis store for HTTP caching. See [http://github.com/rtomayko/rack-ca
     git clone git://github.com/jodosha/redis-store.git
     cd redis-store
     bundle install
+    REDIS_STORE_ENV=rails3 bundle install # to install Rails 3.x gems
     rake dtach:install
     rake redis:install
     rake
+    REDIS_STORE_ENV=rails3 rake # to test against Rails 3.x
 
 If you are on **Snow Leopard** you have to run `env ARCHFLAGS="-arch x86_64" bundle install`
 
