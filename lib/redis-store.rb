@@ -3,6 +3,7 @@ require "redis/distributed"
 require "redis/factory"
 require "redis/marshaled_client"
 require "redis/distributed_marshaled"
+require "redis_store/version"
 
 module RedisStore
   def self.rails3? #:nodoc:
