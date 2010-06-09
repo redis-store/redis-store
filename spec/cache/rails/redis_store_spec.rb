@@ -65,11 +65,21 @@ module ActiveSupport
       end
 
       if ::RedisStore.rails3?
-        it "should read raw data" do
-          with_store_management do |store|
-            result = store.read("rabbit", :raw => true)
-            result.should include("ActiveSupport::Cache::Entry")
-            result.should include("\017OpenStruct{\006:\tname\"\nbunny:")
+        if RUBY_VERSION.match /1\.9/
+          it "should read raw data" do
+            with_store_management do |store|
+              result = store.read("rabbit", :raw => true)
+              result.should include("ActiveSupport::Cache::Entry")
+              result.should include("\x0FOpenStruct{\x06:\tnameI\"\nbunny\x06:\rencoding\"\rUS-ASCII")
+            end
+          end
+        else
+          it "should read raw data" do
+            with_store_management do |store|
+              result = store.read("rabbit", :raw => true)
+              result.should include("ActiveSupport::Cache::Entry")
+              result.should include("\017OpenStruct{\006:\tname\"\nbunny:")
+            end
           end
         end
 

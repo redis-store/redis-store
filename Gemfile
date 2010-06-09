@@ -11,6 +11,7 @@ group :development, :test, :rails3 do
   gem "rspec"
   gem "rack-cache"
   gem "merb"
+  gem "methopara" if RUBY_VERSION.match /1\.9/
 end
 
 if ENV["REDIS_STORE_ENV"] == "rails3"

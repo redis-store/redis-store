@@ -22,8 +22,14 @@ describe "Redis::MarshaledClient" do
     @store.marshalled_get("rabbit").should === @white_rabbit
   end
 
-  it "should not unmarshal object on get if raw option is true" do
-    @store.marshalled_get("rabbit", :raw => true).should == "\004\bU:\017OpenStruct{\006:\tname\"\nbunny"
+  if RUBY_VERSION.match /1\.9/
+    it "should not unmarshal object on get if raw option is true" do
+      @store.marshalled_get("rabbit", :raw => true).should == "\x04\bU:\x0FOpenStruct{\x06:\tnameI\"\nbunny\x06:\rencoding\"\rUS-ASCII"
+    end
+  else
+    it "should not unmarshal object on get if raw option is true" do
+      @store.marshalled_get("rabbit", :raw => true).should == "\004\bU:\017OpenStruct{\006:\tname\"\nbunny"
+    end
   end
 
   it "should not marshal object on set if raw option is true" do
