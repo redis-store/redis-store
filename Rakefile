@@ -47,32 +47,10 @@ Spec::Rake::SpecTask.new(:rcov_run) do |t|
   t.rcov = true
 end
 
-namespace :redis_cluster do
-  desc "Starts the redis_cluster"
-  task :start do
-    result = RedisClusterRunner.start_detached
-    raise("Could not start redis-server, aborting.") unless result
-  end
-
-  desc "Stops the redis_cluster"
-  task :stop do
-    RedisClusterRunner.stop
-  end
-end
-
 namespace :bundle do
   task :clean do
     system "rm -rf ~/.bundle/ ~/.gem/ .bundle/ Gemfile.lock"
   end
 end
 
-# courtesy of http://github.com/ezmobius/redis-rb team
 load "tasks/redis.tasks.rb"
-def invoke_with_redis_cluster(task_name)
-  begin
-    Rake::Task["redis_cluster:start"].invoke
-    Rake::Task[task_name].invoke
-  ensure
-    Rake::Task["redis_cluster:stop"].invoke
-  end
-end

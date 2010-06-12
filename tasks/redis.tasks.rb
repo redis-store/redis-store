@@ -159,6 +159,19 @@ namespace :redis do
     system "bundle exec irb -I lib -I extra -r redis-store.rb"
     RedisRunner.stop
   end
+
+  namespace :cluster do
+    desc "Starts the redis_cluster"
+    task :start do
+      result = RedisClusterRunner.start_detached
+      raise("Could not start redis-server, aborting.") unless result
+    end
+
+    desc "Stops the redis_cluster"
+    task :stop do
+      RedisClusterRunner.stop
+    end
+  end  
 end
 
 namespace :dtach do
@@ -187,5 +200,14 @@ namespace :dtach do
     sh 'sudo cp /tmp/dtach-0.8/dtach /usr/bin/'
 
     puts 'Dtach successfully installed to /usr/bin.'
+  end
+end
+
+def invoke_with_redis_cluster(task_name)
+  begin
+    Rake::Task["redis:cluster:start"].invoke
+    Rake::Task[task_name].invoke
+  ensure
+    Rake::Task["redis:cluster:stop"].invoke
   end
 end
