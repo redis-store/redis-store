@@ -1,5 +1,6 @@
 *1.0.0 [beta2] (unreleased)*
 
+  * Added committers names to CHANGELOG
   * Added CHANGELOG
   * Rake namespace: redis_cluster => redis:cluster
   * Fixed Rails 3 failing spec
@@ -24,7 +25,7 @@
   * Check against Rails#version instead of Rails
   * Added redis gem as dependency
   * Changed spec_helper.rb according to the new Rails 3 check
-  * Fix the rails3 check
+  * Fix the rails3 check [Bruno Michel]
   * Added bundler cleanup Rake task
   * Fixed ActiveSupport
   * Re-enabled redis:console Rake task
@@ -49,22 +50,22 @@
   * Version bump to 0.3.8
   * Started namespace migration for redis-2.0.0
   * Merge branch 'master' of http://github.com/akahn/redis-store
-  * Fixed dependency issues.
-  * Removed methodpara because it require ruby 1.9.1.
-  * Merge branch 'master' of http://github.com/dsander/redis-store
-  * Moved RedisSessionStore to rack session directory.
-  * Got RedisSessionStore working with passing specs.
-  * Using modified version of RedisSessionStore (http://github.com/mattmatt/redis-session-store). Still needs testing.
-  * Using redis 1.0.5.
-  * Ignoring gem files and gemspecs with a prefix.
-  * Added git and jeweler to dependencies.
-  * Ignoring .bundle and rubymine files.
-  * Added ability to add a prefix to the gem name via the GEM_PREFIX environment variable.
-  * Fixed marshalling issues with the new Redis api. Fixed redis-server configurations for the latest version of redis-server. Added redis_cluster:start and redis_cluster:stop rake tasks. Spec suite passes.
-  * Fixed redis deprecation warnings.
-  * Using redis 1.0.4. Loading redis.tasks.rb from redis gem using Bundler. Fixed redis test configurations.
-  * Supports redis 1.0.5
-  * Add Rack
+  * Fixed dependency issues. [Brian Takita]
+  * Removed methodpara because it require ruby 1.9.1. [Brian Takita]
+  * Merge branch 'master' of http://github.com/dsander/redis-store [Brian Takita]
+  * Moved RedisSessionStore to rack session directory. [Brian Takita]
+  * Got RedisSessionStore working with passing specs. [Brian Takita]
+  * Using modified version of RedisSessionStore (http://github.com/mattmatt/redis-session-store). Still needs testing. [Brian Takita]
+  * Using redis 1.0.5. [Brian Takita]
+  * Ignoring gem files and gemspecs with a prefix. [Brian Takita]
+  * Added git and jeweler to dependencies. [Brian Takita]
+  * Ignoring .bundle and rubymine files. [Brian Takita]
+  * Added ability to add a prefix to the gem name via the GEM_PREFIX environment variable. [Brian Takita]
+  * Fixed marshalling issues with the new Redis api. Fixed redis-server configurations for the latest version of redis-server. Added redis_cluster:start and redis_cluster:stop rake tasks. Spec suite passes. [Brian Takita]
+  * Fixed redis deprecation warnings. [Brian Takita]
+  * Using redis 1.0.4. Loading redis.tasks.rb from redis gem using Bundler. Fixed redis test configurations. [Brian Takita]
+  * Supports redis 1.0.5 [Dominik Sander]
+  * Add Rack [Alexander Kahn]
   * Updated development and testing dependencies
   * Made compatible with rack-cache-0.5.2
 
@@ -86,7 +87,7 @@
   * Added Gemfile, removed rubygems dependecy for testing.
   * Added *.swp to .gitignore
   * Added jeweler rake tasks
-  * Make it work in classic Sinatra apps.
+  * Make it work in classic Sinatra apps. [Dmitriy Timokhin]
   * Updated README with new instructions about redis-rb
 
 *0.3.6 [Final] (June 18, 2009)*
