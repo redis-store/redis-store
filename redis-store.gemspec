@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{redis-store}
-  s.version = "1.0.0.beta1"
+  s.version = "1.0.0.beta2"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Luca Guidi"]
-  s.date = %q{2010-06-09}
+  s.date = %q{2010-06-12}
   s.description = %q{Rack::Session, Rack::Cache and cache Redis stores for Ruby web frameworks.}
   s.email = %q{guidi.luca@gmail.com}
   s.extra_rdoc_files = [
@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".gitignore",
+     "CHANGELOG",
      "Gemfile",
      "MIT-LICENSE",
      "README.md",
@@ -37,7 +38,6 @@ Gem::Specification.new do |s|
      "lib/redis_store/version.rb",
      "redis-store.gemspec",
      "spec/cache/merb/redis_store_spec.rb",
-     "spec/cache/rails/redis_session_store_spec.rb",
      "spec/cache/rails/redis_store_spec.rb",
      "spec/cache/sinatra/redis_store_spec.rb",
      "spec/config/master.conf",
@@ -46,6 +46,7 @@ Gem::Specification.new do |s|
      "spec/rack/cache/entitystore/pony.jpg",
      "spec/rack/cache/entitystore/redis_spec.rb",
      "spec/rack/cache/metastore/redis_spec.rb",
+     "spec/rack/session/redis_session_store_spec.rb",
      "spec/rack/session/redis_spec.rb",
      "spec/redis/distributed_marshaled_redis_spec.rb",
      "spec/redis/factory_spec.rb",
@@ -61,11 +62,11 @@ Gem::Specification.new do |s|
   s.summary = %q{Rack::Session, Rack::Cache and cache Redis stores for Ruby web frameworks.}
   s.test_files = [
     "spec/cache/merb/redis_store_spec.rb",
-     "spec/cache/rails/redis_session_store_spec.rb",
      "spec/cache/rails/redis_store_spec.rb",
      "spec/cache/sinatra/redis_store_spec.rb",
      "spec/rack/cache/entitystore/redis_spec.rb",
      "spec/rack/cache/metastore/redis_spec.rb",
+     "spec/rack/session/redis_session_store_spec.rb",
      "spec/rack/session/redis_spec.rb",
      "spec/redis/distributed_marshaled_redis_spec.rb",
      "spec/redis/factory_spec.rb",

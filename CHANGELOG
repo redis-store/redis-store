@@ -1,5 +1,6 @@
-*1.0.0 [beta2] (unreleased)*
+*1.0.0 [beta2] (June 12, 2010)*
 
+  * Bump version v1.0.0.beta2
   * Added committers names to CHANGELOG
   * Added CHANGELOG
   * Rake namespace: redis_cluster => redis:cluster
@@ -11,7 +12,7 @@
   * Make sure of use top-level module
   * Updated Rails 2.x development dependencies
 
-*1.0.0 [beta1] (June 12, 2010)*
+*1.0.0 [beta1] (June 10, 2010)*
 
   * Bump version v1.0.0.beta1
   * Made specs pass for Ruby 1.9.1
