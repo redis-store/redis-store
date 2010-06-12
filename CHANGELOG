@@ -1,0 +1,209 @@
+*1.0.0 [beta2] (unreleased)*
+
+  * Added CHANGELOG
+  * Rake namespace: redis_cluster => redis:cluster
+  * Fixed Rails 3 failing spec
+  * Added ActiveSupport
+  * Enabled notifications for ActiveSupport
+  * Moved spec
+  * Use consinstent Rails 3 check in session store
+  * Make sure of use top-level module
+  * Updated Rails 2.x development dependencies
+
+*1.0.0 [beta1] (June 12, 2010)*
+
+  * Bump version v1.0.0.beta1
+  * Made specs pass for Ruby 1.9.1
+  * Updated instructions to test against Rails 3.x
+  * Updated copyright year
+  * Prepare for v1.0.0.beta1
+  * Use Rails v3.0.0.beta4
+  * Require redis >= 2.0.0 gem in Gemfile
+  * Updated instructions for Rails 2 session store
+  * Added instructions for Rails 3 configuration
+  * Check against Rails#version instead of Rails
+  * Added redis gem as dependency
+  * Changed spec_helper.rb according to the new Rails 3 check
+  * Fix the rails3 check
+  * Added bundler cleanup Rake task
+  * Fixed ActiveSupport
+  * Re-enabled redis:console Rake task
+  * Don't use Rspec#have with ActiveSupport 3
+  * Fixed Rails 2 regression for ActiveSupport
+  * Fixed issues for ActiveSupport
+  * Rails 3 namespace
+  * Use Rails edge instead of 3.0.0.beta3
+  * Made the specs run again
+  * Updated Gemfile development/test dependecies for rails3.
+  * Updated README instructions
+  * Updated test configuration files, according to redis-2.0.0-rc1 defaults
+  * Made specs pass with redis-2.0.0 gem
+  * Don't support the old redis-rb namespace
+  * Import the whole redis-rb old Rake tasks
+  * Updated redis-rb dependency
+
+*0.3.8 [Final] (May 21, 2010)*
+
+  * Fixed gemspec executable issue
+  * Updated .gemspec
+  * Version bump to 0.3.8
+  * Started namespace migration for redis-2.0.0
+  * Merge branch 'master' of http://github.com/akahn/redis-store
+  * Fixed dependency issues.
+  * Removed methodpara because it require ruby 1.9.1.
+  * Merge branch 'master' of http://github.com/dsander/redis-store
+  * Moved RedisSessionStore to rack session directory.
+  * Got RedisSessionStore working with passing specs.
+  * Using modified version of RedisSessionStore (http://github.com/mattmatt/redis-session-store). Still needs testing.
+  * Using redis 1.0.5.
+  * Ignoring gem files and gemspecs with a prefix.
+  * Added git and jeweler to dependencies.
+  * Ignoring .bundle and rubymine files.
+  * Added ability to add a prefix to the gem name via the GEM_PREFIX environment variable.
+  * Fixed marshalling issues with the new Redis api. Fixed redis-server configurations for the latest version of redis-server. Added redis_cluster:start and redis_cluster:stop rake tasks. Spec suite passes.
+  * Fixed redis deprecation warnings.
+  * Using redis 1.0.4. Loading redis.tasks.rb from redis gem using Bundler. Fixed redis test configurations.
+  * Supports redis 1.0.5
+  * Add Rack
+  * Updated development and testing dependencies
+  * Made compatible with rack-cache-0.5.2
+
+*0.3.7 [Final] (November 15, 2009)*
+
+  * Version bump to 0.3.7
+  * Version bump to 0.3.7
+  * Updated spec instructions in README
+  * Jeweler generated redis-store.gemspec
+  * Removed no longer used Rake tasks. Added Gemcutter support via Jeweler.
+  * Typo
+  * Let Rcov task run with the Redis cluster started
+  * Make spec suite pass again
+  * README.textile -> README.md
+  * Re-enabled Merb specs
+  * Added *.rdb in .gitignore
+  * Run detached Redis instances for spec suite
+  * Start detached Redis server for specs
+  * Added Gemfile, removed rubygems dependecy for testing.
+  * Added *.swp to .gitignore
+  * Added jeweler rake tasks
+  * Make it work in classic Sinatra apps.
+  * Updated README with new instructions about redis-rb
+
+*0.3.6 [Final] (June 18, 2009)*
+
+  * Prepare for v0.3.6
+  * Updated README with new version
+  * Changed Redis config files for specs
+  * Updated README instructions
+  * New filelist in gemspec
+  * Fixed typo in spec
+  * Don't try to unmarshal empty strings
+  * Running specs according to the DEBUG env var
+  * Added specs for uncovered Merb Cache API
+  * Added rcov Rake task
+  * Fix README
+  * Fix typo in README
+  * Updated README instructions
+  * Removed RedisError catching
+  * Declaring for now RedisError in spec_helper.rb
+  * Removed unnecessary classes
+  * Fix specs for DistributedMarshaledRedis
+  * Fix some specs
+  * Made Server#notify_observers private
+  * Ensure to select the correct database after the socket connection
+  * Reverted socket pooling. Ensure to always return an active socket.
+  * Lowering default timeout from 10 to 0.1
+
+*0.3.5 [Final] (May 7, 2009)*
+
+  * Prepare for v0.3.5
+  * Totally replace ezmobius-redis-rb Server implementation
+  * Fixed default Server timeout to 1 second
+  * Little refactoring
+  * Ensure Server#active? always returns a boolean and never raise an exception
+  * Made configurable connection pool timeout and size
+  * Socket connection pooling
+  * Updated README
+
+*0.3.0 [Final] (May 3, 2009)*
+
+  * Prepare for v0.3.0
+  * README formatting issues
+  * README formatting (again)
+  * README formatting
+  * Updated Rack
+  * Make Rack
+  * Added instructions for Rack
+  * Expiration support for Rack
+  * Ensure to test Rails and Sinatra expiration implementations with both MarshaledRedis and DistrbutedMarshaledRedis
+  * Expiration support for Merb
+  * Use full qualified class names in specs. Minor spec fix.
+  * Ported for foreword compatibility the expiration implementation from ezmobius/redis-rb
+  * Little spec cleanup
+  * Full support for Rack
+  * Extracted some logic into RedisFactory
+  * Initial support for Rack
+
+*0.2.0 [Final] (April 30, 2009)*
+
+  * Prepare for v0.2.0
+  * Links in README
+  * Maybe someday I will use the right formating rules at first attempt
+  * Still formatting README
+  * Formatting for README
+  * Updated instructions for Rack
+  * Don't require any cache store if no Ruby framework is detected
+  * Implemented EntityStore for Rack
+  * Added REDIS constant for Rack
+  * MetaStore implementation for Rack
+
+*0.1.0 [Final] (April 30, 2009)*
+
+  * Prepare for v0.1.0
+  * Sinatra cache support
+
+*0.0.3 [Final] (April 30, 2009)*
+
+  * Prepare for v0.0.3
+  * Updated instructions for Merb
+  * Hack for Merb cyclic dependency
+  * Renaming main lib
+  * Merb store #writable always returns true. Added pending test.
+  * Merb store #fetch refactoring
+  * Updated Redis installation instructions
+  * Implemented #fetch for Merb store
+  * Implemented #exists?, #delete and #delete_all for Merb cache store
+  * Renamed project name in Rakefile
+  * Updated project name in README
+  * Updated README with Merb instructions
+  * Changed name in gemspec
+  * New gemspec
+  * Initial cache store support for Merb
+  * Moving files around
+  * Don't complain about missing db in tmp/
+
+*0.0.2 [Final] (April 16, 2009)*
+
+  * Prepare for v0.0.2
+  * Updated file list in gemspec
+  * Updated README instructions
+  * Re-enabled spec for RedisStore#fetch
+  * Update rdoc
+  * Fix RedisStore#clear when use a cluster
+  * Test RedisStore both with single server and with a cluster
+  * Fix port in DistributedMarshaledRedis spec
+  * Don't slave Redis cluster node
+  * Changed Redis cluster configuration
+  * Added configuration for Redis cluster
+  * Use a distributed system if the store uses more than one server
+  * Accept params for client connection
+
+*0.0.1 [Final] (April 11, 2009)*
+
+  * Added :unless_exist option to #write
+  * Added failing specs for :expires_in option
+  * Made optional args compatible with the Cache interface
+  * Implemented #delete_matched, #clear, #stats
+  * Implemented #delete, #exist?, #increment, #decrement
+  * Introduced RedisStore
+  * Initial import
