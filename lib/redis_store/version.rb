@@ -1,4 +1,4 @@
-module RedisStore
+module ::RedisStore
   module VERSION #:nodoc:
     MAJOR = 1
     MINOR = 0

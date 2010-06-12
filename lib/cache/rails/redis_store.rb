@@ -1,4 +1,4 @@
-module RedisStore
+module ::RedisStore
   module Cache
     module Rails2
       def write(key, value, options = nil)
@@ -38,7 +38,7 @@ module RedisStore
     end
 
     module Store
-      include RedisStore.rails3? ? Rails3 : Rails2
+      include ::RedisStore.rails3? ? Rails3 : Rails2
     end
   end
 end

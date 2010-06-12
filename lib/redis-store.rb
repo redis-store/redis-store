@@ -5,7 +5,7 @@ require "redis/marshaled_client"
 require "redis/distributed_marshaled"
 require "redis_store/version"
 
-module RedisStore
+module ::RedisStore
   def self.rails3? #:nodoc:
     defined?(::Rails) && ::Rails.version =~ /3\.0\.0/
   end
