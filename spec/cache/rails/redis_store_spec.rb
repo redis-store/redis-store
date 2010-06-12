@@ -182,6 +182,108 @@ module ActiveSupport
         end
       end
 
+      if ::RedisStore.rails3?
+        describe "notifications" do
+          it "should notify on #fetch" do
+            with_notifications do
+              @store.fetch("radiohead") { "House Of Cards" }
+            end
+
+            read, generate, write = @events
+            read.name.should        == "cache_read.active_support"
+            read.payload.should     == { :key => "radiohead" }
+            generate.name.should    == "cache_generate.active_support"
+            generate.payload.should == { :key => "radiohead" }
+            write.name.should       == "cache_write.active_support"
+            write.payload.should    == { :key => "radiohead" }
+          end
+
+          it "should notify on #read" do
+            with_notifications do
+              @store.read "metallica"
+            end
+
+            read = @events.first
+            read.name.should    == "cache_read.active_support"
+            read.payload.should == { :key => "metallica" }
+          end
+
+          # it "should notify on #read_multi" # Not supported in Rails 3
+
+          it "should notify on #write" do
+            with_notifications do
+              @store.write "depeche mode", "Enjoy The Silence"
+            end
+
+            write = @events.first
+            write.name.should    == "cache_write.active_support"
+            write.payload.should == { :key => "depeche mode" }
+          end
+
+          it "should notify on #delete" do
+            with_notifications do
+              @store.delete "the new cardigans"
+            end
+
+            delete = @events.first
+            delete.name.should    == "cache_delete.active_support"
+            delete.payload.should == { :key => "the new cardigans" }
+          end
+
+          it "should notify on #exist?" do
+            with_notifications do
+              @store.exist? "the smiths"
+            end
+
+            exist = @events.first
+            exist.name.should    == "cache_exist?.active_support"
+            exist.payload.should == { :key => "the smiths" }
+          end
+
+          it "should notify on #delete_matched" do
+            with_notifications do
+              @store.delete_matched "afterhours*"
+            end
+
+            delete_matched = @events.first
+            delete_matched.name.should    == "cache_delete_matched.active_support"
+            delete_matched.payload.should == { :key => "afterhours*" }
+          end
+
+          it "should notify on #increment" do
+            with_notifications do
+              @store.increment "pearl jam"
+            end
+
+            increment = @events.first
+            increment.name.should    == "cache_increment.active_support"
+            increment.payload.should == { :key => "pearl jam", :amount => 1 }
+          end
+
+          it "should notify on #decrement" do
+            with_notifications do
+              @store.decrement "placebo"
+            end
+
+            decrement = @events.first
+            decrement.name.should    == "cache_decrement.active_support"
+            decrement.payload.should == { :key => "placebo", :amount => 1 }
+          end
+
+          # it "should notify on cleanup" # TODO implement in ActiveSupport::Cache::RedisStore
+
+          it "should notify on clear" do
+            with_notifications do
+              @store.clear
+            end
+
+            clear = @events.first
+            clear.name.should    == "cache_clear.active_support"
+            clear.payload.should == { :key => nil }
+          end
+        end
+      end
+
       private
         def instantiate_store(addresses = nil)
           ActiveSupport::Cache::RedisStore.new(addresses).instance_variable_get(:@data)
@@ -190,6 +292,16 @@ module ActiveSupport
         def with_store_management
           yield @store
           yield @dstore
+        end
+
+        def with_notifications
+          @events = [ ]
+          ActiveSupport::Cache::RedisStore.instrument = true
+          ActiveSupport::Notifications.subscribe(/^cache_(.*)\.active_support$/) do |*args|
+            @events << ActiveSupport::Notifications::Event.new(*args)
+          end
+          yield
+          ActiveSupport::Cache::RedisStore.instrument = false
         end
     end
   end

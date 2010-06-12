@@ -16,6 +16,17 @@ module ::RedisStore
         super
         @data.del key
       end
+
+      def exist?(key, options = nil)
+        super
+        @data.exists key
+      end
+
+      private
+        def instrument(operation, key, options = nil)
+          log(operation.to_s, key, options)
+          yield
+        end
     end
 
     module Rails3
@@ -60,9 +71,14 @@ module ActiveSupport
         @data = Redis::Factory.create(addresses)
       end
 
-      def exist?(key, options = nil)
-        super
-        @data.exists key
+      # Delete objects for matched keys.
+      #
+      # Example:
+      #   cache.del_matched "rab*"
+      def delete_matched(matcher, options = nil)
+        instrument(:delete_matched, matcher, options) do
+          @data.keys(matcher).each { |key| @data.del key }
+        end
       end
 
       # Increment a key in the store.
@@ -87,8 +103,9 @@ module ActiveSupport
       #   cache.increment "rabbit"
       #   cache.read "rabbit", :raw => true       # => "1"
       def increment(key, amount = 1)
-        log "increment", key, amount
-        @data.incrby key, amount
+        instrument(:increment, key, :amount => amount) do
+          @data.incrby key, amount
+        end
       end
 
       # Decrement a key in the store
@@ -113,23 +130,16 @@ module ActiveSupport
       #   cache.decrement "rabbit"
       #   cache.read "rabbit", :raw => true       # => "-1"
       def decrement(key, amount = 1)
-        log "decrement", key, amount
-        @data.decrby key, amount
-      end
-
-      # Delete objects for matched keys.
-      #
-      # Example:
-      #   cache.del_matched "rab*"
-      def delete_matched(matcher, options = nil)
-        log "delete_matched", matcher, options
-        @data.keys(matcher).each { |key| @data.del key }
+        instrument(:decrement, key, :amount => amount) do
+          @data.decrby key, amount
+        end
       end
 
       # Clear all the data from the store.
       def clear
-        log "clear", nil, nil
-        @data.flushdb
+        instrument(:clear, nil, nil) do
+          @data.flushdb
+        end
       end
 
       def stats
