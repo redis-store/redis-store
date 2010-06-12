@@ -5,14 +5,14 @@
   * Added CHANGELOG
   * Rake namespace: redis_cluster => redis:cluster
   * Fixed Rails 3 failing spec
-  * Added ActiveSupport
-  * Enabled notifications for ActiveSupport
+  * Added ActiveSupport::Cache::RedisStore#read_multi
+  * Enabled notifications for ActiveSupport::Cache::RedisStore
   * Moved spec
   * Use consinstent Rails 3 check in session store
   * Make sure of use top-level module
   * Updated Rails 2.x development dependencies
 
-*1.0.0 [beta1] (June 10, 2010)*
+*1.0.0 [beta1] (June 9, 2010)*
 
   * Bump version v1.0.0.beta1
   * Made specs pass for Ruby 1.9.1
@@ -23,16 +23,16 @@
   * Require redis >= 2.0.0 gem in Gemfile
   * Updated instructions for Rails 2 session store
   * Added instructions for Rails 3 configuration
-  * Check against Rails#version instead of Rails
+  * Check against Rails#version instead of Rails::VERSION::STRING
   * Added redis gem as dependency
   * Changed spec_helper.rb according to the new Rails 3 check
   * Fix the rails3 check [Bruno Michel]
   * Added bundler cleanup Rake task
-  * Fixed ActiveSupport
+  * Fixed ActiveSupport::Cache::RedisStore#fetch
   * Re-enabled redis:console Rake task
   * Don't use Rspec#have with ActiveSupport 3
-  * Fixed Rails 2 regression for ActiveSupport
-  * Fixed issues for ActiveSupport
+  * Fixed Rails 2 regression for ActiveSupport::Cache::RedisStore#delete_matched
+  * Fixed issues for ActiveSupport::Cache::RedisStore #delete_matched, #read, #rwrite
   * Rails 3 namespace
   * Use Rails edge instead of 3.0.0.beta3
   * Made the specs run again
@@ -66,7 +66,7 @@
   * Fixed redis deprecation warnings. [Brian Takita]
   * Using redis 1.0.4. Loading redis.tasks.rb from redis gem using Bundler. Fixed redis test configurations. [Brian Takita]
   * Supports redis 1.0.5 [Dominik Sander]
-  * Add Rack [Alexander Kahn]
+  * Add Rack::Session::Redis usage for Sinatra to README [Alexander Kahn]
   * Updated development and testing dependencies
   * Made compatible with rack-cache-0.5.2
 
@@ -133,18 +133,18 @@
   * README formatting issues
   * README formatting (again)
   * README formatting
-  * Updated Rack
-  * Make Rack
-  * Added instructions for Rack
-  * Expiration support for Rack
+  * Updated Rack::Session instructions for Sinatra
+  * Make Rack::Session implementation working with Merb
+  * Added instructions for Rack::Session
+  * Expiration support for Rack::Session
   * Ensure to test Rails and Sinatra expiration implementations with both MarshaledRedis and DistrbutedMarshaledRedis
-  * Expiration support for Merb
+  * Expiration support for Merb::Cache
   * Use full qualified class names in specs. Minor spec fix.
   * Ported for foreword compatibility the expiration implementation from ezmobius/redis-rb
   * Little spec cleanup
-  * Full support for Rack
+  * Full support for Rack::Session
   * Extracted some logic into RedisFactory
-  * Initial support for Rack
+  * Initial support for Rack::Session
 
 *0.2.0 [Final] (April 30, 2009)*
 
@@ -153,11 +153,11 @@
   * Maybe someday I will use the right formating rules at first attempt
   * Still formatting README
   * Formatting for README
-  * Updated instructions for Rack
+  * Updated instructions for Rack::Cache
   * Don't require any cache store if no Ruby framework is detected
-  * Implemented EntityStore for Rack
-  * Added REDIS constant for Rack
-  * MetaStore implementation for Rack
+  * Implemented EntityStore for Rack::Cache
+  * Added REDIS constant for Rack::Cache::Metastore
+  * MetaStore implementation for Rack::Cache
 
 *0.1.0 [Final] (April 30, 2009)*
 
