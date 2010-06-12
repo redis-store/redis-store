@@ -56,5 +56,28 @@ describe "Redis::MarshaledClient" do
     @store.marshalled_setnx "rabbit2", @white_rabbit, :raw => true
     @store.marshalled_get("rabbit2", :raw => true).should == %(#<OpenStruct color="white">)
   end
+
+  it "should unmarshal object(s) on multi get" do
+    @store.marshalled_set "rabbit2", @white_rabbit
+    rabbit, rabbit2 = @store.marshalled_mget "rabbit", "rabbit2"
+    rabbit.should  == @rabbit
+    rabbit2.should == @white_rabbit
+  end
+
+  if RUBY_VERSION.match /1\.9/
+    it "should not unmarshal object(s) on multi get if raw option is true" do
+      @store.marshalled_set "rabbit2", @white_rabbit
+      rabbit, rabbit2 = @store.marshalled_mget "rabbit", "rabbit2", :raw => true
+      rabbit.should  == "\x04\bU:\x0FOpenStruct{\x06:\tnameI\"\nbunny\x06:\rencoding\"\rUS-ASCII"
+      rabbit2.should == "\x04\bU:\x0FOpenStruct{\x06:\ncolorI\"\nwhite\x06:\rencoding\"\rUS-ASCII"
+    end
+  else
+    it "should not unmarshal object(s) on multi get if raw option is true" do
+      @store.marshalled_set "rabbit2", @white_rabbit
+      rabbit, rabbit2 = @store.marshalled_mget "rabbit", "rabbit2", :raw => true
+      rabbit.should  == "\004\bU:\017OpenStruct{\006:\tname\"\nbunny"
+      rabbit2.should == "\004\bU:\017OpenStruct{\006:\ncolor\"\nwhite"
+    end
+  end
 end
 

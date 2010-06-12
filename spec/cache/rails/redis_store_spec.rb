@@ -183,6 +183,22 @@ module ActiveSupport
       end
 
       if ::RedisStore.rails3?
+        it "should read multiple keys" do
+          @store.write "irish whisky", "Jameson"
+          rabbit, whisky = @store.read_multi "rabbit", "irish whisky"
+          rabbit.raw_value.should === @rabbit
+          whisky.raw_value.should == "Jameson"
+        end
+      else
+        it "should read multiple keys" do
+          @store.write "irish whisky", "Jameson"
+          rabbit, whisky  = @store.read_multi "rabbit", "irish whisky"
+          rabbit.should === @rabbit
+          whisky.should  == "Jameson"
+        end
+      end
+
+      if ::RedisStore.rails3?
         describe "notifications" do
           it "should notify on #fetch" do
             with_notifications do

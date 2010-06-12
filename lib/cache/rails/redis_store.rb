@@ -81,6 +81,16 @@ module ActiveSupport
         end
       end
 
+      # Reads multiple keys from the cache using a single call to the
+      # servers for all keys. Options can be passed in the last argument.
+      #
+      # Example:
+      #   cache.read_multi "rabbit", "white-rabbit"
+      #   cache.read_multi "rabbit", "white-rabbit", :raw => true
+      def read_multi(*names)
+        @data.marshalled_mget *names
+      end
+
       # Increment a key in the store.
       #
       # If the key doesn't exist it will be initialized on 0.

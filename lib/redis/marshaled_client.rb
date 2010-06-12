@@ -31,6 +31,13 @@ class Redis
       result
     end
 
+    def marshalled_mget(*keys)
+      options = keys.flatten.pop if keys.flatten.last.is_a?(Hash)
+      mget(*keys).map do |result|
+        unmarshal?(result, options) ? Marshal.load(result) : result
+      end
+    end
+
     def to_s
       "Redis Client connected to #{@client.host}:#{@client.port} against DB #{@client.db}"
     end
