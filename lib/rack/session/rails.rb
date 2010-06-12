@@ -59,12 +59,12 @@ module RedisStore
   end
 end
 
-unless defined?(ActionDispatch) # rails 2.3.x
-  class ActionController::Session::RedisSessionStore < ActionController::Session::AbstractStore
+if ::RedisStore.rails3?
+  class ActionDispatch::Session::RedisSessionStore < ActionDispatch::Session::AbstractStore
     include RedisStore::Rack::Session::Rails
   end
-else # rails 3.x
-  class ActionDispatch::Session::RedisSessionStore < ActionDispatch::Session::AbstractStore
+else
+  class ActionController::Session::RedisSessionStore < ActionController::Session::AbstractStore
     include RedisStore::Rack::Session::Rails
   end
 end
