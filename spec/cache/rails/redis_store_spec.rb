@@ -78,7 +78,7 @@ module ActiveSupport
             with_store_management do |store|
               result = store.read("rabbit", :raw => true)
               result.should include("ActiveSupport::Cache::Entry")
-              result.should include("\017OpenStruct{\006:\tname\"\nbunny:")
+              result.should include("\017OpenStruct{\006:\tname\"\nbunny")
             end
           end
         end
