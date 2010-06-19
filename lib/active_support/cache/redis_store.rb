@@ -1,3 +1,5 @@
+require "redis-store"
+
 module ::RedisStore
   module Cache
     module Rails2

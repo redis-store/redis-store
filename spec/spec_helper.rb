@@ -21,8 +21,8 @@ rescue LoadError
   require "action_dispatch/middleware/session/abstract_store" # Rails 3.x
   module Rails; def self.version; "3.0.0.beta4" end end unless defined?(Rails)
 end
-require "cache/rails/redis_store"
-require "rack/session/rails"
+require "active_support/cache/redis_store"
+require "action_controller/session/redis_session_store"
 require "cache/sinatra/redis_store"
 
 $DEBUG = ENV["DEBUG"] === "true"

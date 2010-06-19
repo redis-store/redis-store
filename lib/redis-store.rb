@@ -18,8 +18,6 @@ elsif defined?(Merb)
   # HACK for cyclic dependency: redis-store is required before merb-cache
   module Merb; module Cache; class AbstractStore; end end end
   require "cache/merb/redis_store"
-elsif defined?(Rails)
-  require "cache/rails/redis_store"
 end
 
 # Rack::Session
@@ -28,9 +26,6 @@ if defined?(Rack::Session)
   require "rack/session/redis"
   if defined?(Merb)
     require "rack/session/merb"
-  end
-  if defined?(Rails)
-    require "rack/session/rails"
   end
 end
 
