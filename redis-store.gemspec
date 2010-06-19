@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Luca Guidi"]
-  s.date = %q{2010-06-12}
+  s.date = %q{2010-06-19}
   s.description = %q{Rack::Session, Rack::Cache and cache Redis stores for Ruby web frameworks.}
   s.email = %q{guidi.luca@gmail.com}
   s.extra_rdoc_files = [
@@ -37,8 +37,9 @@ Gem::Specification.new do |s|
      "lib/redis/marshaled_client.rb",
      "lib/redis_store/version.rb",
      "redis-store.gemspec",
+     "spec/action_controller/session/redis_session_store_spec.rb",
+     "spec/active_support/cache/redis_store_spec.rb",
      "spec/cache/merb/redis_store_spec.rb",
-     "spec/cache/rails/redis_store_spec.rb",
      "spec/cache/sinatra/redis_store_spec.rb",
      "spec/config/master.conf",
      "spec/config/single.conf",
@@ -46,7 +47,6 @@ Gem::Specification.new do |s|
      "spec/rack/cache/entitystore/pony.jpg",
      "spec/rack/cache/entitystore/redis_spec.rb",
      "spec/rack/cache/metastore/redis_spec.rb",
-     "spec/rack/session/redis_session_store_spec.rb",
      "spec/rack/session/redis_spec.rb",
      "spec/redis/distributed_marshaled_redis_spec.rb",
      "spec/redis/factory_spec.rb",
@@ -61,12 +61,12 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{Rack::Session, Rack::Cache and cache Redis stores for Ruby web frameworks.}
   s.test_files = [
-    "spec/cache/merb/redis_store_spec.rb",
-     "spec/cache/rails/redis_store_spec.rb",
+    "spec/action_controller/session/redis_session_store_spec.rb",
+     "spec/active_support/cache/redis_store_spec.rb",
+     "spec/cache/merb/redis_store_spec.rb",
      "spec/cache/sinatra/redis_store_spec.rb",
      "spec/rack/cache/entitystore/redis_spec.rb",
      "spec/rack/cache/metastore/redis_spec.rb",
-     "spec/rack/session/redis_session_store_spec.rb",
      "spec/rack/session/redis_spec.rb",
      "spec/redis/distributed_marshaled_redis_spec.rb",
      "spec/redis/factory_spec.rb",
