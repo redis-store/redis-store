@@ -9,7 +9,7 @@ class RedisRunner
   end
 
   def self.redisdir
-    "/tmp/redis/"
+    @@redisdir ||= File.expand_path File.join(File.dirname(__FILE__), '..', 'vendor', 'redis')
   end
 
   def self.redisconfdir
@@ -124,17 +124,19 @@ namespace :redis do
   end
 
   desc 'Install the lastest verison of Redis from Github (requires git, duh)'
-  task :install => [:about, :download, :make] do
+  task :install => [ :about, :download, :make ] do
     %w(redis-benchmark redis-cli redis-server).each do |bin|
-      sh "sudo cp /tmp/redis/#{bin} /usr/bin/"
+      if File.exist?(path = "#{RedisRunner.redisdir}/src/#{bin}")
+        sh "sudo cp #{path} /usr/bin/"
+      else
+        sh "sudo cp #{RedisRunner.redisdir}/#{bin} /usr/bin/"
+      end
     end
 
     puts "Installed redis-benchmark, redis-cli and redis-server to /usr/bin/"
 
-    unless File.exists?('/etc/redis.conf')
-      sh 'sudo cp /tmp/redis/redis.conf /etc/'
-      puts "Installed redis.conf to /etc/ \n You should look at this file!"
-    end
+    sh "sudo cp #{RedisRunner.redisdir}/redis.conf /etc/"
+    puts "Installed redis.conf to /etc/ \n You should look at this file!"
   end
 
   task :make do
@@ -144,13 +146,18 @@ namespace :redis do
 
   desc "Download package"
   task :download do
-    sh 'rm -rf /tmp/redis/' if File.exists?("#{RedisRunner.redisdir}/.svn")
-    sh 'git clone git://github.com/antirez/redis.git /tmp/redis' unless File.exists?(RedisRunner.redisdir)
+    require 'git'
 
-    if File.exists?("#{RedisRunner.redisdir}/.git")
-      arguments = ENV['COMMIT'].nil? ? "pull" : "reset --hard #{ENV['COMMIT']}"
-      sh "cd #{RedisRunner.redisdir} && git #{arguments}"
+    sh "rm -rf #{RedisRunner.redisdir} && mkdir -p vendor && rm -rf redis"
+    Git.clone("git://github.com/antirez/redis.git", "redis")
+    sh "mv redis vendor"
+
+    commit = case ENV['VERSION']
+      when "1.2.6": "570e43c8285a4e5e3f31"
     end
+
+    arguments = commit.nil? ? "pull origin master" : "reset --hard #{commit}"
+    sh "cd #{RedisRunner.redisdir} && git #{arguments}"
   end
 
   desc "Open an IRb session"
