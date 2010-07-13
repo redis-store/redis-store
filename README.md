@@ -33,6 +33,8 @@ Provides a cache store for your Ruby web framework of choice.
     # config/environments/production.rb
     config.cache_store = :redis_store
 
+For advanced configurations scenarios please visit [the wiki](http://wiki.github.com/jodosha/redis-store/rails).
+
 ### Merb
 
     dependency "redis-store", "1.0.0.beta2"
@@ -79,6 +81,8 @@ Provides a Redis store for Rack::Session. See [http://rack.rubyforge.org/doc/Rac
 
     # config/initializers/session_store.rb
     Rails.application.config.session_store :redis_session_store
+
+For advanced configurations scenarios please visit [the wiki](http://wiki.github.com/jodosha/redis-store/rails).
 
 ### Merb
 
