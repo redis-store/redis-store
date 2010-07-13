@@ -11,7 +11,7 @@ group :development, :test, :rails3 do
   gem "ruby-debug"
   gem "rspec"
   gem "rack-cache"
-  gem "merb"
+  gem "merb", "1.1.0"
   gem "methopara" if RUBY_VERSION.match /1\.9/
 end
 

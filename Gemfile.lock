@@ -41,7 +41,7 @@ dependencies:
     - :development
     - :test
     - :rails3
-    version: ">= 0"
+    version: = 1.1.0
   redis: 
     group: 
     - :default
@@ -54,7 +54,7 @@ specs:
 - rake: 
     version: 0.8.7
 - ZenTest: 
-    version: 4.3.2
+    version: 4.3.3
 - RubyInline: 
     version: 3.8.4
 - sexp_processor: 
@@ -70,6 +70,8 @@ specs:
 - actionpack: 
     version: 2.3.8
 - addressable: 
+    version: 2.1.2
+- bcrypt-ruby: 
     version: 2.1.2
 - bundler: 
     version: 0.9.26
@@ -89,30 +91,36 @@ specs:
     version: 0.10.2
 - dm-migrations: 
     version: 0.10.2
+- fastercsv: 
+    version: 1.5.3
+- json_pure: 
+    version: 1.2.4
 - dm-serializer: 
-    version: 0.10.0
+    version: 0.10.2
 - randexp: 
     version: 0.1.5
 - dm-sweatshop: 
     version: 0.10.2
 - dm-timestamps: 
     version: 0.10.2
+- stringex: 
+    version: 1.1.0
+- uuidtools: 
+    version: 2.1.1
 - dm-types: 
-    version: 0.10.0
+    version: 0.10.2
 - dm-validations: 
     version: 0.10.2
 - do_sqlite3: 
     version: 0.10.2
 - erubis: 
     version: 2.6.6
-- json_pure: 
-    version: 1.4.3
 - gemcutter: 
     version: 0.5.0
 - git: 
     version: 1.2.5
 - haml: 
-    version: 3.0.10
+    version: 3.0.13
 - highline: 
     version: 1.5.2
 - rubyforge: 
@@ -138,13 +146,13 @@ specs:
 - merb-assets: 
     version: 1.1.0
 - merb-auth-core: 
-    version: 1.1.0
+    version: 1.1.1
 - merb-auth-more: 
-    version: 1.1.0
+    version: 1.1.1
 - merb-slices: 
     version: 1.1.0
 - merb-auth-slice-password: 
-    version: 1.1.0
+    version: 1.1.1
 - merb-auth: 
     version: 1.1.0
 - merb-cache: 
@@ -170,12 +178,12 @@ specs:
 - rack-cache: 
     version: 0.5.2
 - redis: 
-    version: 2.0.1
+    version: 2.0.3
 - ruby-debug-base: 
     version: 0.10.3
 - ruby-debug: 
     version: 0.10.3
-hash: 818b7472e85459b874c9489058a39f467685fc03
+hash: fb80884cb8c52a6950054c1ab83b35f567837aa6
 sources: 
 - Rubygems: 
     uri: http://gemcutter.org
