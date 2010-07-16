@@ -80,6 +80,25 @@ describe RAILS_SESSION_STORE_CLASS do
     end
   end
 
+  describe "namespace" do
+    before :each do
+      @namespace = "theplaylist"
+      @store = RAILS_SESSION_STORE_CLASS.new(lambda {|| }, :servers => [{ :namespace => @namespace }])
+      @pool  = @store.instance_variable_get(:@pool)
+    end
+
+    it "should read the data" do
+      client = @pool.instance_variable_get(:@client)
+      client.should_receive(:call).with(:get, "#{@namespace}:rabbit")
+      @store.send :get_session, {}, "rabbit"
+    end
+
+    it "should write the data" do
+      @pool.should_receive(:set).with("#{@namespace}:rabbit", Marshal.dump(@white_rabbit))
+      @store.send :set_session, {"rack.session.options" => {}}, "rabbit", @white_rabbit
+    end
+  end
+
   private
     def instantiate_store(params = { })
       RAILS_SESSION_STORE_CLASS.new(app, params).instance_variable_get(:@pool)
