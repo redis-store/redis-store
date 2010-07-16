@@ -3,6 +3,7 @@ class Redis
     def initialize(options = { })
       super
       @namespace = options[:namespace]
+      extend ::Redis::Namespace unless @namespace.nil?
     end
 
     def marshalled_set(key, val, options = nil)

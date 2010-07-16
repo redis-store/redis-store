@@ -1,6 +1,7 @@
 require "redis"
 require "redis/distributed"
 require "redis/factory"
+require "redis/namespace"
 require "redis/marshaled_client"
 require "redis/distributed_marshaled"
 require "redis_store/version"
