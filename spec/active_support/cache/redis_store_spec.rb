@@ -201,6 +201,62 @@ module ActiveSupport
         end
       end
 
+      describe "namespace" do
+        before :each do
+          @namespace = "theplaylist"
+          @store = ActiveSupport::Cache::RedisStore.new :namespace => @namespace
+          @data = @store.instance_variable_get(:@data)
+          @client = @data.instance_variable_get(:@client)
+        end
+
+        it "should read the data" do
+          @client.should_receive(:call).with(:get, "#{@namespace}:rabbit")
+          @store.read("rabbit")
+        end
+
+        it "should write the data" do
+          @data.should_receive(:set).with("#{@namespace}:rabbit", Marshal.dump(@white_rabbit))
+          @store.write "rabbit", @white_rabbit
+        end
+
+        it "should delete the data" do
+          @client.should_receive(:call).with(:del, "#{@namespace}:rabbit")
+          @store.delete "rabbit"
+        end
+
+        it "should delete matched data" do
+          @client.should_receive(:call).with(:del, "#{@namespace}:rabbit")
+          @client.should_receive(:call).with(:keys, "theplaylist:rabb*").and_return [ "#{@namespace}:rabbit" ]
+          @store.delete_matched "rabb*"
+        end
+
+        it "should verify existence of an object in the store" do
+          @client.should_receive(:call).with(:exists, "#{@namespace}:rabbit")
+          @store.exist?("rabbit")
+        end
+
+        it "should increment a key" do
+          @client.should_receive(:call).with(:incrby, "#{@namespace}:counter", 1)
+          @store.increment "counter"
+        end
+
+        it "should decrement a key" do
+          @client.should_receive(:call).with(:decrby, "#{@namespace}:counter", 1)
+          @store.decrement "counter"
+        end
+
+        it "should fetch data" do
+          @client.should_receive(:call).with(:get, "#{@namespace}:rabbit")
+          @store.fetch "rabbit"
+        end
+
+        it "should read multiple keys" do
+          rabbits = [ Marshal.dump(@rabbit), Marshal.dump(@white_rabbit) ]
+          @client.should_receive(:call).with(:mget, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit").and_return rabbits
+          @store.read_multi "rabbit", "white_rabbit"
+        end
+      end
+
       if ::RedisStore.rails3?
         describe "notifications" do
           it "should notify on #fetch" do
