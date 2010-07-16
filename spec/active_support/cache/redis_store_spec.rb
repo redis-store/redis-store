@@ -73,7 +73,7 @@ module ActiveSupport
             with_store_management do |store|
               result = store.read("rabbit", :raw => true)
               result.should include("ActiveSupport::Cache::Entry")
-              result.should include("\x0FOpenStruct{\x06:\tnameI\"\nbunny\x06:\rencoding\"\rUS-ASCII")
+              result.should include("\x0FOpenStruct{\x06:\tnameI\"\nbunny\x06:\x06EF")
             end
           end
         else
@@ -216,7 +216,7 @@ module ActiveSupport
 
 
         if ::RedisStore.rails3?
-          it "should write the data"
+          # it "should write the data"
           # it "should write the data" do
           #   @data.should_receive(:set).with("#{@namespace}:rabbit"), Marshal.dump(ActiveSupport::Cache::Entry.new(@white_rabbit)))
           #   @store.write "rabbit", @white_rabbit
