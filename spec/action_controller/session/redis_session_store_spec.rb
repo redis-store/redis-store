@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), "/../../spec_helper")
+require 'spec_helper'
 RAILS_SESSION_STORE_CLASS = ::RedisStore.rails3? ? ActionDispatch::Session::RedisSessionStore : ActionController::Session::RedisSessionStore
 
 describe RAILS_SESSION_STORE_CLASS do

@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), "/../spec_helper")
+require 'spec_helper'
 
 describe RedisStore::VERSION do
   it "should describe RedisStore version" do

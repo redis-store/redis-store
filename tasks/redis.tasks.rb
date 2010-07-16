@@ -153,7 +153,7 @@ namespace :redis do
     sh "mv redis vendor"
 
     commit = case ENV['VERSION']
-      when "1.2.6": "570e43c8285a4e5e3f31"
+      when "1.2.6" then "570e43c8285a4e5e3f31"
     end
 
     arguments = commit.nil? ? "pull origin master" : "reset --hard #{commit}"
