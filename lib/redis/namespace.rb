@@ -1,31 +1,31 @@
 class Redis
   module Namespace
     def marshalled_set(key, val, options = nil)
-      namespace(key) { |key| super }
+      namespace(key) { |key| super key, val, options }
     end
 
     def marshalled_setnx(key, val, options = nil)
-      namespace(key) { |key| super }
+      namespace(key) { |key| super key, val, options }
     end
 
     def marshalled_get(key, options = nil)
-      namespace(key) { |key| super }
+      namespace(key) { |key| super key, options }
     end
 
     def exists(key)
-      namespace(key) { |key| super }
+      namespace(key) { |key| super key }
     end
 
     def incrby(key, increment)
-      namespace(key) { |key| super }
+      namespace(key) { |key| super key, increment }
     end
 
     def decrby(key, increment)
-      namespace(key) { |key| super }
+      namespace(key) { |key| super key, increment }
     end
 
     def keys(pattern = "*")
-      namespace(pattern) { |pattern| super }
+      namespace(pattern) { |pattern| super pattern }
     end
 
     def del(*keys)

@@ -24,7 +24,7 @@ describe "Redis::MarshaledClient" do
 
   if RUBY_VERSION.match /1\.9/
     it "should not unmarshal object on get if raw option is true" do
-      @store.marshalled_get("rabbit", :raw => true).should == "\x04\bU:\x0FOpenStruct{\x06:\tnameI\"\nbunny\x06:\rencoding\"\rUS-ASCII"
+      @store.marshalled_get("rabbit", :raw => true).should == "\x04\bU:\x0FOpenStruct{\x06:\tnameI\"\nbunny\x06:\x06EF"
     end
   else
     it "should not unmarshal object on get if raw option is true" do
@@ -68,8 +68,8 @@ describe "Redis::MarshaledClient" do
     it "should not unmarshal object(s) on multi get if raw option is true" do
       @store.marshalled_set "rabbit2", @white_rabbit
       rabbit, rabbit2 = @store.marshalled_mget "rabbit", "rabbit2", :raw => true
-      rabbit.should  == "\x04\bU:\x0FOpenStruct{\x06:\tnameI\"\nbunny\x06:\rencoding\"\rUS-ASCII"
-      rabbit2.should == "\x04\bU:\x0FOpenStruct{\x06:\ncolorI\"\nwhite\x06:\rencoding\"\rUS-ASCII"
+      rabbit.should  == "\x04\bU:\x0FOpenStruct{\x06:\tnameI\"\nbunny\x06:\x06EF"
+      rabbit2.should == "\x04\bU:\x0FOpenStruct{\x06:\ncolorI\"\nwhite\x06:\x06EF"
     end
   else
     it "should not unmarshal object(s) on multi get if raw option is true" do
