@@ -21,7 +21,7 @@ describe RAILS_SESSION_STORE_CLASS do
     end
   end
 
-  it "should accept connection params" do
+  it "should accept string connection params" do
     redis = instantiate_store
     redis.to_s.should == "Redis Client connected to 127.0.0.1:6379 against DB 0"
 
@@ -33,6 +33,23 @@ describe RAILS_SESSION_STORE_CLASS do
 
     redis = instantiate_store :servers => "localhost:6380/13"
     redis.to_s.should == "Redis Client connected to localhost:6380 against DB 13"
+
+    redis = instantiate_store :servers => "localhost:6380/13/theplaylist"
+    redis.to_s.should == "Redis Client connected to localhost:6380 against DB 13 with namespace theplaylist"
+  end
+
+  it "should accept hash connection params" do
+    redis = instantiate_store :servers => [{ :host => "192.168.0.1" }]
+    redis.to_s.should == "Redis Client connected to 192.168.0.1:6379 against DB 0"
+
+    redis = instantiate_store :servers => [{ :port => "6380" }]
+    redis.to_s.should == "Redis Client connected to localhost:6380 against DB 0"
+
+    redis = instantiate_store :servers => [{ :db => 13 }]
+    redis.to_s.should == "Redis Client connected to localhost:6379 against DB 13"
+
+    redis = instantiate_store :servers => [{ :key_prefix => "theplaylist" }]
+    redis.to_s.should == "Redis Client connected to localhost:6379 against DB 0 with namespace theplaylist"
   end
 
   it "should instantiate a ring" do
@@ -64,7 +81,7 @@ describe RAILS_SESSION_STORE_CLASS do
   end
 
   private
-    def instantiate_store(params={})
+    def instantiate_store(params = { })
       RAILS_SESSION_STORE_CLASS.new(app, params).instance_variable_get(:@pool)
     end
 

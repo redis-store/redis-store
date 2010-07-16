@@ -26,6 +26,16 @@ describe "Redis::Factory" do
         store.to_s.should == "Redis Client connected to localhost:6380 against DB 13"
       end
 
+      it "should allow to specify namespace" do
+        store = Redis::Factory.create :namespace => "theplaylist"
+        store.to_s.should == "Redis Client connected to 127.0.0.1:6379 against DB 0 with namespace theplaylist"
+      end
+
+      it "should allow to specify key_prefix as namespace" do
+        store = Redis::Factory.create :key_prefix => "theplaylist"
+        store.to_s.should == "Redis Client connected to 127.0.0.1:6379 against DB 0 with namespace theplaylist"
+      end
+
       it "should instantiate a Redis::DistributedMarshaled store" do
         store = Redis::Factory.create(
           {:host => "localhost", :port => 6379},
@@ -53,6 +63,11 @@ describe "Redis::Factory" do
       it "should allow to specify db" do
         store = Redis::Factory.create "localhost:6380/13"
         store.to_s.should == "Redis Client connected to localhost:6380 against DB 13"
+      end
+
+      it "should allow to specify namespace" do
+        store = Redis::Factory.create "localhost:6379/0/theplaylist"
+        store.to_s.should == "Redis Client connected to localhost:6379 against DB 0 with namespace theplaylist"
       end
 
       it "should instantiate a Redis::DistributedMarshaled store" do

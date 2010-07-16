@@ -26,6 +26,9 @@ module Merb
 
         redis = instantiate_store "localhost:6380/13"
         redis.to_s.should == "Redis Client connected to localhost:6380 against DB 13"
+
+        redis = instantiate_store "localhost:6380/13/theplaylist"
+        redis.to_s.should == "Redis Client connected to localhost:6380 against DB 13 with namespace theplaylist"
       end
 
       it "should instantiate a ring" do

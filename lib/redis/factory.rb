@@ -13,14 +13,20 @@ class Redis
     end
 
     def self.convert_to_redis_client_options(address_or_options)
-      return address_or_options if address_or_options.is_a?(Hash)
-      host, port = address_or_options.split /\:/
-      port, db   = port.split /\// if port
-      options = {}
-      options[:host] = host if host
-      options[:port] = port if port
-      options[:db]  = db.to_i if db
-      options
+      if address_or_options.is_a?(Hash)
+        options = address_or_options.dup
+        options[:namespace] ||= options.delete(:key_prefix) # RailsSessionStore
+        options
+      else
+        host, port = address_or_options.split /\:/
+        port, db, namespace = port.split /\// if port
+        options = {}
+        options[:host] = host if host
+        options[:port] = port if port
+        options[:db]  = db.to_i if db
+        options[:namespace] = namespace if namespace
+        options
+      end
     end
   end
 end

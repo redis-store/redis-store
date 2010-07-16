@@ -64,11 +64,23 @@ module ActiveSupport
       # Instantiate the store.
       #
       # Example:
-      #   RedisStore.new                       # => host: localhost,   port: 6379,  db: 0
-      #   RedisStore.new "example.com"         # => host: example.com, port: 6379,  db: 0
-      #   RedisStore.new "example.com:23682"   # => host: example.com, port: 23682, db: 0
-      #   RedisStore.new "example.com:23682/1" # => host: example.com, port: 23682, db: 1
-      #   RedisStore.new "localhost:6379/0", "localhost:6380/0" # => instantiate a cluster
+      #   RedisStore.new
+      #     # => host: localhost,   port: 6379,  db: 0
+      #
+      #   RedisStore.new "example.com"
+      #     # => host: example.com, port: 6379,  db: 0
+      #
+      #   RedisStore.new "example.com:23682"
+      #     # => host: example.com, port: 23682, db: 0
+      #
+      #   RedisStore.new "example.com:23682/1"
+      #     # => host: example.com, port: 23682, db: 1
+      #
+      #   RedisStore.new "example.com:23682/1/theplaylist"
+      #     # => host: example.com, port: 23682, db: 1, namespace: theplaylist
+      #
+      #   RedisStore.new "localhost:6379/0", "localhost:6380/0"
+      #     # => instantiate a cluster
       def initialize(*addresses)
         @data = Redis::Factory.create(addresses)
       end

@@ -26,9 +26,9 @@ module Rack
       end
 
       it "should specify connection params" do
-        pool = Rack::Session::Redis.new(@incrementor, :redis_server => "localhost:6380/1").pool
+        pool = Rack::Session::Redis.new(@incrementor, :redis_server => "localhost:6380/1/theplaylist").pool
         pool.should be_kind_of(::Redis::MarshaledClient)
-        pool.to_s.should == "Redis Client connected to localhost:6380 against DB 1"
+        pool.to_s.should == "Redis Client connected to localhost:6380 against DB 1 with namespace theplaylist"
 
         pool = Rack::Session::Redis.new(@incrementor, :redis_server => ["localhost:6379", "localhost:6380"]).pool
         pool.should be_kind_of(::Redis::DistributedMarshaled)

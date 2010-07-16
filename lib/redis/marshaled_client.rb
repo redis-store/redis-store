@@ -1,5 +1,10 @@
 class Redis
   class MarshaledClient < self
+    def initialize(options = { })
+      super
+      @namespace = options[:namespace]
+    end
+
     def marshalled_set(key, val, options = nil)
       val = marshal_value(val, options)
       if ttl = expires_in(options)
@@ -39,7 +44,9 @@ class Redis
     end
 
     def to_s
-      "Redis Client connected to #{@client.host}:#{@client.port} against DB #{@client.db}"
+      result = "Redis Client connected to #{@client.host}:#{@client.port} against DB #{@client.db}"
+      result << " with namespace #{@namespace}" unless @namespace.nil?
+      result
     end
 
     private

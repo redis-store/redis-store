@@ -21,10 +21,8 @@ module RedisStore
 
           super
 
-          @options = { :key_prefix => "" }.update(options)
           servers = [options[:servers]].flatten.compact.map do |server_options|
             {
-              :namespace => 'rack:session',
               :host => 'localhost',
               :port => '6379',
               :db => 0
@@ -35,27 +33,23 @@ module RedisStore
         end
 
         private
-        def prefixed(sid)
-          "#{@options[:key_prefix]}#{sid}"
-        end
-
-        def get_session(env, sid)
-          sid ||= generate_sid
-          begin
-            session = @pool.marshalled_get(prefixed(sid)) || {}
-          rescue Errno::ECONNREFUSED
-            session = {}
+          def get_session(env, sid)
+            sid ||= generate_sid
+            begin
+              session = @pool.marshalled_get(sid) || {}
+            rescue Errno::ECONNREFUSED
+              session = {}
+            end
+            [sid, session]
           end
-          [sid, session]
-        end
 
-        def set_session(env, sid, session_data)
-          options = env['rack.session.options']
-          @pool.marshalled_set(prefixed(sid), session_data, options)
-          return true
-        rescue Errno::ECONNREFUSED
-          return false
-        end
+          def set_session(env, sid, session_data)
+            options = env['rack.session.options']
+            @pool.marshalled_set(sid, session_data, options)
+            return true
+          rescue Errno::ECONNREFUSED
+            return false
+          end
       end
     end
   end
