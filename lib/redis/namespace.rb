@@ -12,6 +12,10 @@ class Redis
       namespace(key) { |key| super }
     end
 
+    def to_s
+      "#{super} with namespace #{@namespace}"
+    end
+
     private
       def namespace(key)
         yield "#{@namespace}:#{key}"

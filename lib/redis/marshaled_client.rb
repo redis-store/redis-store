@@ -45,9 +45,7 @@ class Redis
     end
 
     def to_s
-      result = "Redis Client connected to #{@client.host}:#{@client.port} against DB #{@client.db}"
-      result << " with namespace #{@namespace}" unless @namespace.nil?
-      result
+      "Redis Client connected to #{@client.host}:#{@client.port} against DB #{@client.db}"
     end
 
     private
