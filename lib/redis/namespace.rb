@@ -1,14 +1,14 @@
 class Redis
   module Namespace
-    def marshalled_set(key, val, options = nil)
+    def set(key, val, options = nil)
       namespace(key) { |key| super key, val, options }
     end
 
-    def marshalled_setnx(key, val, options = nil)
+    def setnx(key, val, options = nil)
       namespace(key) { |key| super key, val, options }
     end
 
-    def marshalled_get(key, options = nil)
+    def get(key, options = nil)
       namespace(key) { |key| super key, options }
     end
 

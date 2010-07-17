@@ -54,7 +54,7 @@ describe RAILS_SESSION_STORE_CLASS do
 
   it "should instantiate a ring" do
     store = instantiate_store
-    store.should be_kind_of(Redis::MarshaledClient)
+    store.should be_kind_of(Redis::Store)
     store = instantiate_store :servers => ["localhost:6379/0", "localhost:6379/1"]
     store.should be_kind_of(Redis::DistributedMarshaled)
   end

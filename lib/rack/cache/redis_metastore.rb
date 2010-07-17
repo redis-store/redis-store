@@ -4,7 +4,7 @@ module Rack
       class RedisBase < MetaStore
         extend Rack::Utils
 
-        # The Redis::MarshaledClient object used to communicate with the Redis daemon.
+        # The Redis::Store object used to communicate with the Redis daemon.
         attr_reader :cache
 
         def self.resolve(uri)
@@ -17,17 +17,17 @@ module Rack
 
       class Redis < RedisBase
         def initialize(server, options = {})
-          @cache = ::Redis::MarshaledClient.new server
+          @cache = ::Redis::Factory.create server
         end
 
         def read(key)
           key = hexdigest(key)
-          cache.marshalled_get(key) || []
+          cache.get(key) || []
         end
 
         def write(key, entries)
           key = hexdigest(key)
-          cache.marshalled_set(key, entries)
+          cache.set(key, entries)
         end
 
         def purge(key)

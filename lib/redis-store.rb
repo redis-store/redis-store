@@ -1,8 +1,10 @@
 require "redis"
 require "redis/distributed"
 require "redis/factory"
+require "redis/interface"
 require "redis/namespace"
-require "redis/marshaled_client"
+require "redis/marshalling"
+require "redis/store"
 require "redis/distributed_marshaled"
 require "redis_store/version"
 

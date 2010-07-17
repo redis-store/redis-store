@@ -8,7 +8,7 @@ describe "Redis::DistributedMarshaled" do
     ]
     @rabbit = OpenStruct.new :name => "bunny"
     @white_rabbit = OpenStruct.new :color => "white"
-    @dmr.marshalled_set "rabbit", @rabbit
+    @dmr.set "rabbit", @rabbit
   end
 
   after(:all) do
@@ -23,11 +23,11 @@ describe "Redis::DistributedMarshaled" do
   end
 
   it "should set an object" do
-    @dmr.marshalled_set "rabbit", @white_rabbit
-    @dmr.marshalled_get("rabbit").should == @white_rabbit
+    @dmr.set "rabbit", @white_rabbit
+    @dmr.get("rabbit").should == @white_rabbit
   end
 
   it "should get an object" do
-    @dmr.marshalled_get("rabbit").should == @rabbit
+    @dmr.get("rabbit").should == @rabbit
   end
 end

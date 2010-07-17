@@ -36,7 +36,7 @@ module RedisStore
           def get_session(env, sid)
             sid ||= generate_sid
             begin
-              session = @pool.marshalled_get(sid) || {}
+              session = @pool.get(sid) || {}
             rescue Errno::ECONNREFUSED
               session = {}
             end
@@ -45,7 +45,7 @@ module RedisStore
 
           def set_session(env, sid, session_data)
             options = env['rack.session.options']
-            @pool.marshalled_set(sid, session_data, options)
+            @pool.set(sid, session_data, options)
             return true
           rescue Errno::ECONNREFUSED
             return false

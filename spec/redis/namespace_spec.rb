@@ -3,9 +3,9 @@ require 'spec_helper'
 describe "Redis::Namespace" do
   before :each do
     @namespace = "theplaylist"
-    @store  = Redis::MarshaledClient.new :namespace => @namespace
+    @store  = Redis::Store.new :namespace => @namespace, :marshalling => false # TODO remove mashalling option
     @client = @store.instance_variable_get(:@client)
-    @rabbit = OpenStruct.new :name => "bunny"
+    @rabbit = "bunny"
   end
 
   after :each do
@@ -14,29 +14,29 @@ describe "Redis::Namespace" do
   end
 
   it "should only decorate instances that needs to be namespaced" do
-    @store = Redis::MarshaledClient.new
+    @store = Redis::Store.new
     client = @store.instance_variable_get(:@client)
     client.should_receive(:call).with(:get, "rabbit")
-    @store.marshalled_get("rabbit")
+    @store.get("rabbit")
   end
 
   it "should not namespace a key which is already namespaced" do
     @store.send(:interpolate, "#{@namespace}:rabbit").should == "#{@namespace}:rabbit"
   end
 
-  it "should namespace marshalled_get" do
+  it "should namespace get" do
     @client.should_receive(:call).with(:get, "#{@namespace}:rabbit")
-    @store.marshalled_get("rabbit")
+    @store.get("rabbit")
   end
 
-  it "should namespace marshalled_set" do
-    @store.should_receive(:set).with("#{@namespace}:rabbit", Marshal.dump(@rabbit))
-    @store.marshalled_set "rabbit", @rabbit
+  it "should namespace set" do
+    @client.should_receive(:call).with(:set, "#{@namespace}:rabbit", @rabbit)
+    @store.set "rabbit", @rabbit
   end
 
-  it "should namespace marshalled_setnx" do
-    @store.should_receive(:setnx).with("#{@namespace}:rabbit", Marshal.dump(@rabbit))
-    @store.marshalled_setnx "rabbit", @rabbit
+  it "should namespace setnx" do
+    @client.should_receive(:call).with(:setnx, "#{@namespace}:rabbit", @rabbit)
+    @store.setnx "rabbit", @rabbit
   end
 
   it "should namespace del with single key" do

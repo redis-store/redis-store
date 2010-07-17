@@ -5,13 +5,13 @@ module ::RedisStore
     module Rails2
       def write(key, value, options = nil)
         super
-        method = options && options[:unless_exist] ? :marshalled_setnx : :marshalled_set
+        method = options && options[:unless_exist] ? :setnx : :set
         @data.send method, key, value, options
       end
 
       def read(key, options = nil)
         super
-        @data.marshalled_get key, options
+        @data.get key, options
       end
 
       def delete(key, options = nil)
@@ -34,12 +34,12 @@ module ::RedisStore
     module Rails3
       protected
         def write_entry(key, entry, options)
-          method = options && options[:unless_exist] ? :marshalled_setnx : :marshalled_set
+          method = options && options[:unless_exist] ? :setnx : :set
           @data.send method, key, entry, options
         end
 
         def read_entry(key, options)
-          entry = @data.marshalled_get key, options
+          entry = @data.get key, options
           if entry
             entry.is_a?(ActiveSupport::Cache::Entry) ? entry : ActiveSupport::Cache::Entry.new(entry)
           end
@@ -82,7 +82,7 @@ module ActiveSupport
       #   RedisStore.new "localhost:6379/0", "localhost:6380/0"
       #     # => instantiate a cluster
       def initialize(*addresses)
-        @data = Redis::Factory.create(addresses)
+        @data = ::Redis::Factory.create(addresses)
       end
 
       # Delete objects for matched keys.
@@ -102,7 +102,7 @@ module ActiveSupport
       #   cache.read_multi "rabbit", "white-rabbit"
       #   cache.read_multi "rabbit", "white-rabbit", :raw => true
       def read_multi(*names)
-        @data.marshalled_mget *names
+        @data.mget *names
       end
 
       # Increment a key in the store.

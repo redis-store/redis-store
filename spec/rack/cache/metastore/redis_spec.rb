@@ -23,7 +23,7 @@ module Rack
 
         it "should resolve the connection uri" do
           cache = Rack::Cache::MetaStore::Redis.resolve(uri("redis://127.0.0.1")).cache
-          cache.should be_kind_of(::Redis::MarshaledClient)
+          cache.should be_kind_of(::Redis::Store)
           cache.to_s.should == "Redis Client connected to 127.0.0.1:6379 against DB 0"
 
           cache = Rack::Cache::MetaStore::Redis.resolve(uri("redis://127.0.0.1:6380")).cache

@@ -3,9 +3,9 @@ require 'spec_helper'
 describe "Redis::Factory" do
   describe ".create" do
     context "when not given any arguments" do
-      it "should instantiate a Redis::MarshaledClient store" do
+      it "should instantiate a Redis::Store store" do
         store = Redis::Factory.create
-        store.should be_kind_of(Redis::MarshaledClient)
+        store.should be_kind_of(Redis::Store)
         store.to_s.should == "Redis Client connected to 127.0.0.1:6379 against DB 0"
       end
     end
@@ -34,6 +34,11 @@ describe "Redis::Factory" do
       it "should allow to specify key_prefix as namespace" do
         store = Redis::Factory.create :key_prefix => "theplaylist"
         store.to_s.should == "Redis Client connected to 127.0.0.1:6379 against DB 0 with namespace theplaylist"
+      end
+
+      it "should allow to specify marshalling" do
+        store = Redis::Factory.create :marshalling => false
+        store.instance_variable_get(:@marshalling).should be_false
       end
 
       it "should instantiate a Redis::DistributedMarshaled store" do

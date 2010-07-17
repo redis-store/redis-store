@@ -30,12 +30,12 @@ module Merb
       end
 
       def read(key, parameters = {}, conditions = {})
-        @data.marshalled_get normalize(key, parameters), conditions
+        @data.get normalize(key, parameters), conditions
       end
 
       def write(key, data = nil, parameters = {}, conditions = {})
         if writable?(key, parameters, conditions)
-          method = conditions && conditions[:unless_exist] ? :marshalled_setnx : :marshalled_set
+          method = conditions && conditions[:unless_exist] ? :setnx : :set
           @data.send method, normalize(key, parameters), data, conditions
         end
       end

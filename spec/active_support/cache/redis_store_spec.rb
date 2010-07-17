@@ -34,7 +34,7 @@ module ActiveSupport
 
       it "should instantiate a ring" do
         store = instantiate_store
-        store.should be_kind_of(Redis::MarshaledClient)
+        store.should be_kind_of(Redis::Store)
         store = instantiate_store ["localhost:6379/0", "localhost:6379/1"]
         store.should be_kind_of(Redis::DistributedMarshaled)
       end

@@ -4,7 +4,7 @@ class Redis
 
     def initialize(addresses)
       nodes = addresses.map do |address|
-        MarshaledClient.new address
+        ::Redis::Store.new address
       end
       @ring = Redis::HashRing.new nodes
     end
@@ -13,16 +13,16 @@ class Redis
       ring.nodes
     end
 
-    def marshalled_set(key, val, options = nil)
-      node_for(key).marshalled_set(key, val, options)
+    def set(key, val, options = nil)
+      node_for(key).set(key, val, options)
     end
 
-    def marshalled_get(key, options = nil)
-      node_for(key).marshalled_get(key, options)
+    def get(key, options = nil)
+      node_for(key).get(key, options)
     end
 
-    def marshalled_setnx(key, value, options = nil)
-      node_for(key).marshalled_setnx(key, value, options)
+    def setnx(key, value, options = nil)
+      node_for(key).setnx(key, value, options)
     end
   end
 end

@@ -33,14 +33,14 @@ module Sinatra
 
       def write(key, value, options = nil)
         if options && options[:unless_exist]
-          @data.marshalled_setnx key, value, options
+          @data.setnx key, value, options
         else
-          @data.marshalled_set key, value, options
+          @data.set key, value, options
         end
       end
 
       def read(key, options = nil)
-        @data.marshalled_get(key, options)
+        @data.get(key, options)
       end
 
       def delete(key, options = nil)
