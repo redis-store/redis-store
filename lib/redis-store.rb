@@ -33,6 +33,11 @@ if defined?(Rack::Session)
   end
 end
 
+# ActionDispatch::Session
+if defined?(Rails) && ::RedisStore.rails3?
+  require "action_controller/session/redis_session_store"
+end
+
 # Rack::Cache
 if defined?(Rack::Cache)
   require "rack/cache/key"
