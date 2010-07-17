@@ -1,6 +1,6 @@
 class Redis
   class Store < self
-    include Interface
+    include Ttl, Interface
 
     def initialize(options = { })
       super

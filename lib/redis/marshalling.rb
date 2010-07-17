@@ -1,11 +1,11 @@
 class Redis
   module Marshalling
     def set(key, value, options = nil)
-      _marshal(value, options) { |value| super key, value }
+      _marshal(value, options) { |value| super key, value, options }
     end
 
     def setnx(key, value, options = nil)
-      _marshal(value, options) { |value| super key, value }
+      _marshal(value, options) { |value| super key, value, options }
     end
 
     def get(key, options = nil)

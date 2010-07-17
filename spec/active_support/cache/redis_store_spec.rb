@@ -222,7 +222,7 @@ module ActiveSupport
           # end
         else
           it "should write the data" do
-            @data.should_receive(:set).with("#{@namespace}:rabbit", Marshal.dump(@white_rabbit))
+            @client.should_receive(:call).with(:set, "#{@namespace}:rabbit", Marshal.dump(@white_rabbit))
             @store.write "rabbit", @white_rabbit
           end
         end
