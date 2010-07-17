@@ -24,6 +24,16 @@ module ::RedisStore
         @data.exists key
       end
 
+      # Delete objects for matched keys.
+      #
+      # Example:
+      #   cache.del_matched "rab*"
+      def delete_matched(matcher, options = nil)
+        instrument(:delete_matched, matcher, options) do
+          @data.keys(matcher).each { |key| @data.del key }
+        end
+      end
+
       private
         def instrument(operation, key, options = nil)
           log(operation.to_s, key, options)
@@ -32,6 +42,18 @@ module ::RedisStore
     end
 
     module Rails3
+      # Delete objects for matched keys.
+      #
+      # Example:
+      #   cache.del_matched "rab*"
+      def delete_matched(matcher, options = nil)
+        options = merged_options(options)
+        instrument(:delete_matched, matcher.inspect) do
+          matcher = key_matcher(matcher, options)
+          @data.keys(matcher).each { |key| delete_entry(key, options) }
+        end
+      end
+
       protected
         def write_entry(key, entry, options)
           method = options && options[:unless_exist] ? :setnx : :set
@@ -83,16 +105,6 @@ module ActiveSupport
       #     # => instantiate a cluster
       def initialize(*addresses)
         @data = ::Redis::Factory.create(addresses)
-      end
-
-      # Delete objects for matched keys.
-      #
-      # Example:
-      #   cache.del_matched "rab*"
-      def delete_matched(matcher, options = nil)
-        instrument(:delete_matched, matcher, options) do
-          @data.keys(matcher).each { |key| @data.del key }
-        end
       end
 
       # Reads multiple keys from the cache using a single call to the

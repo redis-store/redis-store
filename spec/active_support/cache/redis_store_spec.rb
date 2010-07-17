@@ -337,7 +337,7 @@ module ActiveSupport
 
             delete_matched = @events.first
             delete_matched.name.should    == "cache_delete_matched.active_support"
-            delete_matched.payload.should == { :key => "afterhours*" }
+            delete_matched.payload.should == { :key => %("afterhours*") }
           end
 
           it "should notify on #increment" do
