@@ -35,6 +35,7 @@ Gem::Specification.new do |s|
      "lib/redis/distributed_marshaled.rb",
      "lib/redis/factory.rb",
      "lib/redis/marshaled_client.rb",
+     "lib/redis/namespace.rb",
      "lib/redis_store/version.rb",
      "redis-store.gemspec",
      "spec/action_controller/session/redis_session_store_spec.rb",
@@ -51,6 +52,7 @@ Gem::Specification.new do |s|
      "spec/redis/distributed_marshaled_redis_spec.rb",
      "spec/redis/factory_spec.rb",
      "spec/redis/marshaled_client_spec.rb",
+     "spec/redis/namespace_spec.rb",
      "spec/redis_store/version_spec.rb",
      "spec/spec_helper.rb",
      "tasks/redis.tasks.rb"
@@ -71,6 +73,7 @@ Gem::Specification.new do |s|
      "spec/redis/distributed_marshaled_redis_spec.rb",
      "spec/redis/factory_spec.rb",
      "spec/redis/marshaled_client_spec.rb",
+     "spec/redis/namespace_spec.rb",
      "spec/redis_store/version_spec.rb",
      "spec/spec_helper.rb"
   ]
