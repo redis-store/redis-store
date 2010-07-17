@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe "Redis::DistributedMarshaled" do
+describe "Redis::DistributedStore" do
   before(:each) do
-    @dmr = Redis::DistributedMarshaled.new [
+    @dmr = Redis::DistributedStore.new [
       {:host => "localhost", :port => "6380", :db => 0},
       {:host => "localhost", :port => "6381", :db => 0}
     ]
@@ -16,7 +16,7 @@ describe "Redis::DistributedMarshaled" do
   end
 
   it "should accept connection params" do
-    dmr = Redis::DistributedMarshaled.new [ :host => "localhost", :port => "6380", :db => "1" ]
+    dmr = Redis::DistributedStore.new [ :host => "localhost", :port => "6380", :db => "1" ]
     dmr.ring.nodes.size == 1
     mr = dmr.ring.nodes.first
     mr.to_s.should == "Redis Client connected to localhost:6380 against DB 1"

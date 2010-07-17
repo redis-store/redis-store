@@ -41,12 +41,12 @@ describe "Redis::Factory" do
         store.instance_variable_get(:@marshalling).should be_false
       end
 
-      it "should instantiate a Redis::DistributedMarshaled store" do
+      it "should instantiate a Redis::DistributedStore store" do
         store = Redis::Factory.create(
           {:host => "localhost", :port => 6379},
           {:host => "localhost", :port => 6380}
         )
-        store.should be_kind_of(Redis::DistributedMarshaled)
+        store.should be_kind_of(Redis::DistributedStore)
         store.nodes.map {|node| node.to_s}.should == [
           "Redis Client connected to localhost:6379 against DB 0",
           "Redis Client connected to localhost:6380 against DB 0",
@@ -75,9 +75,9 @@ describe "Redis::Factory" do
         store.to_s.should == "Redis Client connected to localhost:6379 against DB 0 with namespace theplaylist"
       end
 
-      it "should instantiate a Redis::DistributedMarshaled store" do
+      it "should instantiate a Redis::DistributedStore store" do
         store = Redis::Factory.create "localhost:6379", "localhost:6380"
-        store.should be_kind_of(Redis::DistributedMarshaled)
+        store.should be_kind_of(Redis::DistributedStore)
         store.nodes.map {|node| node.to_s}.should == [
           "Redis Client connected to localhost:6379 against DB 0",
           "Redis Client connected to localhost:6380 against DB 0",

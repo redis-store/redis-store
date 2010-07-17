@@ -1,5 +1,5 @@
 class Redis
-  class DistributedMarshaled < Distributed
+  class DistributedStore < Distributed
     attr_reader :ring
 
     def initialize(addresses)
@@ -13,8 +13,8 @@ class Redis
       ring.nodes
     end
 
-    def set(key, val, options = nil)
-      node_for(key).set(key, val, options)
+    def set(key, value, options = nil)
+      node_for(key).set(key, value, options)
     end
 
     def get(key, options = nil)

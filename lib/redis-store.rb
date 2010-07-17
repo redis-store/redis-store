@@ -6,7 +6,7 @@ require "redis/ttl"
 require "redis/namespace"
 require "redis/marshalling"
 require "redis/store"
-require "redis/distributed_marshaled"
+require "redis/distributed_store"
 require "redis_store/version"
 
 module ::RedisStore

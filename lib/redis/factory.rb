@@ -6,7 +6,7 @@ class Redis
         result
       end
       if redis_client_options.size > 1
-        DistributedMarshaled.new redis_client_options
+        ::Redis::DistributedStore.new redis_client_options
       else
         ::Redis::Store.new redis_client_options.first || {}
       end
