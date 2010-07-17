@@ -1,3 +1,25 @@
+*1.0.0 [beta3] (unreleased)*
+
+  * CHANGELOG
+  * Gemspec
+  * Removed superfluous specs. Documentation.
+  * Made the specs pass with Ruby 1.9.2 and Rails 3
+  * Made the specs pass with Ruby 1.9.2
+  * Prepare specs for Ruby 1.9.2
+  * Made the specs pass for Rails 3
+  * Namespaced keys for ActiveSupport::Cache::RedisStore
+  * Got RedisSessionStore working again with namespace
+  * Delegate MarshaledClient#to_s decoration to Redis::Namespace
+  * Redis::Namespace
+  * Accept :namespace option when instantiate a store
+  * Test against merb-1.1.0 for now
+  * Updated Rake tasks for Redis installation
+  * Advanced configurations for Rails in README. closes #8
+  * Locked gems
+  * Changed the gemspec according to the new directories structure
+  * Changed directories structure, according to the ActiveSupport loading policies
+  * Typo in CHANGELOG
+
 *1.0.0 [beta2] (June 12, 2010)*
 
   * Bump version v1.0.0.beta2
@@ -8,7 +30,7 @@
   * Added ActiveSupport::Cache::RedisStore#read_multi
   * Enabled notifications for ActiveSupport::Cache::RedisStore
   * Moved spec
-  * Use consinstent Rails 3 check in session store
+  * Use consistent Rails 3 check in session store
   * Make sure of use top-level module
   * Updated Rails 2.x development dependencies
 
@@ -36,7 +58,7 @@
   * Rails 3 namespace
   * Use Rails edge instead of 3.0.0.beta3
   * Made the specs run again
-  * Updated Gemfile development/test dependecies for rails3.
+  * Updated Gemfile development/test dependencies for rails3.
   * Updated README instructions
   * Updated test configuration files, according to redis-2.0.0-rc1 defaults
   * Made specs pass with redis-2.0.0 gem
@@ -52,7 +74,7 @@
   * Started namespace migration for redis-2.0.0
   * Merge branch 'master' of http://github.com/akahn/redis-store
   * Fixed dependency issues. [Brian Takita]
-  * Removed methodpara because it require ruby 1.9.1. [Brian Takita]
+  * Removed methopara because it require ruby 1.9.1. [Brian Takita]
   * Merge branch 'master' of http://github.com/dsander/redis-store [Brian Takita]
   * Moved RedisSessionStore to rack session directory. [Brian Takita]
   * Got RedisSessionStore working with passing specs. [Brian Takita]
@@ -150,7 +172,7 @@
 
   * Prepare for v0.2.0
   * Links in README
-  * Maybe someday I will use the right formating rules at first attempt
+  * Maybe someday I will use the right formatting rules at first attempt
   * Still formatting README
   * Formatting for README
   * Updated instructions for Rack::Cache
