@@ -14,6 +14,25 @@ Install the gem
 
     sudo gem install redis-store
 
+## Options
+There are two ways to configure the Redis server options: by an URI string and by an hash.
+By default each store try to connect on `localhost` with the port `6379` and the db `0`.
+
+### String
+
+    "192.168.1.100:23682/13/theplaylist"
+
+    host: 192.168.1.100
+    port: 23682
+    db: 13
+    namespace: theplaylist
+
+If you want to specify the `namespace` optional, you have to pass the `db` param too.
+
+### Hash
+
+    { :host => 192.168.1.100, :port => 23682, :db => 13, :namespace => "theplaylist" }
+
 ## Cache store
 
 Provides a cache store for your Ruby web framework of choice.

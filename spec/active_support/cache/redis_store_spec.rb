@@ -214,7 +214,6 @@ module ActiveSupport
           @store.read("rabbit")
         end
 
-
         if ::RedisStore.rails3?
           # it "should write the data"
           # it "should write the data" do
