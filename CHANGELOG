@@ -2,6 +2,11 @@
 
   * CHANGELOG
   * Gemspec
+  * Redis::DistributedMarshaled => Redis::DistributedStore
+  * Extracted expiration logic in Redis::Ttl
+  * Introducing Redis::Store and extracted marshalling logic into Redis::Marshalling
+  * CHANGELOG
+  * Gemspec
   * Removed superfluous specs. Documentation.
   * Made the specs pass with Ruby 1.9.2 and Rails 3
   * Made the specs pass with Ruby 1.9.2
