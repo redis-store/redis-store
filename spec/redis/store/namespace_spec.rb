@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Redis::Namespace" do
+describe "Redis::Store::Namespace" do
   before :each do
     @namespace = "theplaylist"
     @store  = Redis::Store.new :namespace => @namespace, :marshalling => false # TODO remove mashalling option

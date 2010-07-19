@@ -34,12 +34,12 @@ Gem::Specification.new do |s|
      "lib/redis-store.rb",
      "lib/redis/distributed_store.rb",
      "lib/redis/factory.rb",
-     "lib/redis/interface.rb",
-     "lib/redis/marshalling.rb",
-     "lib/redis/namespace.rb",
      "lib/redis/store.rb",
-     "lib/redis/ttl.rb",
-     "lib/redis_store/version.rb",
+     "lib/redis/store/interface.rb",
+     "lib/redis/store/marshalling.rb",
+     "lib/redis/store/namespace.rb",
+     "lib/redis/store/ttl.rb",
+     "lib/redis/store/version.rb",
      "redis-store.gemspec",
      "spec/action_controller/session/redis_session_store_spec.rb",
      "spec/active_support/cache/redis_store_spec.rb",
@@ -55,8 +55,8 @@ Gem::Specification.new do |s|
      "spec/redis/distributed_store_spec.rb",
      "spec/redis/factory_spec.rb",
      "spec/redis/marshalling_spec.rb",
-     "spec/redis/namespace_spec.rb",
-     "spec/redis_store/version_spec.rb",
+     "spec/redis/store/namespace_spec.rb",
+     "spec/redis/store/version_spec.rb",
      "spec/spec_helper.rb",
      "tasks/redis.tasks.rb"
   ]
@@ -76,8 +76,8 @@ Gem::Specification.new do |s|
      "spec/redis/distributed_store_spec.rb",
      "spec/redis/factory_spec.rb",
      "spec/redis/marshalling_spec.rb",
-     "spec/redis/namespace_spec.rb",
-     "spec/redis_store/version_spec.rb",
+     "spec/redis/store/namespace_spec.rb",
+     "spec/redis/store/version_spec.rb",
      "spec/spec_helper.rb"
   ]
 

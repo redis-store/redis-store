@@ -8,6 +8,10 @@ class Redis
       _extend_namespace   options
     end
 
+    def self.rails3? #:nodoc:
+      defined?(::Rails) && ::Rails.version =~ /3\.0\.0/
+    end
+
     def to_s
       "Redis Client connected to #{@client.host}:#{@client.port} against DB #{@client.db}"
     end
@@ -15,12 +19,12 @@ class Redis
     private
       def _extend_marshalling(options)
         @marshalling = !(options[:marshalling] === false) # HACK - TODO delegate to Factory
-        extend ::Redis::Marshalling if @marshalling
+        extend Marshalling if @marshalling
       end
 
       def _extend_namespace(options)
         @namespace = options[:namespace]
-        extend ::Redis::Namespace if @namespace
+        extend Namespace if @namespace
       end
   end
 end

@@ -1,19 +1,13 @@
 require "redis"
 require "redis/distributed"
 require "redis/factory"
-require "redis/interface"
-require "redis/ttl"
-require "redis/namespace"
-require "redis/marshalling"
+require "redis/store/interface"
+require "redis/store/ttl"
+require "redis/store/namespace"
+require "redis/store/marshalling"
+require "redis/store/version"
 require "redis/store"
 require "redis/distributed_store"
-require "redis_store/version"
-
-module ::RedisStore
-  def self.rails3? #:nodoc:
-    defined?(::Rails) && ::Rails.version =~ /3\.0\.0/
-  end
-end
 
 # Cache store
 if defined?(Sinatra)
@@ -34,7 +28,7 @@ if defined?(Rack::Session)
 end
 
 # ActionDispatch::Session
-if ::RedisStore.rails3?
+if ::Redis::Store.rails3?
   require "action_controller/session/redis_session_store"
 end
 

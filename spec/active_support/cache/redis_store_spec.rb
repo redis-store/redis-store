@@ -67,7 +67,7 @@ module ActiveSupport
         end
       end
 
-      if ::RedisStore.rails3?
+      if ::Redis::Store.rails3?
         if RUBY_VERSION.match /1\.9/
           it "should read raw data" do
             with_store_management do |store|
@@ -185,7 +185,7 @@ module ActiveSupport
         end
       end
 
-      if ::RedisStore.rails3?
+      if ::Redis::Store.rails3?
         it "should read multiple keys" do
           @store.write "irish whisky", "Jameson"
           rabbit, whisky = @store.read_multi "rabbit", "irish whisky"
@@ -214,7 +214,7 @@ module ActiveSupport
           @store.read("rabbit")
         end
 
-        if ::RedisStore.rails3?
+        if ::Redis::Store.rails3?
           # it "should write the data"
           # it "should write the data" do
           #   @data.should_receive(:set).with("#{@namespace}:rabbit"), Marshal.dump(ActiveSupport::Cache::Entry.new(@white_rabbit)))
@@ -238,7 +238,7 @@ module ActiveSupport
           @store.delete_matched "rabb*"
         end
 
-        if ::RedisStore.rails3?
+        if ::Redis::Store.rails3?
           it "should verify existence of an object in the store" do
             @client.should_receive(:call).with(:get, "#{@namespace}:rabbit")
             @store.exist?("rabbit")
@@ -272,7 +272,7 @@ module ActiveSupport
         end
       end
 
-      if ::RedisStore.rails3?
+      if ::Redis::Store.rails3?
         describe "notifications" do
           it "should notify on #fetch" do
             with_notifications do

@@ -55,7 +55,7 @@ module RedisStore
   end
 end
 
-if ::RedisStore.rails3?
+if ::Redis::Store.rails3?
   class ActionDispatch::Session::RedisSessionStore < ActionDispatch::Session::AbstractStore
     include RedisStore::Rack::Session::Rails
   end
