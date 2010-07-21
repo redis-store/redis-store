@@ -38,3 +38,7 @@ if defined?(Rack::Cache)
   require "rack/cache/redis_metastore"
   require "rack/cache/redis_entitystore"
 end
+
+if defined?(I18n)
+  require "i18n/backend/redis"
+end
