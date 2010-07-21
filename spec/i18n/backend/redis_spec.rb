@@ -37,6 +37,7 @@ describe "I18n::Backend::Redis" do
   it "should get translations" do
     I18n.backend.store_translations :en, :foo => { :bar => { :baz => :bang } }
     I18n.t(:"foo.bar.baz").should == :bang
+    I18n.t(:"baz", :scope => :"foo.bar").should == :bang
   end
 
   it "should not store proc translations" do

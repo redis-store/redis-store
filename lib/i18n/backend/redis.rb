@@ -33,7 +33,7 @@ module I18n
         super locale, key, options
       end
 
-      def store_translations(locale, data, options = { })
+      def store_translations(locale, data, options = {})
         escape = options.fetch(:escape, true)
         flatten_translations(locale, data, escape, false).each do |key, value|
           case value
@@ -55,8 +55,12 @@ module I18n
 
       protected
         def lookup(locale, key, scope = [], options = {})
-          # key   = normalize_flat_keys(locale, key, scope, options[:separator])
+          key = normalize_flat_keys(locale, key, scope, options[:separator])
           @store.get "#{locale}.#{key}"
+        end
+
+        def resolve_link(locale, key)
+          key
         end
     end
   end
