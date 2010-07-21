@@ -1,4 +1,4 @@
-# Rack::Session, Rack::Cache and cache Redis stores for Ruby web frameworks
+# Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks
 
 ## Installation
 
@@ -139,6 +139,14 @@ Provides a Redis store for HTTP caching. See [http://github.com/rtomayko/rack-ca
       :metastore   => 'redis://localhost:6379/0',
       :entitystore => 'redis://localhost:6380/1'
     run Application.new
+
+## I18n
+
+    require "i18n"
+    require "redis-store"
+    I18n.backend = I18n::Backend::Redis.new
+
+The backend accepts the uri string and hash options.
 
 ## Running specs
 

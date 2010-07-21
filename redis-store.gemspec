@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Luca Guidi"]
   s.date = %q{2010-06-19}
-  s.description = %q{Rack::Session, Rack::Cache and cache Redis stores for Ruby web frameworks.}
+  s.description = %q{Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks.}
   s.email = %q{guidi.luca@gmail.com}
   s.extra_rdoc_files = [
     "README.md"
@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
      "lib/active_support/cache/redis_store.rb",
      "lib/cache/merb/redis_store.rb",
      "lib/cache/sinatra/redis_store.rb",
+     "lib/i18n/backend/redis.rb",
      "lib/rack/cache/redis_entitystore.rb",
      "lib/rack/cache/redis_metastore.rb",
      "lib/rack/session/merb.rb",
@@ -48,6 +49,7 @@ Gem::Specification.new do |s|
      "spec/config/master.conf",
      "spec/config/single.conf",
      "spec/config/slave.conf",
+     "spec/i18n/backend/redis_spec.rb",
      "spec/rack/cache/entitystore/pony.jpg",
      "spec/rack/cache/entitystore/redis_spec.rb",
      "spec/rack/cache/metastore/redis_spec.rb",
@@ -64,12 +66,13 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.7}
-  s.summary = %q{Rack::Session, Rack::Cache and cache Redis stores for Ruby web frameworks.}
+  s.summary = %q{Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks.}
   s.test_files = [
     "spec/action_controller/session/redis_session_store_spec.rb",
      "spec/active_support/cache/redis_store_spec.rb",
      "spec/cache/merb/redis_store_spec.rb",
      "spec/cache/sinatra/redis_store_spec.rb",
+     "spec/i18n/backend/redis_spec.rb",
      "spec/rack/cache/entitystore/redis_spec.rb",
      "spec/rack/cache/metastore/redis_spec.rb",
      "spec/rack/session/redis_spec.rb",

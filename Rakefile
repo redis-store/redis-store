@@ -11,8 +11,8 @@ begin
   require "jeweler"
   Jeweler::Tasks.new do |gemspec|
     gemspec.name        = "#{ENV["GEM_PREFIX"]}redis-store"
-    gemspec.summary     = "Rack::Session, Rack::Cache and cache Redis stores for Ruby web frameworks."
-    gemspec.description = "Rack::Session, Rack::Cache and cache Redis stores for Ruby web frameworks."
+    gemspec.summary     = "Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks."
+    gemspec.description = "Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks."
     gemspec.email       = "guidi.luca@gmail.com"
     gemspec.homepage    = "http://github.com/jodosha/redis-store"
     gemspec.authors     = [ "Luca Guidi" ]
