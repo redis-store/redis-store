@@ -3,9 +3,6 @@ ARGV << "-b"
 require "rubygems"
 require "bundler"
 require "methopara" if RUBY_VERSION.match /1\.9/
-Bundler.setup
-
-#require "vendor/gems/environment"
 require "ostruct"
 require "spec"
 require "spec/autorun"
