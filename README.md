@@ -26,7 +26,7 @@ Provides a cache store for your Ruby web framework of choice.
 
 ### Merb
 
-    dependency "redis-store", "0.3.8"
+    dependency "redis-store", "0.3.9"
     dependency("merb-cache", merb_gems_version) do
       Merb::Cache.setup do
         register(:redis, Merb::Cache::RedisStore, :servers => ["127.0.0.1:6379"])
@@ -63,7 +63,7 @@ Provides a Redis store for Rack::Session. See [http://rack.rubyforge.org/doc/Rac
 
 ### Merb
 
-    dependency "redis-store", "0.3.8"
+    dependency "redis-store", "0.3.9"
     Merb::Config.use do |c|
       c[:session_store] = "redis"
     end
