@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Luca Guidi"]
-  s.date = %q{2010-05-21}
+  s.date = %q{2010-08-06}
   s.description = %q{Rack::Session, Rack::Cache and cache Redis stores for Ruby web frameworks.}
   s.email = %q{guidi.luca@gmail.com}
   s.extra_rdoc_files = [
@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   s.files = [
     ".gitignore",
      "Gemfile",
+     "Gemfile.lock",
      "MIT-LICENSE",
      "README.md",
      "Rakefile",
