@@ -13,6 +13,6 @@ class Redis
       ring.nodes
     end
 
-    alias_method :flushdb, :delete_cloud!
+    alias_method :flushdb, :delete_cloud! if respond_to?(:delete_cloud!)
   end
 end
