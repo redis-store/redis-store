@@ -104,6 +104,7 @@ module ActiveSupport
       #   RedisStore.new "localhost:6379/0", "localhost:6380/0"
       #     # => instantiate a cluster
       def initialize(*addresses)
+        super(nil)
         @data = ::Redis::Factory.create(addresses)
       end
 
