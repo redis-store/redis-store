@@ -25,7 +25,7 @@ class Redis
             uri.path.split /\//
           end
         else
-          warn "[DEPRECATION] `#{address_or_options}` is deprecated.  Please use `redis://#{address_or_options}` instead."
+          warn "[DEPRECATION] `#{address_or_options}` is deprecated. Please use `redis://#{address_or_options}` instead."
           host, port = address_or_options.split /\:/
           port, db, namespace = port.split /\// if port
         end
