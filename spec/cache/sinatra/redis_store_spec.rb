@@ -19,7 +19,7 @@ module Sinatra
     describe "Sinatra::Cache::RedisStore" do
       before(:each) do
         @store  = Sinatra::Cache::RedisStore.new
-        @dstore = Sinatra::Cache::RedisStore.new "localhost:6380/1", "localhost:6381/1"
+        @dstore = Sinatra::Cache::RedisStore.new "redis://127.0.0.1:6380/1", "redis://127.0.0.1:6381/1"
         @rabbit = OpenStruct.new :name => "bunny"
         @white_rabbit = OpenStruct.new :color => "white"
         with_store_management do |store|
@@ -40,23 +40,23 @@ module Sinatra
         redis = instantiate_store
         redis.to_s.should == "Redis Client connected to 127.0.0.1:6379 against DB 0"
 
-        redis = instantiate_store "localhost"
-        redis.to_s.should == "Redis Client connected to localhost:6379 against DB 0"
+        redis = instantiate_store "redis://127.0.0.1"
+        redis.to_s.should == "Redis Client connected to 127.0.0.1:6379 against DB 0"
 
-        redis = instantiate_store "localhost:6380"
-        redis.to_s.should == "Redis Client connected to localhost:6380 against DB 0"
+        redis = instantiate_store "redis://127.0.0.1:6380"
+        redis.to_s.should == "Redis Client connected to 127.0.0.1:6380 against DB 0"
 
-        redis = instantiate_store "localhost:6380/13"
-        redis.to_s.should == "Redis Client connected to localhost:6380 against DB 13"
+        redis = instantiate_store "redis://127.0.0.1:6380/13"
+        redis.to_s.should == "Redis Client connected to 127.0.0.1:6380 against DB 13"
 
-        redis = instantiate_store "localhost:6380/13/theplaylist"
-        redis.to_s.should == "Redis Client connected to localhost:6380 against DB 13 with namespace theplaylist"
+        redis = instantiate_store "redis://127.0.0.1:6380/13/theplaylist"
+        redis.to_s.should == "Redis Client connected to 127.0.0.1:6380 against DB 13 with namespace theplaylist"
       end
 
       it "should instantiate a ring" do
         store = instantiate_store
         store.should be_kind_of(Redis::Store)
-        store = instantiate_store ["localhost:6379/0", "localhost:6379/1"]
+        store = instantiate_store ["redis://127.0.0.1:6379/0", "redis://127.0.0.1:6379/1"]
         store.should be_kind_of(Redis::DistributedStore)
       end
 

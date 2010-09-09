@@ -20,7 +20,7 @@ By default each store try to connect on `localhost` with the port `6379` and the
 
 ### String
 
-    "192.168.1.100:23682/13/theplaylist"
+    "redis://192.168.1.100:23682/13/theplaylist"
 
     host: 192.168.1.100
     port: 23682

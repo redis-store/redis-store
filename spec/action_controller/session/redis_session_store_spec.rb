@@ -7,7 +7,7 @@ describe RAILS_SESSION_STORE_CLASS do
   before :each do
     @app = Object.new
     @store  = RAILS_SESSION_STORE_CLASS.new(app)
-    @dstore = RAILS_SESSION_STORE_CLASS.new app, :servers => ["localhost:6380/1", "localhost:6381/1"]
+    @dstore = RAILS_SESSION_STORE_CLASS.new app, :servers => ["redis://127.0.0.1:6380/1", "redis://127.0.0.1:6381/1"]
     @rabbit = OpenStruct.new :name => "bunny"
     @white_rabbit = OpenStruct.new :color => "white"
     with_store_management do |store|
@@ -25,16 +25,16 @@ describe RAILS_SESSION_STORE_CLASS do
     redis = instantiate_store
     redis.to_s.should == "Redis Client connected to 127.0.0.1:6379 against DB 0"
 
-    redis = instantiate_store :servers => "localhost"
+    redis = instantiate_store :servers => "redis://localhost"
     redis.to_s.should == "Redis Client connected to localhost:6379 against DB 0"
 
-    redis = instantiate_store :servers => "localhost:6380"
+    redis = instantiate_store :servers => "redis://localhost:6380"
     redis.to_s.should == "Redis Client connected to localhost:6380 against DB 0"
 
-    redis = instantiate_store :servers => "localhost:6380/13"
+    redis = instantiate_store :servers => "redis://localhost:6380/13"
     redis.to_s.should == "Redis Client connected to localhost:6380 against DB 13"
 
-    redis = instantiate_store :servers => "localhost:6380/13/theplaylist"
+    redis = instantiate_store :servers => "redis://localhost:6380/13/theplaylist"
     redis.to_s.should == "Redis Client connected to localhost:6380 against DB 13 with namespace theplaylist"
   end
 
@@ -55,7 +55,7 @@ describe RAILS_SESSION_STORE_CLASS do
   it "should instantiate a ring" do
     store = instantiate_store
     store.should be_kind_of(Redis::Store)
-    store = instantiate_store :servers => ["localhost:6379/0", "localhost:6379/1"]
+    store = instantiate_store :servers => ["redis://127.0.0.1:6379/0", "redis://127.0.0.1:6379/1"]
     store.should be_kind_of(Redis::DistributedStore)
   end
 

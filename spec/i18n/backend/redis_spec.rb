@@ -12,12 +12,12 @@ describe "I18n::Backend::Redis" do
   end
 
   it "should instantiate a distributed store" do
-    store = I18n::Backend::Redis.new([ "127.0.0.1:6379", "127.0.0.1:6380" ]).store
+    store = I18n::Backend::Redis.new([ "redis://127.0.0.1:6379", "redis://127.0.0.1:6380" ]).store
     store.should be_kind_of(Redis::DistributedStore)
   end
 
   it "should accept string uri" do
-    store = I18n::Backend::Redis.new("127.0.0.1:6380/13/theplaylist").store
+    store = I18n::Backend::Redis.new("redis://127.0.0.1:6380/13/theplaylist").store
     store.to_s.should == "Redis Client connected to 127.0.0.1:6380 against DB 13 with namespace theplaylist"
   end
 
