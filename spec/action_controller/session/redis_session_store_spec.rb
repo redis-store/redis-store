@@ -10,12 +10,14 @@ describe RAILS_SESSION_STORE_CLASS do
     @dstore = RAILS_SESSION_STORE_CLASS.new app, :servers => ["redis://127.0.0.1:6380/1", "redis://127.0.0.1:6381/1"]
     @rabbit = OpenStruct.new :name => "bunny"
     @white_rabbit = OpenStruct.new :color => "white"
+    @sid = "rabbit"
+    @env = {'rack.session.options' => {:id => @sid}}
     with_store_management do |store|
       class << store
         attr_reader :pool
-        public :get_session, :set_session
+        public :get_session, :set_session, :destroy
       end
-      store.set_session({'rack.session.options' => {}}, "rabbit", @rabbit)
+      store.set_session(@env, @sid, @rabbit)
       store.pool.del "counter"
       store.pool.del "rub-a-dub"
     end
@@ -61,22 +63,30 @@ describe RAILS_SESSION_STORE_CLASS do
 
   it "should read the data" do
     with_store_management do |store|
-      store.get_session({}, "rabbit").should === ["rabbit", @rabbit]
+      store.get_session(@env, @sid).should === [@sid, @rabbit]
     end
   end
 
   it "should write the data" do
     with_store_management do |store|
-      store.set_session({"rack.session.options" => {}}, "rabbit", @white_rabbit)
-      store.get_session({}, "rabbit").should === ["rabbit", @white_rabbit]
+      store.set_session(@env, @sid, @white_rabbit)
+      store.get_session(@env, @sid).should === [@sid, @white_rabbit]
+    end
+  end
+
+  it "should delete the data" do
+    with_store_management do |store|
+      store.destroy(@env)
+      store.get_session(@env, @sid).should === [@sid, {}]
     end
   end
 
   it "should write the data with expiration time" do
     with_store_management do |store|
-      store.set_session({"rack.session.options" => {:expires_in => 1.second}}, "rabbit", @white_rabbit)
-      store.get_session({}, "rabbit").should === ["rabbit", @white_rabbit]; sleep 2
-      store.get_session({}, "rabbit").should === ["rabbit", {}]
+      @env['rack.session.options'].merge!(:expires_in => 1.second)
+      store.set_session(@env, @sid, @white_rabbit)
+      store.get_session(@env, @sid).should === [@sid, @white_rabbit]; sleep 2
+      store.get_session(@env, @sid).should === [@sid, {}]
     end
   end
 
@@ -89,13 +99,13 @@ describe RAILS_SESSION_STORE_CLASS do
     end
 
     it "should read the data" do
-      @client.should_receive(:call).with(:get, "#{@namespace}:rabbit")
-      @store.send :get_session, {}, "rabbit"
+      @client.should_receive(:call).with(:get, "#{@namespace}:#{@sid}")
+      @store.send :get_session, @env, @sid
     end
 
     it "should write the data" do
-      @client.should_receive(:call).with(:set, "#{@namespace}:rabbit", Marshal.dump(@white_rabbit))
-      @store.send :set_session, {"rack.session.options" => {}}, "rabbit", @white_rabbit
+      @client.should_receive(:call).with(:set, "#{@namespace}:#{@sid}", Marshal.dump(@white_rabbit))
+      @store.send :set_session, @env, @sid, @white_rabbit
     end
   end
 
