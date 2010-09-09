@@ -26,6 +26,8 @@ class Redis
           end
         else
           warn "[DEPRECATION] `#{address_or_options}` is deprecated. Please use `redis://#{address_or_options}` instead."
+          address_or_options, password = address_or_options.split(/\@/).reverse
+          password = password.gsub(/\:/, "") if password
           host, port = address_or_options.split /\:/
           port, db, namespace = port.split /\// if port
         end
@@ -35,6 +37,7 @@ class Redis
         options[:port] = port || uri.port
         options[:db]  = db.to_i if db
         options[:namespace] = namespace if namespace
+        options[:password]  = password || uri.password
         options
       end
     end

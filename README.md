@@ -20,19 +20,20 @@ By default each store try to connect on `localhost` with the port `6379` and the
 
 ### String
 
-    "redis://192.168.1.100:23682/13/theplaylist"
+    "redis://:secret@192.168.1.100:23682/13/theplaylist"
 
     host: 192.168.1.100
     port: 23682
     db: 13
     namespace: theplaylist
+    password: secret
 
 If you want to specify the `namespace` optional, you have to pass the `db` param too.
 #### __Important__: for now (beta3) `namespace` is only supported for single, non-distributed stores.
 
 ### Hash
 
-    { :host => 192.168.1.100, :port => 23682, :db => 13, :namespace => "theplaylist" }
+    { :host => 192.168.1.100, :port => 23682, :db => 13, :namespace => "theplaylist", :password => "secret" }
 
 #### __Important__: for now (beta3) `namespace` is only supported for single, non-distributed stores.
 
