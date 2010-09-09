@@ -24,5 +24,9 @@ class Redis
     def marshalled_setnx(key, value, options = nil)
       node_for(key).marshalled_setnx(key, value, options)
     end
+
+    def del(key)
+      node_for(key).del(key)
+    end
   end
 end
