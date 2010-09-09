@@ -4,9 +4,9 @@
 
 Download and install Redis from [http://code.google.com/p/redis/](http://code.google.com/p/redis/)
 
-    wget http://redis.googlecode.com/files/redis-2.0.0-rc1.tar.gz
-    tar -zxf redis-2.0.0-rc1.tar.gz
-    mv redis-2.0.0-rc1 redis
+    wget http://redis.googlecode.com/files/redis-2.0.0.tar.gz
+    tar -zxf redis-2.0.0.tar.gz
+    mv redis-2.0.0 redis
     cd redis
     make
 
@@ -28,10 +28,13 @@ By default each store try to connect on `localhost` with the port `6379` and the
     namespace: theplaylist
 
 If you want to specify the `namespace` optional, you have to pass the `db` param too.
+#### __Important__: for now (beta3) `namespace` is only supported for single, non-distributed stores.
 
 ### Hash
 
     { :host => 192.168.1.100, :port => 23682, :db => 13, :namespace => "theplaylist" }
+
+#### __Important__: for now (beta3) `namespace` is only supported for single, non-distributed stores.
 
 ## Cache store
 
@@ -45,7 +48,7 @@ Provides a cache store for your Ruby web framework of choice.
 ### Rails 3.x
 
     # Gemfile
-    gem 'rails', '3.0.0.beta4'
+    gem 'rails', '3.0.0'
     gem 'redis'
     gem 'redis-store', '1.0.0.beta2'
 
@@ -94,7 +97,7 @@ Provides a Redis store for Rack::Session. See [http://rack.rubyforge.org/doc/Rac
 ### Rails 3.x
 
     # Gemfile
-    gem 'rails', '3.0.0.beta4'
+    gem 'rails', '3.0.0'
     gem 'redis'
     gem 'redis-store', '1.0.0.beta2'
 
@@ -154,11 +157,11 @@ The backend accepts the uri string and hash options.
     git clone git://github.com/jodosha/redis-store.git
     cd redis-store
     bundle install
-    REDIS_STORE_ENV=rails3 bundle install # to install Rails 3.x gems
+    REDIS_STORE_ENV=rails3 bundle install # to install Rails 3 gems
     rake dtach:install
     rake redis:install
     rake
-    REDIS_STORE_ENV=rails3 rake # to test against Rails 3.x
+    REDIS_STORE_ENV=rails3 rake # to test against Rails 3
 
 If you are on **Snow Leopard** you have to run `env ARCHFLAGS="-arch x86_64" bundle install`
 
