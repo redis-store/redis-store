@@ -23,7 +23,7 @@ if ENV["REDIS_STORE_ENV"] == "rails3"
   end
 else
   group :test do
-    gem "activesupport", "2.3.8"
-    gem "actionpack", "2.3.8"
+    gem "activesupport", "2.3.9"
+    gem "actionpack", "2.3.9"
   end
 end

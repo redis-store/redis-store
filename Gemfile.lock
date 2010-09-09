@@ -8,10 +8,10 @@ GEM
       ZenTest (~> 4.3)
     ZenTest (4.4.0)
     abstract (1.0.0)
-    actionpack (2.3.8)
-      activesupport (= 2.3.8)
+    actionpack (2.3.9)
+      activesupport (= 2.3.9)
       rack (~> 1.1.0)
-    activesupport (2.3.8)
+    activesupport (2.3.9)
     addressable (2.2.0)
     bcrypt-ruby (2.1.2)
     columnize (0.3.1)
@@ -170,8 +170,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  actionpack (= 2.3.8)
-  activesupport (= 2.3.8)
+  actionpack (= 2.3.9)
+  activesupport (= 2.3.9)
   git
   i18n
   jeweler
