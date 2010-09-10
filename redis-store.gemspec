@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Luca Guidi"]
-  s.date = %q{2010-06-19}
+  s.date = %q{2010-09-10}
   s.description = %q{Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks.}
   s.email = %q{guidi.luca@gmail.com}
   s.extra_rdoc_files = [
@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
     ".gitignore",
      "CHANGELOG",
      "Gemfile",
+     "Gemfile.lock",
      "MIT-LICENSE",
      "README.md",
      "Rakefile",
@@ -56,7 +57,8 @@ Gem::Specification.new do |s|
      "spec/rack/session/redis_spec.rb",
      "spec/redis/distributed_store_spec.rb",
      "spec/redis/factory_spec.rb",
-     "spec/redis/marshalling_spec.rb",
+     "spec/redis/store/interface_spec.rb",
+     "spec/redis/store/marshalling_spec.rb",
      "spec/redis/store/namespace_spec.rb",
      "spec/redis/store/version_spec.rb",
      "spec/spec_helper.rb",
@@ -78,7 +80,8 @@ Gem::Specification.new do |s|
      "spec/rack/session/redis_spec.rb",
      "spec/redis/distributed_store_spec.rb",
      "spec/redis/factory_spec.rb",
-     "spec/redis/marshalling_spec.rb",
+     "spec/redis/store/interface_spec.rb",
+     "spec/redis/store/marshalling_spec.rb",
      "spec/redis/store/namespace_spec.rb",
      "spec/redis/store/version_spec.rb",
      "spec/spec_helper.rb"
