@@ -3,17 +3,17 @@ class Redis
     module Ttl
       def set(key, value, options = nil)
         if ttl = expires_in(options)
-          setex key, ttl, value
+          setex(key, ttl, value)
         else
-          super key, value
+          super(key, value)
         end
       end
 
       def setnx(key, value, options = nil)
         if ttl = expires_in(options)
-          setnx_with_expire key, value, ttl
+          setnx_with_expire(key, value, ttl)
         else
-          super key, value
+          super(key, value)
         end
       end
 

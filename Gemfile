@@ -8,12 +8,16 @@ end
 
 group :development, :test, :rails3 do
   gem "rack"
-  gem "ruby-debug"
   gem "rspec"
   gem "rack-cache"
   gem "merb", "1.1.0"
   gem "i18n"
-  gem "methopara" if RUBY_VERSION.match /1\.9/
+
+  if RUBY_VERSION > '1.9'
+    gem "methopara" # required by merb.
+  else
+    gem "ruby-debug" # linecache isn't compatible with 1.9.2 yet.
+  end
 end
 
 if ENV["REDIS_STORE_ENV"] == "rails3"

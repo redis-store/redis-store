@@ -92,13 +92,15 @@ module Rack
           @store.open('87fe0a1ae82a518592f6b12b0183e950b4541c62').should be_nil
         end
 
-        it 'can store largish bodies with binary data' do
-          pony = ::File.open(::File.dirname(__FILE__) + '/pony.jpg', 'rb') { |f| f.read }
-          key, size = @store.write([pony])
-          key.should == 'd0f30d8659b4d268c5c64385d9790024c2d78deb'
-          data = @store.read(key)
-          data.length.should == pony.length
-          data.hash.should == pony.hash
+        if RUBY_VERSION < '1.9'
+          it 'can store largish bodies with binary data' do
+            pony = ::File.open(::File.dirname(__FILE__) + '/pony.jpg', 'rb') { |f| f.read }
+            key, size = @store.write([pony])
+            key.should == 'd0f30d8659b4d268c5c64385d9790024c2d78deb'
+            data = @store.read(key)
+            data.length.should == pony.length
+            data.hash.should == pony.hash
+          end
         end
 
         it 'deletes stored entries with #purge' do
