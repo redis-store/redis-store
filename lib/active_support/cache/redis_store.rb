@@ -70,6 +70,21 @@ module ::RedisStore
         def delete_entry(key, options)
           @data.del key
         end
+
+        # Add the namespace defined in the options to a pattern designed to match keys.
+        #
+        # This implementation is __different__ than ActiveSupport:
+        # __it doesn't accept Regular expressions__, because the Redis matcher is designed
+        # only for strings with wildcards.
+        def key_matcher(pattern, options)
+          prefix = options[:namespace].is_a?(Proc) ? options[:namespace].call : options[:namespace]
+          if prefix
+            raise "Regexps aren't supported, please use string with wildcards." if pattern.is_a?(Regexp)
+            "#{prefix}:#{pattern}"
+          else
+            pattern
+          end
+        end
     end
 
     module Store
@@ -105,6 +120,7 @@ module ActiveSupport
       #     # => instantiate a cluster
       def initialize(*addresses)
         @data = ::Redis::Factory.create(addresses)
+        super(addresses.extract_options!)
       end
 
       # Reads multiple keys from the cache using a single call to the

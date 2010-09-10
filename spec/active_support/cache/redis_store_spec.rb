@@ -177,7 +177,7 @@ module ActiveSupport
           store.fetch("rub-a-dub").should be_nil
           store.fetch("rub-a-dub") { "Flora de Cana" }
           store.fetch("rub-a-dub").should === "Flora de Cana"
-          store.fetch("rabbit", :force => true).should be_nil # force cache miss
+          store.fetch("rabbit", :force => true) # force cache miss
           store.fetch("rabbit", :force => true, :expires_in => 1.second) { @white_rabbit }
           store.fetch("rabbit").should == @white_rabbit
           sleep 2
@@ -281,7 +281,7 @@ module ActiveSupport
 
             read, generate, write = @events
             read.name.should        == "cache_read.active_support"
-            read.payload.should     == { :key => "radiohead" }
+            read.payload.should     == { :key => "radiohead", :super_operation => :fetch }
             generate.name.should    == "cache_generate.active_support"
             generate.payload.should == { :key => "radiohead" }
             write.name.should       == "cache_write.active_support"
@@ -295,7 +295,7 @@ module ActiveSupport
 
             read = @events.first
             read.name.should    == "cache_read.active_support"
-            read.payload.should == { :key => "metallica" }
+            read.payload.should == { :key => "metallica", :hit => false }
           end
 
           # it "should notify on #read_multi" # Not supported in Rails 3
