@@ -51,7 +51,7 @@ Provides a cache store for your Ruby web framework of choice.
     # Gemfile
     gem 'rails', '3.0.0'
     gem 'redis'
-    gem 'redis-store', '1.0.0.beta2'
+    gem 'redis-store', '1.0.0.beta3'
 
     # config/environments/production.rb
     config.cache_store = :redis_store
@@ -60,7 +60,7 @@ For advanced configurations scenarios please visit [the wiki](http://wiki.github
 
 ### Merb
 
-    dependency "redis-store", "1.0.0.beta2"
+    dependency "redis-store", "1.0.0.beta3"
     dependency("merb-cache", merb_gems_version) do
       Merb::Cache.setup do
         register(:redis, Merb::Cache::RedisStore, :servers => ["127.0.0.1:6379"])
@@ -100,16 +100,16 @@ Provides a Redis store for Rack::Session. See [http://rack.rubyforge.org/doc/Rac
     # Gemfile
     gem 'rails', '3.0.0'
     gem 'redis'
-    gem 'redis-store', '1.0.0.beta2'
+    gem 'redis-store', '1.0.0.beta3'
 
     # config/initializers/session_store.rb
-    Rails.application.config.session_store :redis_session_store
+    MyApp::Application.config.session_store :redis_session_store
 
 For advanced configurations scenarios please visit [the wiki](http://wiki.github.com/jodosha/redis-store/rails).
 
 ### Merb
 
-    dependency "redis-store", "1.0.0.beta2"
+    dependency "redis-store", "1.0.0.beta3"
     Merb::Config.use do |c|
       c[:session_store] = "redis"
     end
@@ -168,4 +168,4 @@ If you are on **Snow Leopard** you have to run `env ARCHFLAGS="-arch x86_64" bun
 
 ## Copyright
 
-(c) 2010 Luca Guidi - [http://lucaguidi.com](http://lucaguidi.com), released under the MIT license
+(c) 2009 - 2010 Luca Guidi - [http://lucaguidi.com](http://lucaguidi.com), released under the MIT license

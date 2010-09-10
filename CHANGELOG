@@ -1,5 +1,29 @@
-*1.0.0 [beta3] (unreleased)*
+*1.0.0 [beta3] (September 10, 2010)*
 
+  * Bump version v1.0.0.beta3
+  * Updated gemspec
+  * Made compatible with Ruby 1.9.2
+  * Made compatible with Rails 3
+  * Making the redis-store rails session store compatible with Rails 2.3.9. [Aaron Gibralter]
+  * Updated to v2.3.9 the development dependencies for Rails 2.x
+  * Added password support
+  * Set default URI string for Rack session store according to redis gem
+  * Require redis:// scheme as mandatory part of URI string
+  * Updated locked dependencies
+  * Added namespace support for Redis::DistrubutedStore
+  * Specs for Interface module
+  * Moved a spec to reflect lib/ structure
+  * Made specs run again with bundler-1.0.0.rc.2
+  * Prepare for bundler-1.0.0.rc.1
+  * Use tmp/ for Redis database dumps
+  * README, gemspec
+  * Lookup for scoped keys
+  * Introducing I18n::Backend::Redis
+  * Don't pollute Redis namespace. closes #16
+  * Don't look twice for Rails module
+  * Fixed loading ActionDispatch::Session issue with Rails 3
+  * ActiveSupport cache now uses new Rails 3 namespace API
+  * Let Rack::Cache entity store to use plain Redis client
   * CHANGELOG
   * Gemspec
   * Redis::DistributedMarshaled => Redis::DistributedStore
