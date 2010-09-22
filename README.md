@@ -46,6 +46,15 @@ Provides a cache store for your Ruby web framework of choice.
     config.gem "redis-store"
     config.cache_store = :redis_store
 
+### Rails 2.x (with Bundler)
+
+    # Gemfile
+    gem "redis-store"
+
+    # in your configuration
+    config.gem "redis-store"
+    config.cache_store = :redis_store
+
 ### Rails 3.x
 
     # Gemfile
@@ -93,6 +102,17 @@ Provides a Redis store for Rack::Session. See [http://rack.rubyforge.org/doc/Rac
 ### Rails 2.x
 
     config.gem "redis-store"
+    ActionController::Base.session_store = :redis_session_store
+
+### Rails 2.x (with Bundler)
+
+    # Gemfile
+    gem "redis-store"
+
+    # in your configuration
+    config.gem "redis-store"
+
+    # config/initializers/session_store.rb
     ActionController::Base.session_store = :redis_session_store
 
 ### Rails 3.x
