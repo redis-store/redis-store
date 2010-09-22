@@ -33,11 +33,11 @@ class Redis
         end
 
         options = {}
-        options[:host] = host || uri.host
-        options[:port] = port || uri.port
+        options[:host] = host || uri && uri.host
+        options[:port] = port || uri && uri.port
         options[:db]  = db.to_i if db
         options[:namespace] = namespace if namespace
-        options[:password]  = password || uri.password
+        options[:password]  = password || uri && uri.password
         options
       end
     end
