@@ -27,9 +27,13 @@ if defined?(Rack::Session)
   end
 end
 
-# ActionDispatch::Session
 if ::Redis::Store.rails3?
+  # ActionDispatch::Session
   require "action_controller/session/redis_session_store"
+elsif defined?(ActiveSupport::Cache)
+  # Force loading, in case you're using Bundler, without requiring the gem with:
+  #   config.gem "redis-store"
+  require "active_support/cache/redis_store"
 end
 
 # Rack::Cache
