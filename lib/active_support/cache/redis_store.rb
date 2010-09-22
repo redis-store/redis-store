@@ -3,6 +3,30 @@ require "redis-store"
 module ::RedisStore
   module Cache
     module Rails2
+      # Instantiate the store.
+      #
+      # Example:
+      #   RedisStore.new
+      #     # => host: localhost,   port: 6379,  db: 0
+      #
+      #   RedisStore.new "example.com"
+      #     # => host: example.com, port: 6379,  db: 0
+      #
+      #   RedisStore.new "example.com:23682"
+      #     # => host: example.com, port: 23682, db: 0
+      #
+      #   RedisStore.new "example.com:23682/1"
+      #     # => host: example.com, port: 23682, db: 1
+      #
+      #   RedisStore.new "example.com:23682/1/theplaylist"
+      #     # => host: example.com, port: 23682, db: 1, namespace: theplaylist
+      #
+      #   RedisStore.new "localhost:6379/0", "localhost:6380/0"
+      #     # => instantiate a cluster
+      def initialize(*addresses)
+        @data = ::Redis::Factory.create(addresses)
+      end
+
       def write(key, value, options = nil)
         super
         method = options && options[:unless_exist] ? :setnx : :set
@@ -42,6 +66,31 @@ module ::RedisStore
     end
 
     module Rails3
+      # Instantiate the store.
+      #
+      # Example:
+      #   RedisStore.new
+      #     # => host: localhost,   port: 6379,  db: 0
+      #
+      #   RedisStore.new "example.com"
+      #     # => host: example.com, port: 6379,  db: 0
+      #
+      #   RedisStore.new "example.com:23682"
+      #     # => host: example.com, port: 23682, db: 0
+      #
+      #   RedisStore.new "example.com:23682/1"
+      #     # => host: example.com, port: 23682, db: 1
+      #
+      #   RedisStore.new "example.com:23682/1/theplaylist"
+      #     # => host: example.com, port: 23682, db: 1, namespace: theplaylist
+      #
+      #   RedisStore.new "localhost:6379/0", "localhost:6380/0"
+      #     # => instantiate a cluster
+      def initialize(*addresses)
+        @data = ::Redis::Factory.create(addresses)
+        super(addresses.extract_options!)
+      end
+
       # Delete objects for matched keys.
       #
       # Example:
@@ -97,31 +146,6 @@ module ActiveSupport
   module Cache
     class RedisStore < Store
       include ::RedisStore::Cache::Store
-
-      # Instantiate the store.
-      #
-      # Example:
-      #   RedisStore.new
-      #     # => host: localhost,   port: 6379,  db: 0
-      #
-      #   RedisStore.new "example.com"
-      #     # => host: example.com, port: 6379,  db: 0
-      #
-      #   RedisStore.new "example.com:23682"
-      #     # => host: example.com, port: 23682, db: 0
-      #
-      #   RedisStore.new "example.com:23682/1"
-      #     # => host: example.com, port: 23682, db: 1
-      #
-      #   RedisStore.new "example.com:23682/1/theplaylist"
-      #     # => host: example.com, port: 23682, db: 1, namespace: theplaylist
-      #
-      #   RedisStore.new "localhost:6379/0", "localhost:6380/0"
-      #     # => instantiate a cluster
-      def initialize(*addresses)
-        @data = ::Redis::Factory.create(addresses)
-        super(addresses.extract_options!)
-      end
 
       # Reads multiple keys from the cache using a single call to the
       # servers for all keys. Options can be passed in the last argument.
