@@ -68,7 +68,7 @@ module Rack
 
           delete = old.keys - new.keys
           warn "//@#{sid}: dropping #{delete*','}" if $DEBUG and not delete.empty?
-          delete.each{|k| cur.del k }
+          delete.each{|k| cur.delete k }
 
           update = new.keys.select{|k| new[k] != old[k] }
           warn "//@#{sid}: updating #{update*','}" if $DEBUG and not update.empty?
