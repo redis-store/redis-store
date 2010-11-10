@@ -117,7 +117,7 @@ module ::RedisStore
         end
 
         def delete_entry(key, options)
-          @data.del key
+          key.include?("*") ? delete_matched(key, options) : @data.del(key)
         end
 
         # Add the namespace defined in the options to a pattern designed to match keys.

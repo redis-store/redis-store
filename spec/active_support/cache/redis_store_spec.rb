@@ -121,6 +121,13 @@ module ActiveSupport
         end
       end
 
+      it "should delete (matched) data when a wildcard is given" do
+        with_store_management do |store|
+          store.delete "rabb*"
+          store.read("rabbit").should be_nil
+        end
+      end
+
       it "should verify existence of an object in the store" do
         with_store_management do |store|
           store.exist?("rabbit").should be_true
