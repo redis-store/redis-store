@@ -9,7 +9,7 @@ class Redis
     end
 
     def self.rails3? #:nodoc:
-      defined?(::Rails) && ::Rails.version =~ /3\.0\.0/
+      defined?(::Rails) && ::Rails::VERSION::MAJOR == 3
     end
 
     def to_s
