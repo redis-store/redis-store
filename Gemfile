@@ -8,7 +8,7 @@ end
 
 group :development, :test, :rails3 do
   gem "rack"
-  gem "rspec"
+  gem "rspec", "~>1.0"
   gem "rack-cache"
   gem "merb", "1.1.0"
   gem "i18n"
