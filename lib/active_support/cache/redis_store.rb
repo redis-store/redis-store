@@ -1,6 +1,6 @@
 require "redis-store"
 
-module ::RedisStore
+module RedisStore
   module Cache
     module Rails2
       # Instantiate the store.
@@ -106,13 +106,17 @@ module ::RedisStore
       protected
         def write_entry(key, entry, options)
           method = options && options[:unless_exist] ? :setnx : :set
+          entry = entry.value.to_s if entry.is_a? ActiveSupport::Cache::Entry
           @data.send method, key, entry, options
         end
 
         def read_entry(key, options)
-          entry = @data.get key, options
-          if entry
+          raw_value = @data.get key, options
+          if raw_value
+            entry = Marshal.load(raw_value) rescue raw_value
             entry.is_a?(ActiveSupport::Cache::Entry) ? entry : ActiveSupport::Cache::Entry.new(entry)
+          else
+            nil
           end
         end
 
@@ -136,9 +140,7 @@ module ::RedisStore
         end
     end
 
-    module Store
-      include ::Redis::Store.rails3? ? Rails3 : Rails2
-    end
+    Store = ::Redis::Store.rails3? ? Rails3 : Rails2
   end
 end
 
