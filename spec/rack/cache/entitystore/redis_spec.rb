@@ -31,6 +31,10 @@ module Rack
 
           cache = Rack::Cache::EntityStore::Redis.resolve(uri("redis://127.0.0.1/13")).cache
           cache.id.should == "redis://127.0.0.1:6379/13"
+
+          cache = Rack::Cache::EntityStore::Redis.resolve(uri("redis://:secret@127.0.0.1")).cache
+          cache.id.should == "redis://127.0.0.1:6379/0"
+          cache.client.password.should == 'secret'
         end
 
         # Entity store shared examples ===========================================
