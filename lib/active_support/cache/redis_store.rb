@@ -48,6 +48,12 @@ module ::RedisStore
         @data.exists key
       end
 
+      def fetch(key,value = nil,*)
+          return @data.get key if @data.exists key
+          ret = yield if block_given?
+          @data.set(key,ret)
+          ret
+      end
       # Delete objects for matched keys.
       #
       # Example:
@@ -102,6 +108,14 @@ module ::RedisStore
           @data.keys(matcher).each { |key| delete_entry(key, options) }
         end
       end
+      
+      #def fetch(key,value = nil,*)
+      #       ret = read_entry(key)
+      #       return ret unless ret.nil?
+      #       ret = yield if block_given?
+      #       write_entry(key,ret)
+      #       ret
+      #end
 
       protected
         def write_entry(key, entry, options)
