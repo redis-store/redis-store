@@ -31,6 +31,10 @@ module Rack
 
           cache = Rack::Cache::MetaStore::Redis.resolve(uri("redis://127.0.0.1/13")).cache
           cache.to_s.should == "Redis Client connected to 127.0.0.1:6379 against DB 13"
+
+          cache = Rack::Cache::MetaStore::Redis.resolve(uri("redis://:secret@127.0.0.1")).cache
+          cache.id.should == "redis://127.0.0.1:6379/0"
+          cache.client.password.should == 'secret'
         end
 
         # Low-level implementation methods ===========================================

@@ -15,7 +15,7 @@ module Rack
         def self.resolve(uri)
           db = uri.path.sub(/^\//, '')
           db = "0" if db.empty?
-          server = { :host => uri.host, :port => uri.port || "6379", :db => db }
+          server = { :host => uri.host, :port => uri.port || "6379", :db => db, :password => uri.password }
           new server
         end
       end
