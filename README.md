@@ -53,17 +53,17 @@ Provides a cache store for your Ruby web framework of choice.
 
     # in your configuration
     config.gem "redis-store"
-    config.cache_store = :redis_store
+    config.cache_store = :redis_store, { ... optional configuration ... }
 
 ### Rails 3.x
 
     # Gemfile
-    gem 'rails', '3.0.0'
+    gem 'rails', '3.0.3'
     gem 'redis'
     gem 'redis-store', '1.0.0.beta3'
 
     # config/environments/production.rb
-    config.cache_store = :redis_store
+    config.cache_store = :redis_store, { ... optional configuration ... }
 
 For advanced configurations scenarios please visit [the wiki](http://wiki.github.com/jodosha/redis-store/rails).
 
@@ -101,7 +101,23 @@ Provides a Redis store for Rack::Session. See [http://rack.rubyforge.org/doc/Rac
 
 ### Rails 2.x
 
+    # config/environment.rb
     config.gem "redis-store"
+
+    # then configure as following:
+
+    # config/environments/*.rb
+    config.cache_store = :redis_store
+
+    # or
+
+    # config/initializers/session_store.rb
+    ActionController::Base.session = {
+      :key         => APPLICATION['session_key'],
+      :secret      => APPLICATION['session_secret'],
+      :key_prefix  => Rails.env
+    }
+
     ActionController::Base.session_store = :redis_session_store
 
 ### Rails 2.x (with Bundler)
@@ -109,16 +125,26 @@ Provides a Redis store for Rack::Session. See [http://rack.rubyforge.org/doc/Rac
     # Gemfile
     gem "redis-store"
 
-    # in your configuration
-    config.gem "redis-store"
+    # then configure as following:
+
+    # config/environments/*.rb
+    config.cache_store = :redis_store
+
+    # or
 
     # config/initializers/session_store.rb
+    ActionController::Base.session = {
+      :key         => APPLICATION['session_key'],
+      :secret      => APPLICATION['session_secret'],
+      :key_prefix  => Rails.env
+    }
+
     ActionController::Base.session_store = :redis_session_store
 
 ### Rails 3.x
 
     # Gemfile
-    gem 'rails', '3.0.0'
+    gem 'rails', '3.0.3'
     gem 'redis'
     gem 'redis-store', '1.0.0.beta3'
 
