@@ -1,5 +1,6 @@
-*1.0.0 [beta4] (not released yet)*
+*1.0.0 [beta4] (December 15, 2010)*
 
+  * Bump version v1.0.0.beta4
   * Force Rails cache store when ActiveSupport is detected
   * Make sure to accept options when :servers isn't passed
   * Always force session store loading when using Rails
