@@ -25,7 +25,7 @@ describe RAILS_SESSION_STORE_CLASS do
 
   it "should accept string connection params" do
     redis = instantiate_store
-    redis.to_s.should == "Redis Client connected to 127.0.0.1:6379 against DB 0"
+    redis.to_s.should == "Redis Client connected to localhost:6379 against DB 0"
 
     redis = instantiate_store :servers => "redis://localhost"
     redis.to_s.should == "Redis Client connected to localhost:6379 against DB 0"
@@ -45,12 +45,17 @@ describe RAILS_SESSION_STORE_CLASS do
     redis.to_s.should == "Redis Client connected to 192.168.0.1:6379 against DB 0"
 
     redis = instantiate_store :servers => [{ :port => "6380" }]
-    redis.to_s.should == "Redis Client connected to localhost:6380 against DB 0"
+    redis.to_s.should == "Redis Client connected to 127.0.0.1:6380 against DB 0"
 
     redis = instantiate_store :servers => [{ :db => 13 }]
-    redis.to_s.should == "Redis Client connected to localhost:6379 against DB 13"
+    redis.to_s.should == "Redis Client connected to 127.0.0.1:6379 against DB 13"
 
     redis = instantiate_store :servers => [{ :key_prefix => "theplaylist" }]
+    redis.to_s.should == "Redis Client connected to 127.0.0.1:6379 against DB 0 with namespace theplaylist"
+  end
+
+  it "should accept options when :servers key isn't passed" do
+    redis = RAILS_SESSION_STORE_CLASS.new(app, :key_prefix => "theplaylist").instance_variable_get(:@pool)
     redis.to_s.should == "Redis Client connected to localhost:6379 against DB 0 with namespace theplaylist"
   end
 

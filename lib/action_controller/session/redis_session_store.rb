@@ -7,12 +7,12 @@ module RedisStore
       # the MemCacheStore code, simply dropping in Redis instead.
       #
       # Options:
-      #  :key     => Same as with the other cookie stores, key name
-      #  :secret  => Encryption secret for the key
-      #  :host    => Redis host name, default is localhost
-      #  :port    => Redis port, default is 6379
-      #  :db      => Database number, defaults to 0. Useful to separate your session storage from other data
-      #  :key_prefix  => Prefix for keys used in Redis, e.g. myapp-. Useful to separate session storage keys visibly from others
+      #  :key          => Same as with the other cookie stores, key name
+      #  :secret       => Encryption secret for the key
+      #  :host         => Redis host name, default is localhost
+      #  :port         => Redis port, default is 6379
+      #  :db           => Database number, defaults to 0. Useful to separate your session storage from other data
+      #  :key_prefix   => Prefix for keys used in Redis, e.g. myapp-. Useful to separate session storage keys visibly from others
       #  :expire_after => A number in seconds to set the timeout interval for the session. Will map directly to expiry in Redis
       module Rails
         def initialize(app, options = {})
@@ -21,12 +21,12 @@ module RedisStore
 
           super
 
-          servers = [options[:servers]].flatten.compact.map do |server_options|
-            {
-              :host => 'localhost',
-              :port => '6379',
-              :db => 0
-            }.update(Redis::Factory.convert_to_redis_client_options(server_options))
+          options = options.dup
+          servers = [ options.delete(:servers) ].flatten.compact
+          servers = [ "redis://localhost:6379/0" ] if servers.empty?
+          servers.map! do |server|
+            server = Redis::Factory.convert_to_redis_client_options(server)
+            server.merge(options)
           end
 
           @pool = Redis::Factory.create(*servers)
