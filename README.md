@@ -29,13 +29,13 @@ By default each store try to connect on `localhost` with the port `6379` and the
     password: secret
 
 If you want to specify the `namespace` optional, you have to pass the `db` param too.
-#### __Important__: for now (beta3) `namespace` is only supported for single, non-distributed stores.
+#### __Important__: for now (beta4) `namespace` is only supported for single, non-distributed stores.
 
 ### Hash
 
     { :host => 192.168.1.100, :port => 23682, :db => 13, :namespace => "theplaylist", :password => "secret" }
 
-#### __Important__: for now (beta3) `namespace` is only supported for single, non-distributed stores.
+#### __Important__: for now (beta4) `namespace` is only supported for single, non-distributed stores.
 
 ## Cache store
 
@@ -60,7 +60,7 @@ Provides a cache store for your Ruby web framework of choice.
     # Gemfile
     gem 'rails', '3.0.3'
     gem 'redis'
-    gem 'redis-store', '1.0.0.beta3'
+    gem 'redis-store', '1.0.0.beta4'
 
     # config/environments/production.rb
     config.cache_store = :redis_store, { ... optional configuration ... }
@@ -69,7 +69,7 @@ For advanced configurations scenarios please visit [the wiki](http://wiki.github
 
 ### Merb
 
-    dependency "redis-store", "1.0.0.beta3"
+    dependency "redis-store", "1.0.0.beta4"
     dependency("merb-cache", merb_gems_version) do
       Merb::Cache.setup do
         register(:redis, Merb::Cache::RedisStore, :servers => ["127.0.0.1:6379"])
@@ -146,7 +146,7 @@ Provides a Redis store for Rack::Session. See [http://rack.rubyforge.org/doc/Rac
     # Gemfile
     gem 'rails', '3.0.3'
     gem 'redis'
-    gem 'redis-store', '1.0.0.beta3'
+    gem 'redis-store', '1.0.0.beta4'
 
     # config/initializers/session_store.rb
     MyApp::Application.config.session_store :redis_session_store
@@ -155,7 +155,7 @@ For advanced configurations scenarios please visit [the wiki](http://wiki.github
 
 ### Merb
 
-    dependency "redis-store", "1.0.0.beta3"
+    dependency "redis-store", "1.0.0.beta4"
     Merb::Config.use do |c|
       c[:session_store] = "redis"
     end
