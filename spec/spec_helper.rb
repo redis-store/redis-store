@@ -19,7 +19,11 @@ begin
   require "action_controller/session/abstract_store" # Rails 2.3.x
 rescue LoadError
   require "action_dispatch/middleware/session/abstract_store" # Rails 3.x
-  module Rails; def self.version; "3.0.0" end end unless defined?(Rails)
+  module ::Rails
+    module VERSION
+      MAJOR = 3
+    end
+  end
 end
 require "active_support/cache/redis_store"
 require "action_controller/session/redis_session_store"
