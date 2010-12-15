@@ -1,3 +1,16 @@
+*1.0.0 [beta4] (not released yet)*
+
+  * Force Rails cache store when ActiveSupport is detected
+  * Make sure to accept options when :servers isn't passed
+  * Always force session store loading when using Rails
+  * Make it compatible with Rails 3 sessions store [Andre Medeiros]
+  * Better Rails 3 detection [Andre Medeiros]
+  * Added support for password in Redis URI resolution [Jacob Gyllenstierna]
+  * fix deleting values from session hash [Calvin Yu]
+  * Use defensive design when build options for a store
+  * ActiveSupport cache store doesn't accept any argument in Rails 2
+  * Updated dependencies
+
 *1.0.0 [beta3] (September 10, 2010)*
 
   * Bump version v1.0.0.beta3
