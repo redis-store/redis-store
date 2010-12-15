@@ -10,6 +10,7 @@ group :development, :test, :rails3 do
   gem "rack"
   gem "rack-cache"
   gem "merb", "1.1.0"
+  gem "rspec", "1.3.0"
   gem "i18n"
 
   if RUBY_VERSION > '1.9'
@@ -21,13 +22,11 @@ end
 
 if ENV["REDIS_STORE_ENV"] == "rails3"
   group :rails3 do
-    gem "rspec", "2.3.0"
     gem "activesupport", "3.0.3"
     gem "actionpack", "3.0.3"
   end
 else
   group :test do
-    gem "rspec", "1.3.0"
     gem "activesupport", "2.3.10"
     gem "actionpack", "2.3.10"
   end
