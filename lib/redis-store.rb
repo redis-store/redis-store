@@ -27,8 +27,7 @@ if defined?(Rack::Session)
   end
 end
 
-# ActionDispatch::Session
-if ::Redis::Store.rails3?
+if defined?(Rails)
   require "action_controller/session/redis_session_store"
 end
 
