@@ -122,13 +122,13 @@ module ::RedisStore
 
         # Add the namespace defined in the options to a pattern designed to match keys.
         #
-        # This implementation is __different__ than ActiveSupport:
-        # __it doesn't accept Regular expressions__, because the Redis matcher is designed
-        # only for strings with wildcards.
+        # Since Redis uses strings with wildcards instead of regular expressions, any
+        # regular expression will be converted to it's string source, via Regexp#source.
         def key_matcher(pattern, options)
-          prefix = options[:namespace].is_a?(Proc) ? options[:namespace].call : options[:namespace]
+          prefix  = options[:namespace].is_a?(Proc) ? options[:namespace].call : options[:namespace]
+          pattern = pattern.source if pattern.is_a?(Regexp)
+
           if prefix
-            raise "Regexps aren't supported, please use string with wildcards." if pattern.is_a?(Regexp)
             "#{prefix}:#{pattern}"
           else
             pattern
