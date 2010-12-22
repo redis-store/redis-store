@@ -121,9 +121,16 @@ module ActiveSupport
         end
       end
 
-      it "should delete matched data via regular expression" do
+      it "should delete matched data via fake regular expression" do
         with_store_management do |store|
           store.delete_matched %r{rabb*}
+          store.read("rabbit").should be_nil
+        end
+      end
+
+      it "should delete matched data via real regular expression" do
+        with_store_management do |store|
+          store.delete_matched %r{rabb.*}
           store.read("rabbit").should be_nil
         end
       end

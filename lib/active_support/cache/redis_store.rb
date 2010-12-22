@@ -124,9 +124,14 @@ module ::RedisStore
         #
         # Since Redis uses strings with wildcards instead of regular expressions, any
         # regular expression will be converted to it's string source, via Regexp#source.
+        # Any ".*" portions of the regular expression will also be replace with "*" to be
+        # compatible with Redis.
         def key_matcher(pattern, options)
           prefix  = options[:namespace].is_a?(Proc) ? options[:namespace].call : options[:namespace]
-          pattern = pattern.source if pattern.is_a?(Regexp)
+
+          if pattern.is_a?(Regexp)
+            pattern = pattern.source.gsub('.*', '*')
+          end
 
           if prefix
             "#{prefix}:#{pattern}"
