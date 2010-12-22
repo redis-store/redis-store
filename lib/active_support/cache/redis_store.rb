@@ -127,7 +127,7 @@ module ::RedisStore
         # Any ".*" portions of the regular expression will also be replace with "*" to be
         # compatible with Redis.
         def key_matcher(pattern, options)
-          prefix  = options[:namespace].is_a?(Proc) ? options[:namespace].call : options[:namespace]
+          prefix = options[:namespace].is_a?(Proc) ? options[:namespace].call : options[:namespace]
 
           if pattern.is_a?(Regexp)
             pattern = pattern.source.gsub('.*', '*')
