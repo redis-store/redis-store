@@ -4,6 +4,7 @@ module Sinatra
       def register(app)
         app.set :cache, RedisStore.new
       end
+      alias_method :registered, :register
     end
 
     class RedisStore

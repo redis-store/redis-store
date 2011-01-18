@@ -83,9 +83,11 @@ For advanced configurations scenarios please visit [the wiki](http://wiki.github
     class MyApp < Sinatra::Base
       register Sinatra::Cache
       get "/hi" do
-        cache.fetch("greet") { "Hello, World!" }
+        settings.cache.fetch("greet") { "Hello, World!" }
       end
     end
+
+Keep in mind that the above fetch will return "OK" on success, not the return of the block.
 
 ## Rack::Session
 
