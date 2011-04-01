@@ -1,5 +1,5 @@
 source :gemcutter
-gem "redis", ">= 2.0.0"
+gem "redis", "~> 2.2.0"
 
 group :development do
   gem "jeweler"
@@ -22,12 +22,12 @@ end
 
 if ENV["REDIS_STORE_ENV"] == "rails3"
   group :rails3 do
-    gem "activesupport", "3.0.3"
-    gem "actionpack", "3.0.3"
+    gem "activesupport", "3.0.5"
+    gem "actionpack", "3.0.5"
   end
 else
   group :test do
-    gem "activesupport", "2.3.10"
-    gem "actionpack", "2.3.10"
+    gem "activesupport", "2.3.11"
+    gem "actionpack", "2.3.11"
   end
 end
