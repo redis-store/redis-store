@@ -171,7 +171,7 @@ For advanced configurations scenarios please visit [the wiki](http://wiki.github
     require "redis-store"
 
     class MyApp < Sinatra::Base
-      use Rack::Session::Redis
+      use Rack::Session::Redis, :redis_server => 'redis://127.0.0.1:6379/0' # Redis server on localhost port 6379, database 0
 
       get "/" do
         session[:visited_at] = DateTime.now.to_s # This is stored in Redis
