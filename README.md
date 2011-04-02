@@ -65,7 +65,7 @@ Provides a cache store for your Ruby web framework of choice.
     # config/environments/production.rb
     config.cache_store = :redis_store, { ... optional configuration ... }
 
-For advanced configurations scenarios please visit [the wiki](http://wiki.github.com/jodosha/redis-store/rails).
+For advanced configurations scenarios please visit [the wiki](https://github.com/jodosha/redis-store/wiki/Frameworks-Configuration).
 
 ### Merb
 
@@ -88,6 +88,8 @@ For advanced configurations scenarios please visit [the wiki](http://wiki.github
     end
 
 Keep in mind that the above fetch will return "OK" on success, not the return of the block.
+
+For advanced configurations scenarios please visit [the wiki](https://github.com/jodosha/redis-store/wiki/Frameworks-Configuration).
 
 ## Rack::Session
 
@@ -153,7 +155,7 @@ Provides a Redis store for Rack::Session. See [http://rack.rubyforge.org/doc/Rac
     # config/initializers/session_store.rb
     MyApp::Application.config.session_store :redis_session_store
 
-For advanced configurations scenarios please visit [the wiki](http://wiki.github.com/jodosha/redis-store/rails).
+For advanced configurations scenarios please visit [the wiki](https://github.com/jodosha/redis-store/wiki/Frameworks-Configuration).
 
 ### Merb
 
@@ -178,6 +180,8 @@ For advanced configurations scenarios please visit [the wiki](http://wiki.github
         "Hello, visitor."
       end
     end
+
+For advanced configurations scenarios please visit [the wiki](https://github.com/jodosha/redis-store/wiki/Frameworks-Configuration).
 
 ## Rack::Cache
 
