@@ -14,6 +14,10 @@ class Redis
       ring.nodes
     end
 
+    def reconnect
+      nodes.each {|node| node.reconnect }
+    end
+
     def set(key, value, options = nil)
       node_for(key).set(key, value, options)
     end

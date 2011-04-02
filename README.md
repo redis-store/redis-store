@@ -204,6 +204,10 @@ Provides a Redis store for HTTP caching. See [http://github.com/rtomayko/rack-ca
 
 The backend accepts the uri string and hash options.
 
+## Unicorn
+
+Use `Rails.cache.reconnect` in your Unicorn hooks, in order to force the client reconnection.
+
 ## Running specs
 
     gem install jeweler bundler

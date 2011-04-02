@@ -227,6 +227,11 @@ module ActiveSupport
       def stats
         @data.info
       end
+
+      # Force client reconnection, useful Unicorn deployed apps.
+      def reconnect
+        @data.reconnect
+      end
     end
   end
 end

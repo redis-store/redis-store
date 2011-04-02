@@ -39,6 +39,12 @@ module ActiveSupport
         store.should be_kind_of(Redis::DistributedStore)
       end
 
+      it "should force reconnection" do
+        data = @store.instance_variable_get(:@data)
+        data.should_receive(:reconnect)
+        @store.reconnect
+      end
+
       it "should read the data" do
         with_store_management do |store|
           store.read("rabbit").should === @rabbit

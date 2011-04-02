@@ -12,6 +12,10 @@ class Redis
       defined?(::Rails) && ::Rails::VERSION::MAJOR == 3
     end
 
+    def reconnect
+      @client.reconnect
+    end
+
     def to_s
       "Redis Client connected to #{@client.host}:#{@client.port} against DB #{@client.db}"
     end
