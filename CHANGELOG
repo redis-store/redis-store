@@ -1,3 +1,12 @@
+*1.0.0 [beta5] (April 2, 2011)*
+
+  * Bump version v1.0.0.beta5
+  * Introducing Rails.cache.reconnect, useful for Unicorn environments. Closes #21
+  * Namespaced i18n backend should strip namespace when lists available locales. Closes #62
+  * how to configure Redis session store in Sinatra [Christian von Kleist]
+  * gracefully handle Connection Refused errors, allows database fall-back on fetch [Michael Kintzer]
+  * Sinatra's API must have changed, its registered not register. [Michael D'Auria]
+
 *1.0.0 [beta4] (December 15, 2010)*
 
   * Bump version v1.0.0.beta4

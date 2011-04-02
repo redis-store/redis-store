@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{redis-store}
-  s.version = "1.0.0.beta4"
+  s.version = "1.0.0.beta5"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Luca Guidi"]
-  s.date = %q{2010-12-15}
+  s.date = %q{2011-04-02}
   s.description = %q{Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks.}
   s.email = %q{guidi.luca@gmail.com}
   s.extra_rdoc_files = [
@@ -46,9 +46,9 @@ Gem::Specification.new do |s|
     "spec/active_support/cache/redis_store_spec.rb",
     "spec/cache/merb/redis_store_spec.rb",
     "spec/cache/sinatra/redis_store_spec.rb",
-    "spec/config/master.conf",
-    "spec/config/single.conf",
-    "spec/config/slave.conf",
+    "spec/config/node-one.conf",
+    "spec/config/node-two.conf",
+    "spec/config/redis.conf",
     "spec/i18n/backend/redis_spec.rb",
     "spec/rack/cache/entitystore/pony.jpg",
     "spec/rack/cache/entitystore/redis_spec.rb",
@@ -60,6 +60,7 @@ Gem::Specification.new do |s|
     "spec/redis/store/marshalling_spec.rb",
     "spec/redis/store/namespace_spec.rb",
     "spec/redis/store/version_spec.rb",
+    "spec/redis/store_spec.rb",
     "spec/spec_helper.rb",
     "tasks/redis.tasks.rb"
   ]
@@ -82,6 +83,7 @@ Gem::Specification.new do |s|
     "spec/redis/store/marshalling_spec.rb",
     "spec/redis/store/namespace_spec.rb",
     "spec/redis/store/version_spec.rb",
+    "spec/redis/store_spec.rb",
     "spec/spec_helper.rb"
   ]
 
@@ -90,10 +92,9 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<redis>, [">= 2.0.0"])
+      s.add_runtime_dependency(%q<redis>, ["~> 2.2.0"])
       s.add_development_dependency(%q<jeweler>, [">= 0"])
       s.add_development_dependency(%q<git>, [">= 0"])
-      s.add_development_dependency(%q<rack>, [">= 0"])
       s.add_development_dependency(%q<rack-cache>, [">= 0"])
       s.add_development_dependency(%q<merb>, ["= 1.1.0"])
       s.add_development_dependency(%q<rspec>, ["= 1.3.0"])
@@ -101,10 +102,9 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<ruby-debug>, [">= 0"])
       s.add_runtime_dependency(%q<redis>, [">= 2.0.0"])
     else
-      s.add_dependency(%q<redis>, [">= 2.0.0"])
+      s.add_dependency(%q<redis>, ["~> 2.2.0"])
       s.add_dependency(%q<jeweler>, [">= 0"])
       s.add_dependency(%q<git>, [">= 0"])
-      s.add_dependency(%q<rack>, [">= 0"])
       s.add_dependency(%q<rack-cache>, [">= 0"])
       s.add_dependency(%q<merb>, ["= 1.1.0"])
       s.add_dependency(%q<rspec>, ["= 1.3.0"])
@@ -113,10 +113,9 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<redis>, [">= 2.0.0"])
     end
   else
-    s.add_dependency(%q<redis>, [">= 2.0.0"])
+    s.add_dependency(%q<redis>, ["~> 2.2.0"])
     s.add_dependency(%q<jeweler>, [">= 0"])
     s.add_dependency(%q<git>, [">= 0"])
-    s.add_dependency(%q<rack>, [">= 0"])
     s.add_dependency(%q<rack-cache>, [">= 0"])
     s.add_dependency(%q<merb>, ["= 1.1.0"])
     s.add_dependency(%q<rspec>, ["= 1.3.0"])
