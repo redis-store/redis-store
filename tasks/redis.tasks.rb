@@ -40,7 +40,7 @@ class RedisRunner
   end
 
   def self.stop
-    system %(echo "SHUTDOWN" | nc localhost #{port})
+    system %(redis-cli -p #{port} SHUTDOWN)
   end
 end
 
