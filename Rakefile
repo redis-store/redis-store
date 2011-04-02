@@ -28,7 +28,7 @@ end
 namespace :spec do
   desc "Run all the examples by starting a detached Redis instance"
   task :suite => :prepare do
-    invoke_with_redis_cluster "spec:run"
+    invoke_with_redis_replication "spec:run"
   end
 
   Spec::Rake::SpecTask.new(:run) do |t|
@@ -39,7 +39,7 @@ end
 
 desc "Run all examples with RCov"
 task :rcov => :prepare do
-  invoke_with_redis_cluster "rcov_run"
+  invoke_with_redis_replication "rcov_run"
 end
 
 Spec::Rake::SpecTask.new(:rcov_run) do |t|
