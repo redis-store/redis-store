@@ -107,6 +107,8 @@ module ::RedisStore
         def write_entry(key, entry, options)
           method = options && options[:unless_exist] ? :setnx : :set
           @data.send method, key, entry, options
+        rescue Errno::ECONNREFUSED => e
+          false
         end
 
         def read_entry(key, options)
@@ -114,10 +116,14 @@ module ::RedisStore
           if entry
             entry.is_a?(ActiveSupport::Cache::Entry) ? entry : ActiveSupport::Cache::Entry.new(entry)
           end
+        rescue Errno::ECONNREFUSED => e
+          nil
         end
 
         def delete_entry(key, options)
           @data.del key
+        rescue Errno::ECONNREFUSED => e
+          false
         end
 
         # Add the namespace defined in the options to a pattern designed to match keys.
