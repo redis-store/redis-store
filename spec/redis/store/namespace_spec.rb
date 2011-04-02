@@ -50,8 +50,8 @@ describe "Redis::Store::Namespace" do
   end
 
   it "should namespace keys" do
-    @client.should_receive(:call).with(:keys, "#{@namespace}:rabb*").and_return [ "#{@namespace}:rabbit" ]
-    @store.keys "rabb*"
+    @store.set "rabbit", @rabbit
+    @store.keys("rabb*").should == [ "rabbit" ]
   end
 
   it "should namespace exists" do

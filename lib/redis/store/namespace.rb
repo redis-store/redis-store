@@ -26,7 +26,7 @@ class Redis
       end
 
       def keys(pattern = "*")
-        namespace(pattern) { |pattern| super(pattern) }
+        namespace(pattern) { |pattern| super(pattern).map{|key| strip_namespace(key) } }
       end
 
       def del(*keys)
@@ -47,7 +47,15 @@ class Redis
         end
 
         def interpolate(key)
-          key.match(%r{^#{@namespace}\:}) ? key : "#{@namespace}:#{key}"
+          key.match(namespace_regexp) ? key : "#{@namespace}:#{key}"
+        end
+
+        def strip_namespace(key)
+          key.gsub namespace_regexp, ""
+        end
+
+        def namespace_regexp
+          @namespace_regexp ||= %r{^#{@namespace}\:}
         end
     end
   end
