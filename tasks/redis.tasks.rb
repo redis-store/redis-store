@@ -154,7 +154,7 @@ namespace :redis do
 
     commit = case ENV['VERSION']
       when "1.2.6" then "570e43c8285a4e5e3f31"
-      when "2.2.3" then "27fc6199cae1933dc1e7"
+      when "2.2.4" then "2b886275e9756bb8619a"
     end
 
     arguments = commit.nil? ? "pull origin master" : "reset --hard #{commit}"
