@@ -54,7 +54,7 @@ module ::RedisStore
       #   cache.del_matched "rab*"
       def delete_matched(matcher, options = nil)
         instrument(:delete_matched, matcher, options) do
-          @data.keys(matcher).each { |key| @data.del key }
+          !(keys = @data.keys(matcher)).empty? && @data.del(*keys)
         end
       end
 
@@ -99,7 +99,11 @@ module ::RedisStore
         options = merged_options(options)
         instrument(:delete_matched, matcher.inspect) do
           matcher = key_matcher(matcher, options)
-          @data.keys(matcher).each { |key| delete_entry(key, options) }
+          begin
+            !(keys = @data.keys(matcher)).empty? && @data.del(*keys)
+          rescue Errno::ECONNREFUSED => e
+            false
+          end
         end
       end
 
@@ -118,12 +122,6 @@ module ::RedisStore
           end
         rescue Errno::ECONNREFUSED => e
           nil
-        end
-
-        def delete_entry(key, options)
-          @data.del key
-        rescue Errno::ECONNREFUSED => e
-          false
         end
 
         # Add the namespace defined in the options to a pattern designed to match keys.
