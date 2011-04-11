@@ -22,7 +22,7 @@ class Redis
 
       private
         def _marshal(val, options)
-          yield marshal?(options) ? val : Marshal.dump(val)
+          yield marshal?(options) ? Marshal.dump(val) : val.value.to_s
         end
 
         def _unmarshal(val, options)
@@ -30,11 +30,11 @@ class Redis
         end
 
         def marshal?(options)
-          options && options[:raw]
+          !(options && options[:raw])
         end
 
         def unmarshal?(result, options)
-          result && result.size > 0 && !marshal?(options)
+          result && result.size > 0 && marshal?(options)
         end
     end
   end
