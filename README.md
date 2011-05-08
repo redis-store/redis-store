@@ -2,6 +2,14 @@
 
 ## Installation
 
+### Redis, Option 1: Homebrew
+
+MacOS X users should use [Homebrew](https://github.com/mxcl/homebrew) to install Redis:
+
+    brew install redis
+    
+### Redis, Option 2: From Source
+
 Download and install Redis from [http://code.google.com/p/redis/](http://code.google.com/p/redis/)
 
     wget http://redis.googlecode.com/files/redis-2.0.0.tar.gz
@@ -10,17 +18,22 @@ Download and install Redis from [http://code.google.com/p/redis/](http://code.go
     cd redis
     make
 
-Install the gem
+### Install the Gem
 
-    sudo gem install redis-store
+Assuming you're using RVM or on Windows, install the gem with:
+
+    gem install redis-store
 
 ## Options
-There are two ways to configure the Redis server options: by an URI string and by an hash.
-By default each store try to connect on `localhost` with the port `6379` and the db `0`.
+You can specify the Redis configuration details using a URI or a hash.  By default the gem will attempt to connect to `localhost` port `6379` and the db `0`.
 
-### String
+### Set by URI
+
+For example
 
     "redis://:secret@192.168.1.100:23682/13/theplaylist"
+
+Made up of the following:
 
     host: 192.168.1.100
     port: 23682
@@ -28,10 +41,10 @@ By default each store try to connect on `localhost` with the port `6379` and the
     namespace: theplaylist
     password: secret
 
-If you want to specify the `namespace` optional, you have to pass the `db` param too.
+If you want to specify the `namespace` option, you have to pass the `db` param too.
 #### __Important__: for now (beta5) `namespace` is only supported for single, non-distributed stores.
 
-### Hash
+### Set by Hash
 
     { :host => 192.168.1.100, :port => 23682, :db => 13, :namespace => "theplaylist", :password => "secret" }
 
@@ -58,7 +71,6 @@ Provides a cache store for your Ruby web framework of choice.
 ### Rails 3.x
 
     # Gemfile
-    gem 'rails', '3.0.3'
     gem 'redis'
     gem 'redis-store', '1.0.0.beta5'
 
