@@ -45,9 +45,13 @@ module Merb
       end
 
       def fetch(key, parameters = {}, conditions = {}, &blk)
-        read(key, parameters) || (write key, yield, parameters, conditions if block_given?)
+        (data = read(key, parameters)) || block_given? && begin
+          data = yield
+          write(key, data, parameters, conditions)
+        end
+        data || nil
       end
-
+      
       def exists?(key, parameters = {})
         @data.exists normalize(key, parameters)
       end
