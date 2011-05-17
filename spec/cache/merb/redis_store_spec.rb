@@ -96,7 +96,7 @@ module Merb
         with_store_management do |store|
           store.fetch("rabbit").should == @rabbit
           store.fetch("rub-a-dub").should be_nil
-          store.fetch("rub-a-dub") { "Flora de Cana" }
+          store.fetch("rub-a-dub") { "Flora de Cana" }.should == "Flora de Cana"
           store.fetch("rub-a-dub").should === "Flora de Cana"
         end
       end
