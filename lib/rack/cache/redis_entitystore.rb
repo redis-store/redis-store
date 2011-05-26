@@ -13,10 +13,7 @@ module Rack
         end
 
         def self.resolve(uri)
-          db = uri.path.sub(/^\//, '')
-          db = "0" if db.empty?
-          server = { :host => uri.host, :port => uri.port || "6379", :db => db, :password => uri.password }
-          new server
+          new ::Redis::Factory.convert_to_redis_client_options(uri.to_s)
         end
       end
 
