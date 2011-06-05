@@ -204,8 +204,8 @@ Provides a Redis store for HTTP caching. See [http://github.com/rtomayko/rack-ca
     require "redis-store"
     require "application"
     use Rack::Cache,
-      :metastore   => 'redis://localhost:6379/0',
-      :entitystore => 'redis://localhost:6380/1'
+      :metastore   => 'redis://localhost:6379/0/metastore',
+      :entitystore => 'redis://localhost:6380/0/entitystore'
     run Application.new
 
 ## I18n
