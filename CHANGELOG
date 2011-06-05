@@ -1,16 +1,11 @@
 *1.0.0 [rc1] (June 5, 2011)*
 
-	* Re-implement the delete_entry because it s needed by the
-	ActiveSupport::Cache [Cyril Mougel]
-	* Change readme documentation for rack-cache to use single redis database with namespace support per Redis maintainers recommendation [Travis D. Warlick, Jr.]
-	* Rack-Cache entity and meta store base classes should use the
-	Redis::Factory.convert_to_redis_client_options method for DRYness and for
-	namespace support [Travis D. Warlick, Jr.]
-	* Modify #fetch for cache stores to return the yielded value instead of OK
-	[Rune Botten]
-	* Minor revisions to Readme language and organization [Jeff Casimir]
-	* Re-implement the delete_entry because it s needed by the
-	ActiveSupport::Cache implementation in Rails 3 [Cyril Mougel]
+  * Re-implement the delete_entry because it s needed by the ActiveSupport::Cache [Cyril Mougel]
+  * Change readme documentation for rack-cache to use single redis database with namespace support per Redis maintainers recommendation [Travis D. Warlick, Jr.]
+  * Rack-Cache entity and meta store base classes should use the Redis::Factory.convert_to_redis_client_options method for DRYness and for namespace support [Travis D. Warlick, Jr.]
+  * Modify #fetch for cache stores to return the yielded value instead of OK [Rune Botten]
+  * Minor revisions to Readme language and organization [Jeff Casimir]
+  * Re-implement the delete_entry because it s needed by the ActiveSupport::Cache implementation in Rails 3 [Cyril Mougel]
   * Refactor delete_matched [Andrei Kulakov]
 
 *1.0.0 [beta5] (April 2, 2011)*
