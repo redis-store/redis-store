@@ -124,6 +124,18 @@ module ::RedisStore
           nil
         end
 
+        ##
+        # Implement the ActiveSupport::Cache#delete_entry
+        #
+        # It's really needed and use
+        #
+        def delete_entry(key, options)
+          @data.del key
+        rescue Errno::ECONNREFUSED => e
+          false
+        end
+
+
         # Add the namespace defined in the options to a pattern designed to match keys.
         #
         # This implementation is __different__ than ActiveSupport:
