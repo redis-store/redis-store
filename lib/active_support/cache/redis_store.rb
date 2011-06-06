@@ -89,6 +89,8 @@ module ::RedisStore
       def initialize(*addresses)
         @data = ::Redis::Factory.create(addresses)
         super(addresses.extract_options!)
+        extend  ActiveSupport::Cache::Strategy::LocalCache
+        extend LocalCacheWithRaw
       end
 
       # Delete objects for matched keys.
@@ -152,6 +154,20 @@ module ::RedisStore
         end
     end
 
+    # Provide support for raw values in the local cache strategy.
+    module LocalCacheWithRaw # :nodoc:
+      protected
+        def write_entry(key, entry, options) # :nodoc:
+          retval = super
+          if options[:raw] && local_cache && retval
+            raw_entry = Entry.new(entry.value.to_s)
+            raw_entry.expires_at = entry.expires_at
+            local_cache.write_entry(key, raw_entry, options)
+          end
+          retval
+        end
+    end
+
     module Store
       include ::Redis::Store.rails3? ? Rails3 : Rails2
     end
@@ -194,7 +210,7 @@ module ActiveSupport
       #
       #   cache.increment "rabbit"
       #   cache.read "rabbit", :raw => true       # => "1"
-      def increment(key, amount = 1)
+      def increment(key, amount = 1, options=nil)
         instrument(:increment, key, :amount => amount) do
           @data.incrby key, amount
         end
@@ -221,14 +237,14 @@ module ActiveSupport
       #
       #   cache.decrement "rabbit"
       #   cache.read "rabbit", :raw => true       # => "-1"
-      def decrement(key, amount = 1)
+      def decrement(key, amount = 1, options=nil)
         instrument(:decrement, key, :amount => amount) do
           @data.decrby key, amount
         end
       end
 
       # Clear all the data from the store.
-      def clear
+      def clear(options=nil)
         instrument(:clear, nil, nil) do
           @data.flushdb
         end
