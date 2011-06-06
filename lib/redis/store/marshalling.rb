@@ -1,3 +1,5 @@
+require 'json'
+
 class Redis
   class Store < self
     module Marshalling
@@ -22,11 +24,32 @@ class Redis
 
       private
         def _marshal(val, options)
-          yield marshal?(options) ? Marshal.dump(val) : val
+          if marshal?(options)
+            val = case val
+              when String
+                val
+              when Array,Hash
+                val.to_json
+              else
+                Marshal.dump(val)
+              end
+          end
+          yield val
         end
 
         def _unmarshal(val, options)
-          unmarshal?(val, options) ? Marshal.load(val) : val
+          if unmarshal?(val, options)
+            case
+            when val.start_with?("{","[")
+              JSON.parse(val) rescue val
+            when val.start_with?("\004")
+              Marshal.load(val) rescue val
+            else
+              val
+            end
+          else
+            val
+          end
         end
 
         def marshal?(options)
@@ -39,3 +62,4 @@ class Redis
     end
   end
 end
+
