@@ -153,8 +153,8 @@ namespace :redis do
     sh "mv redis vendor"
 
     commit = case ENV['VERSION']
-      when "1.2.6" then "570e43c8285a4e5e3f31"
-      when "2.2.4" then "2b886275e9756bb8619a"
+      when "1.3.12" then "26ef09a83526e5099bce"
+      when "2.2.8"  then "ec279203df0bc6ddc981"
     end
 
     arguments = commit.nil? ? "pull origin master" : "reset --hard #{commit}"
@@ -186,7 +186,7 @@ namespace :redis do
       system "bundle exec irb -I lib -I extra -r redis-store.rb"
       RedisReplicationRunner.stop
     end
-  end  
+  end
 end
 
 namespace :dtach do
