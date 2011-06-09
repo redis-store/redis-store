@@ -149,6 +149,22 @@ module ActiveSupport
         end
       end
 
+      it "should increment a raw key" do
+        with_store_management do |store|
+          store.write("raw-counter", 1, :raw => true).should be_true
+          store.increment("raw-counter", 2)
+          store.read("raw-counter", :raw => true).to_i.should == 3
+        end
+      end
+
+      it "should decrement a raw key" do
+        with_store_management do |store|
+          store.write("raw-counter", 3, :raw => true).should be_true
+          store.decrement("raw-counter", 2)
+          store.read("raw-counter", :raw => true).to_i.should == 1
+        end
+      end
+
       it "should increment a key by given value" do
         with_store_management do |store|
           store.increment "counter", 3
