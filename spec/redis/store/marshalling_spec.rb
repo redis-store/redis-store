@@ -32,6 +32,11 @@ describe "Redis::Marshalling" do
     end
   end
 
+  it "should not marshal object on set if it's a Fixnum" do
+    @store.set("number", 1)
+    @store.get("number", :raw => true).should == "1"
+  end
+
   it "should not marshal object on set if raw option is true" do
     @store.set "rabbit", @white_rabbit, :raw => true
     @store.get("rabbit", :raw => true).should == %(#<OpenStruct color="white">)
