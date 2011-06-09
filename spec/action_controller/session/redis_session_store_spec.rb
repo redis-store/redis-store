@@ -104,12 +104,12 @@ describe RAILS_SESSION_STORE_CLASS do
     end
 
     it "should read the data" do
-      @client.should_receive(:call).with(:get, "#{@namespace}:#{@sid}")
+      @client.should_receive(:call).with([:get, "#{@namespace}:#{@sid}"])
       @store.send :get_session, @env, @sid
     end
 
     it "should write the data" do
-      @client.should_receive(:call).with(:set, "#{@namespace}:#{@sid}", Marshal.dump(@white_rabbit))
+      @client.should_receive(:call).with([:set, "#{@namespace}:#{@sid}", Marshal.dump(@white_rabbit)])
       @store.send :set_session, @env, @sid, @white_rabbit
     end
   end

@@ -216,7 +216,7 @@ module ActiveSupport
         end
 
         it "should read the data" do
-          @client.should_receive(:call).with(:get, "#{@namespace}:rabbit")
+          @client.should_receive(:call).with([:get, "#{@namespace}:rabbit"])
           @store.read("rabbit")
         end
 
@@ -228,19 +228,19 @@ module ActiveSupport
           # end
         else
           it "should write the data" do
-            @client.should_receive(:call).with(:set, "#{@namespace}:rabbit", Marshal.dump(@white_rabbit))
+            @client.should_receive(:call).with([:set, "#{@namespace}:rabbit", Marshal.dump(@white_rabbit)])
             @store.write "rabbit", @white_rabbit
           end
         end
 
         it "should delete the data" do
-          @client.should_receive(:call).with(:del, "#{@namespace}:rabbit")
+          @client.should_receive(:call).with([:del, "#{@namespace}:rabbit"])
           @store.delete "rabbit"
         end
 
         it "should delete matched data" do
-          @client.should_receive(:call).with(:del, "#{@namespace}:rabbit")
-          @client.should_receive(:call).with(:keys, "theplaylist:rabb*").and_return [ "#{@namespace}:rabbit" ]
+          @client.should_receive(:call).with([:del, "#{@namespace}:rabbit"])
+          @client.should_receive(:call).with([:keys, "theplaylist:rabb*"]).and_return [ "#{@namespace}:rabbit" ]
           @store.delete_matched "rabb*"
         end
 
@@ -251,29 +251,29 @@ module ActiveSupport
           end
         else
           it "should verify existence of an object in the store" do
-            @client.should_receive(:call).with(:exists, "#{@namespace}:rabbit")
+            @client.should_receive(:call).with([:exists, "#{@namespace}:rabbit"])
             @store.exist?("rabbit")
           end
         end
 
         it "should increment a key" do
-          @client.should_receive(:call).with(:incrby, "#{@namespace}:counter", 1)
+          @client.should_receive(:call).with([:incrby, "#{@namespace}:counter", 1])
           @store.increment "counter"
         end
 
         it "should decrement a key" do
-          @client.should_receive(:call).with(:decrby, "#{@namespace}:counter", 1)
+          @client.should_receive(:call).with([:decrby, "#{@namespace}:counter", 1])
           @store.decrement "counter"
         end
 
         it "should fetch data" do
-          @client.should_receive(:call).with(:get, "#{@namespace}:rabbit")
+          @client.should_receive(:call).with([:get, "#{@namespace}:rabbit"])
           @store.fetch "rabbit"
         end
 
         it "should read multiple keys" do
           rabbits = [ Marshal.dump(@rabbit), Marshal.dump(@white_rabbit) ]
-          @client.should_receive(:call).with(:mget, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit").and_return rabbits
+          @client.should_receive(:call).with([:mget, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"]).and_return rabbits
           @store.read_multi "rabbit", "white_rabbit"
         end
       end

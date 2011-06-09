@@ -1,5 +1,5 @@
 source :gemcutter
-gem "redis", "~> 2.2.0"
+gem "redis", "~> 2.2.1"
 
 group :development do
   gem "jeweler"
