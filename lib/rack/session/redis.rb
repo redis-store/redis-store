@@ -7,7 +7,8 @@ module Rack
       def initialize(app, options = {})
         super
         @mutex = Mutex.new
-        @pool = ::Redis::Factory.create options[:redis_server] || @default_options[:redis_server]
+        options[:redis_server] ||= @default_options[:redis_server]
+        @pool = ::Redis::Factory.create options
       end
 
       def generate_sid
