@@ -170,7 +170,14 @@ module ActiveSupport
       #   cache.read_multi "rabbit", "white-rabbit"
       #   cache.read_multi "rabbit", "white-rabbit", :raw => true
       def read_multi(*names)
-        @data.mget *names
+        values = @data.mget(*names)
+        
+        # Remove the options hash before mapping keys to values
+        names.extract_options!
+        
+        result = Hash[names.zip(values)]
+        result.reject!{ |k,v| v.nil? }
+        result
       end
 
       # Increment a key in the store.
