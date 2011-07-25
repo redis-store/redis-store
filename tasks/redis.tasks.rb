@@ -40,23 +40,23 @@ class RedisRunner
   end
 
   def self.stop
-    system %(echo "SHUTDOWN" | nc localhost #{port})
+    system %(redis-cli -p #{port} SHUTDOWN)
   end
 end
 
-class SingleRedisRunner < RedisRunner
+class MainRedisRunner < RedisRunner
   def self.redisconfdir
-    File.expand_path(File.dirname(__FILE__) + "/../spec/config/single.conf")
+    File.expand_path(File.dirname(__FILE__) + "/../spec/config/redis.conf")
   end
 end
 
-class MasterRedisRunner < RedisRunner
+class NodeOneRedisRunner < RedisRunner
   def self.redisconfdir
-    File.expand_path(File.dirname(__FILE__) + "/../spec/config/master.conf")
+    File.expand_path(File.dirname(__FILE__) + "/../spec/config/node-one.conf")
   end
 
   def self.dtach_socket
-    "/tmp/redis_master.dtach"
+    "/tmp/redis-node-one.dtach"
   end
 
   def self.port
@@ -64,13 +64,13 @@ class MasterRedisRunner < RedisRunner
   end
 end
 
-class SlaveRedisRunner < RedisRunner
+class NodeTwoRedisRunner < RedisRunner
   def self.redisconfdir
-    File.expand_path(File.dirname(__FILE__) + "/../spec/config/slave.conf")
+    File.expand_path(File.dirname(__FILE__) + "/../spec/config/node-two.conf")
   end
 
   def self.dtach_socket
-    "/tmp/redis_slave.dtach"
+    "/tmp/redis-node-two.dtach"
   end
 
   def self.port
@@ -78,9 +78,9 @@ class SlaveRedisRunner < RedisRunner
   end
 end
 
-class RedisClusterRunner
+class RedisReplicationRunner
   def self.runners
-    [ SingleRedisRunner, MasterRedisRunner, SlaveRedisRunner ]
+    [ MainRedisRunner, NodeOneRedisRunner, NodeTwoRedisRunner ]
   end
 
   def self.start_detached
@@ -154,6 +154,7 @@ namespace :redis do
 
     commit = case ENV['VERSION']
       when "1.2.6" then "570e43c8285a4e5e3f31"
+      when "2.2.4" then "2b886275e9756bb8619a"
     end
 
     arguments = commit.nil? ? "pull origin master" : "reset --hard #{commit}"
@@ -167,16 +168,23 @@ namespace :redis do
     RedisRunner.stop
   end
 
-  namespace :cluster do
-    desc "Starts the redis_cluster"
+  namespace :replication do
+    desc "Starts redis replication servers"
     task :start do
-      result = RedisClusterRunner.start_detached
+      result = RedisReplicationRunner.start_detached
       raise("Could not start redis-server, aborting.") unless result
     end
 
-    desc "Stops the redis_cluster"
+    desc "Stops redis replication servers"
     task :stop do
-      RedisClusterRunner.stop
+      RedisReplicationRunner.stop
+    end
+
+    desc "Open an IRb session with the master/slave replication"
+    task :console do
+      RedisReplicationRunner.start_detached
+      system "bundle exec irb -I lib -I extra -r redis-store.rb"
+      RedisReplicationRunner.stop
     end
   end  
 end
@@ -210,11 +218,11 @@ namespace :dtach do
   end
 end
 
-def invoke_with_redis_cluster(task_name)
+def invoke_with_redis_replication(task_name)
   begin
-    Rake::Task["redis:cluster:start"].invoke
+    Rake::Task["redis:replication:start"].invoke
     Rake::Task[task_name].invoke
   ensure
-    Rake::Task["redis:cluster:stop"].invoke
+    Rake::Task["redis:replication:stop"].invoke
   end
 end

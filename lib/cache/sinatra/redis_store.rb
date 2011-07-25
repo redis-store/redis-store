@@ -4,6 +4,7 @@ module Sinatra
       def register(app)
         app.set :cache, RedisStore.new
       end
+      alias_method :registered, :register
     end
 
     class RedisStore
@@ -110,7 +111,11 @@ module Sinatra
       end
 
       def fetch(key, options = {})
-        (!options[:force] && data = read(key, options)) || (write key, yield, options if block_given?)
+        (!options[:force] && data = read(key, options)) || block_given? && begin
+          data = yield
+          write(key, data, options)
+        end
+        data || nil
       end
 
       # Clear all the data from the store.

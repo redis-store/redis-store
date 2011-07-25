@@ -2,6 +2,7 @@
 *.swp
 *.gem
 *-redis-store.gemspec
+tags
 bin/
 coverage/
 pkg/

@@ -54,7 +54,7 @@ module ::RedisStore
       #   cache.del_matched "rab*"
       def delete_matched(matcher, options = nil)
         instrument(:delete_matched, matcher, options) do
-          @data.keys(matcher).each { |key| @data.del key }
+          !(keys = @data.keys(matcher)).empty? && @data.del(*keys)
         end
       end
 
@@ -101,7 +101,11 @@ module ::RedisStore
         options = merged_options(options)
         instrument(:delete_matched, matcher.inspect) do
           matcher = key_matcher(matcher, options)
-          @data.keys(matcher).each { |key| delete_entry(key, options) }
+          begin
+            !(keys = @data.keys(matcher)).empty? && @data.del(*keys)
+          rescue Errno::ECONNREFUSED => e
+            false
+          end
         end
       end
 
@@ -109,6 +113,8 @@ module ::RedisStore
         def write_entry(key, entry, options)
           method = options && options[:unless_exist] ? :setnx : :set
           @data.send method, key, entry, options
+        rescue Errno::ECONNREFUSED => e
+          false
         end
 
         def read_entry(key, options)
@@ -116,11 +122,21 @@ module ::RedisStore
           if entry
             entry.is_a?(ActiveSupport::Cache::Entry) ? entry : ActiveSupport::Cache::Entry.new(entry)
           end
+        rescue Errno::ECONNREFUSED => e
+          nil
         end
 
+        ##
+        # Implement the ActiveSupport::Cache#delete_entry
+        #
+        # It's really needed and use
+        #
         def delete_entry(key, options)
           @data.del key
+        rescue Errno::ECONNREFUSED => e
+          false
         end
+
 
         # Add the namespace defined in the options to a pattern designed to match keys.
         #
@@ -236,6 +252,11 @@ module ActiveSupport
 
       def stats
         @data.info
+      end
+
+      # Force client reconnection, useful Unicorn deployed apps.
+      def reconnect
+        @data.reconnect
       end
     end
   end

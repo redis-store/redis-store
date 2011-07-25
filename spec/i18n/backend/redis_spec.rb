@@ -44,13 +44,29 @@ describe "I18n::Backend::Redis" do
     lambda { I18n.backend.store_translations :en, :foo => lambda {|| } }.should raise_error("Key-value stores cannot handle procs")
   end
 
-  it "should list available locales" do
-    locales = [ :en, :it, :es, :fr, :de ]
-    locales.each { |locale| I18n.backend.store_translations locale, :foo => "bar" }
-    available_locales = I18n.backend.available_locales
+  describe "available locales" do
+    before :each do
+      @locales = [ :en, :it, :es, :fr, :de ]
+    end
 
-    locales.each do |locale|
-      available_locales.should include(locale)
+    it "should list" do
+      @locales.each { |locale| I18n.backend.store_translations locale, :foo => "bar" }
+      available_locales = I18n.backend.available_locales
+
+      @locales.each do |locale|
+        available_locales.should include(locale)
+      end
+    end
+
+    it "should list when namespaced" do
+      I18n.backend = I18n::Backend::Redis.new :namespace => 'foo'
+
+      @locales.each { |locale| I18n.backend.store_translations locale, :foo => "bar" }
+      available_locales = I18n.backend.available_locales
+
+      @locales.each do |locale|
+        available_locales.should include(locale)
+      end
     end
   end
 end

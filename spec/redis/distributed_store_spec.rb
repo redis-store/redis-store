@@ -22,6 +22,14 @@ describe "Redis::DistributedStore" do
     mr.to_s.should == "Redis Client connected to localhost:6380 against DB 1"
   end
 
+  it "should force reconnection" do
+    @dmr.nodes.each do |node|
+      node.should_receive(:reconnect)
+    end
+
+    @dmr.reconnect
+  end
+
   it "should set an object" do
     @dmr.set "rabbit", @white_rabbit
     @dmr.get("rabbit").should == @white_rabbit
