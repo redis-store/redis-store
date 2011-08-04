@@ -2,11 +2,11 @@ class Redis
   class Store < self
     module Marshalling
       def set(key, value, options = nil)
-        _marshal(value, options) { |value| super key, value, options }
+        _marshal(value, options) { |value| super encode(key), encode(value), options }
       end
 
       def setnx(key, value, options = nil)
-        _marshal(value, options) { |value| super key, value, options }
+        _marshal(value, options) { |value| super encode(key), encode(value), options }
       end
 
       def get(key, options = nil)
@@ -35,6 +35,16 @@ class Redis
 
         def unmarshal?(result, options)
           result && result.size > 0 && marshal?(options)
+        end
+
+        if defined?(Encoding)
+          def encode(string)
+            string.to_s.force_encoding(Encoding::BINARY)
+          end
+        else
+          def encode(string)
+            string
+          end
         end
     end
   end
