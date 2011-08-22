@@ -10,3 +10,4 @@ vendor/
 tmp/
 .idea
 .bundle/
+Gemfile.lock
