@@ -210,17 +210,23 @@ module ActiveSupport
       if ::Redis::Store.rails3?
         it "should read multiple keys" do
           @store.write "irish whisky", "Jameson"
-          rabbit, whisky = @store.read_multi "rabbit", "irish whisky"
-          rabbit.raw_value.should === @rabbit
-          whisky.raw_value.should == "Jameson"
+          result = @store.read_multi "rabbit", "irish whisky"
+          result['rabbit'].raw_value.should === @rabbit
+          result['irish whisky'].raw_value.should == "Jameson"
         end
       else
         it "should read multiple keys" do
           @store.write "irish whisky", "Jameson"
-          rabbit, whisky  = @store.read_multi "rabbit", "irish whisky"
-          rabbit.should === @rabbit
-          whisky.should  == "Jameson"
+          result = @store.read_multi "rabbit", "irish whisky"
+          result.should == { 'rabbit' => @rabbit, 'irish whisky' => 'Jameson' }
         end
+      end
+      
+      it 'should read multiple keys and return only matches' do
+        @store.delete 'irish whisky'
+        result = @store.read_multi "rabbit", "irish whisky"
+        result.should_not include('irish whisky')
+        result.should include('rabbit')
       end
 
       describe "namespace" do

@@ -103,7 +103,7 @@ namespace :redis do
   end
 
   desc 'Start redis'
-  task :start do
+  task :start => 'dtach:check' do
     RedisRunner.start
   end
 
@@ -170,7 +170,7 @@ namespace :redis do
 
   namespace :replication do
     desc "Starts redis replication servers"
-    task :start do
+    task :start => 'dtach:check' do
       result = RedisReplicationRunner.start_detached
       raise("Could not start redis-server, aborting.") unless result
     end
@@ -193,6 +193,13 @@ namespace :dtach do
   desc 'About dtach'
   task :about do
     puts "\nSee http://dtach.sourceforge.net/ for information about dtach.\n\n"
+  end
+  
+  desc 'Check that dtach is available'
+  task :check do
+    unless system('which dtach')
+      raise "dtach is not installed. Install it manually or run 'rake dtach:install'"
+    end
   end
 
   desc 'Install dtach 0.8 from source'
