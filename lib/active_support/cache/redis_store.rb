@@ -31,21 +31,29 @@ module ::RedisStore
         super
         method = options && options[:unless_exist] ? :setnx : :set
         @data.send method, key, value, options
+      rescue Errno::ECONNREFUSED => e
+        false
       end
 
       def read(key, options = nil)
         super
         @data.get key, options
+      rescue Errno::ECONNREFUSED => e
+        nil
       end
 
       def delete(key, options = nil)
         super
         @data.del key
+      rescue Errno::ECONNREFUSED => e
+        false
       end
 
       def exist?(key, options = nil)
         super
         @data.exists key
+      rescue Errno::ECONNREFUSED => e
+        false
       end
 
       # Delete objects for matched keys.
@@ -56,6 +64,8 @@ module ::RedisStore
         instrument(:delete_matched, matcher, options) do
           !(keys = @data.keys(matcher)).empty? && @data.del(*keys)
         end
+      rescue Errno::ECONNREFUSED => e
+        false
       end
 
       private
