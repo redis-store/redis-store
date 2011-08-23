@@ -194,10 +194,10 @@ namespace :dtach do
   task :about do
     puts "\nSee http://dtach.sourceforge.net/ for information about dtach.\n\n"
   end
-  
+
   desc 'Check that dtach is available'
   task :check do
-    unless system('which dtach')
+    if !ENV['TRAVIS'] && !system('which dtach')
       raise "dtach is not installed. Install it manually or run 'rake dtach:install'"
     end
   end
