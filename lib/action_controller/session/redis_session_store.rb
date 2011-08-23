@@ -43,7 +43,7 @@ module RedisStore
             [sid, session]
           end
 
-          def set_session(env, sid, session_data)
+          def set_session(env, sid, session_data, opts=nil)
             options = env['rack.session.options']
             @pool.set(sid, session_data, options)
             return(::Redis::Store.rails3? ? sid : true)
@@ -54,6 +54,7 @@ module RedisStore
           def destroy(env)
             if sid = current_session_id(env)
               @pool.del(sid)
+              sid
             end
           rescue Errno::ECONNREFUSED
             false
@@ -62,8 +63,13 @@ module RedisStore
     end
   end
 end
-
-if ::Redis::Store.rails3?
+if ::Redis::Store.rails31?
+  require 'action_dispatch/middleware/session/abstract_store'
+  class ActionDispatch::Session::RedisSessionStore < Rack::Session::Redis
+    include ActionDispatch::Session::Compatibility
+    include ActionDispatch::Session::StaleSessionCheck
+  end
+elsif ::Redis::Store.rails3?
   class ActionDispatch::Session::RedisSessionStore < ActionDispatch::Session::AbstractStore
     include RedisStore::Rack::Session::Rails
   end
@@ -72,3 +78,4 @@ else
     include RedisStore::Rack::Session::Rails
   end
 end
+

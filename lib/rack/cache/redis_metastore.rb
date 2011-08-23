@@ -14,7 +14,8 @@ module Rack
 
       class Redis < RedisBase
         def initialize(server, options = {})
-          @cache = ::Redis::Factory.create server
+          options[:redis_server] ||= server
+          @cache = ::Redis::Factory.create options
         end
 
         def read(key)

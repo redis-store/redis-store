@@ -103,7 +103,7 @@ namespace :redis do
   end
 
   desc 'Start redis'
-  task :start do
+  task :start => 'dtach:check' do
     RedisRunner.start
   end
 
@@ -153,8 +153,8 @@ namespace :redis do
     sh "mv redis vendor"
 
     commit = case ENV['VERSION']
-      when "1.2.6" then "570e43c8285a4e5e3f31"
-      when "2.2.4" then "2b886275e9756bb8619a"
+      when "1.3.12" then "26ef09a83526e5099bce"
+      when "2.2.8"  then "ec279203df0bc6ddc981"
     end
 
     arguments = commit.nil? ? "pull origin master" : "reset --hard #{commit}"
@@ -170,7 +170,7 @@ namespace :redis do
 
   namespace :replication do
     desc "Starts redis replication servers"
-    task :start do
+    task :start => 'dtach:check' do
       result = RedisReplicationRunner.start_detached
       raise("Could not start redis-server, aborting.") unless result
     end
@@ -186,13 +186,20 @@ namespace :redis do
       system "bundle exec irb -I lib -I extra -r redis-store.rb"
       RedisReplicationRunner.stop
     end
-  end  
+  end
 end
 
 namespace :dtach do
   desc 'About dtach'
   task :about do
     puts "\nSee http://dtach.sourceforge.net/ for information about dtach.\n\n"
+  end
+
+  desc 'Check that dtach is available'
+  task :check do
+    if !ENV['TRAVIS'] && !system('which dtach')
+      raise "dtach is not installed. Install it manually or run 'rake dtach:install'"
+    end
   end
 
   desc 'Install dtach 0.8 from source'
