@@ -7,7 +7,8 @@ module Rack
       def initialize(app, options = {})
         super
         @mutex = Mutex.new
-        @pool = ::Redis::Factory.create options[:redis_server] || @default_options[:redis_server]
+        options[:redis_server] ||= @default_options[:redis_server]
+        @pool = ::Redis::Factory.create options
       end
 
       def generate_sid
@@ -58,6 +59,11 @@ module Rack
         @mutex.unlock if env['rack.multithread']
       end
 
+      def destroy_session(env, session_id, options)
+        options = { :renew => true }.update(options) unless options[:drop]
+        set_session(env, session_id, 0, options)
+      end
+
       private
         def merge_sessions(sid, old, new, cur=nil)
           cur ||= {}
@@ -79,3 +85,4 @@ module Rack
     end
   end
 end
+
