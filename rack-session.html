@@ -1,0 +1,253 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Redis Store - Rack::Session</title>
+<meta name="author" content="ThemeFuse" />
+<meta name="description" content="Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks." />
+<meta name="keywords" content="ruby,rails,ruby on rails,redis,cache,rack,session,i18n,namespace,web,development,open source,free software,jodosha,luca guidi" />
+<link href="styles.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="styles/light.css" media="screen" rel="stylesheet" type="text/css" />
+
+<!--[if IE 7]>
+<link rel="stylesheet" type="text/css" href="styles_ie.css" />
+<![endif]-->
+
+<!-- jquery + easing -->
+<script type="text/javascript" language="javascript" src="js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" language="javascript" src="js/jquery.easing.1.3.js"></script>
+
+<!-- freshfolio class -->
+<script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js"></script>
+<script type="text/javascript" language="javascript" src="js/fresh-folio-home.class.js"></script>
+
+<script language="javascript" type="text/javascript">
+$(function () {
+     $(window).scroll(function () {
+         if ($(this).scrollTop() != 0) {
+             $('.link-top').fadeIn();
+         } else {
+             $('.link-top').fadeOut();
+         }
+     });
+     $('.link-top').click(function () {
+         $('body,html').animate({
+             scrollTop: 0
+         },
+         1300);
+     });
+
+     // load freshFolioEvents class
+     freshFolioEvents.init({
+         scroll_pane: $('.filter_scroll_pane'),
+         slider_panel  : $("#main-slider"),
+    use_fade    : true,
+         size : {
+            mainslider : $("#main-slider > li").size(),
+            step       : 370 // from: sidebar_slider .slider_main li { margin-right: 50px; width: 320px; }
+         }
+     });
+ });
+</script>
+<!--/ freshfolio -->
+
+</head>
+
+<body>
+<div class="bodywrap">
+<div class="container">
+
+    <div class="header">
+
+          <div class="logo">
+            <a href="index.html"><img src="images/logo.png" width="150px" height="150px" alt="Redis Store 1.0.0" /></a>
+          </div>
+
+          <div class="menu-header">
+            <ul class="topmenu">
+              <li class="first menu-item-home"><a href="index.html"><span>Home</span></a></li>
+              <li class="parent current-menu-item"><a href="documentation.html"><span>Documentation</span></a>
+            <ul>
+              <li class="first"><a href="installation.html"><span>Installation</span></a></li>
+              <li><a href="configuration.html"><span>Configuration</span></a></li>
+
+              <li class="parent"><a href="cache-store.html"><span>Cache store</span></a>
+                <ul>
+                  <li class="first"><a href="cache-store.html#rails3"><span>Rails 3.x</span></a></li>
+                  <li><a href="cache-store.html#rails2-bundler"><span>Rails 2.x (Bundler)</span></a></li>
+                  <li><a href="cache-store.html#rails2"><span>Rails 2.x</span></a></li>
+                  <li><a href="cache-store.html#merb"><span>Merb</span></a></li>
+                  <li class="last"><a href="cache-store.html#sinatra"><span>Sinatra</span></a></li>
+                </ul>
+              </li>
+              <li class="parent current-menu-item"><a href="rack-session.html"><span>Rack::Session</span></a>
+                <ul>
+                  <li class="first"><a href="rack-session.html#rack"><span>Rack</span></a></li>
+                  <li><a href="rack-session.html#rails3"><span>Rails 3.x</span></a></li>
+                  <li><a href="rack-session.html#rails2-bundler"><span>Rails 2.x (Bundler)</span></a></li>
+                  <li><a href="rack-session.html#rails2"><span>Rails 2.x</span></a></li>
+                  <li><a href="rack-session.html#merb"><span>Merb</span></a></li>
+                  <li class="last"><a href="rack-session.html#sinatra"><span>Sinatra</span></a></li>
+                </ul>
+              </li>
+              <li><a href="rack-cache.html"><span>Rack::Cache</span></a></li>
+              <li class="last"><a href="i18n.html"><span>i18n</span></a></li>
+            </ul>
+          </li>
+          <li><a href="license.html"><span>License</span></a></li>
+          <li class="last"><a href="about.html"><span>About</span></a></li>
+        </ul>
+
+        <a href="https://github.com/jodosha/redis-store"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/71eeaab9d563c2b3c590319b398dd35683265e85/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub"></a>
+
+        <div class="header-content">
+            <h1>Namespaced <span>Rack::Session</span>, <span>Rack::Cache</span>, <br /> <span>i18n</span> and <span>cache</span> Redis stores for <br/> Ruby web frameworks.</h1>
+        </div>
+
+        <div class="header-content">
+          <div class="filter_top"></div>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+    <!--/ header -->
+
+
+    <!-- content -->
+    <div class="content">
+
+
+    <!-- scroll content -->
+        <div class="wrapper">
+        <div class="content-scroll sidebar_slider comment_list">
+
+        <div class="clear"></div>
+        </div>
+        </div>
+    <!--/ scroll content -->
+
+
+        <div class="post_detail">
+          <div class="post_image"><img src="images/rack-session.png" width="600" height="180" alt="Cache store" /></div>
+            <!-- post content -->
+            <div class="post_content">
+              <div class="post_title"><h1>Rack session</h1></div>
+                <!-- <div class="post_comment"><a href="#" class="join_link"><span>Join the disscution</span></a></div> -->
+                <p>Provides a Redis store for <a href="http://rack.rubyforge.org/doc/Rack/Session.html" target="_blank">Rack::Session</a>.</p>
+                <div class="slide_meta"><a name="rack">Rack application</a></div>
+
+                <div class="post_text text">
+                <pre class="brush: ruby; gutter: false; toolbar: false;">
+require "rack"
+require "redis-store"
+require "application"
+use Rack::Session::Redis
+run Application.new
+                </pre><br />
+
+                <div class="slide_meta"><a name="rails3">Rails 3.x</a></div>
+
+                <div class="post_text text">
+                <pre class="brush: ruby; gutter: false; toolbar: false;">
+# Gemfile
+gem 'rails', '3.0.10'
+gem 'redis-store'
+
+# config/initializers/session_store.rb
+MyApp::Application.config.session_store :redis_session_store
+                </pre><br />
+
+                <div class="slide_meta"><a name="rails2-bundler"></a>Rails 2.x (with Bundler)</div>
+                <pre class="brush: ruby; gutter: false; toolbar: false;">
+# Gemfile
+gem 'redis-store'
+
+# then configure as following:
+
+# config/environments/*.rb
+config.cache_store = :redis_store, { ... optional configuration ... }
+
+# or
+
+# config/initializers/session_store.rb
+ActionController::Base.session = {
+  :key         => APPLICATION['session_key'],
+  :secret      => APPLICATION['session_secret'],
+  :key_prefix  => Rails.env
+}
+
+ActionController::Base.session_store = :redis_session_store
+                </pre><br />
+
+                <div class="slide_meta"><a name="rails2"></a>Rails 2.x</div>
+                <pre class="brush: ruby; gutter: false; toolbar: false;">
+# config/environment.rb
+config.gem 'redis-store'
+
+# then configure as following:
+
+# config/environments/*.rb
+config.cache_store = :redis_store, { ... optional configuration ... }
+
+# or
+
+# config/initializers/session_store.rb
+ActionController::Base.session = {
+  :key         => APPLICATION['session_key'],
+  :secret      => APPLICATION['session_secret'],
+  :key_prefix  => Rails.env
+}
+
+ActionController::Base.session_store = :redis_session_store
+                </pre><br />
+                <p>For advanced configurations scenarios please visit the <a href="https://github.com/jodosha/redis-store/wiki/Frameworks-Configuration" target="_blank" title="Redis Store's wiki"></a>wiki.</p>
+
+                <div class="slide_meta"><a name="merb"></a>Merb</div>
+                <pre class="brush: ruby; gutter: false; toolbar: false;">
+dependency "redis-store", "1.0.0"
+Merb::Config.use do |c|
+  c[:session_store] = "redis"
+end
+Merb::BootLoader.before_app_loads do
+  Merb::SessionContainer.subclasses &lt;&lt; "Merb::RedisSession"
+end
+                </pre><br />
+
+                <div class="slide_meta"><a name="sinatra"></a>Sinatra</div>
+                <pre class="brush: ruby; gutter: false; toolbar: false;">
+require "sinatra"
+require "redis-store"
+
+class MyApp &lt; Sinatra::Base
+  use Rack::Session::Redis, :redis_server => 'redis://127.0.0.1:6379/0' # Redis server on localhost port 6379, database 0
+
+  get "/" do
+    session[:visited_at] = DateTime.now.to_s # This is stored in Redis
+    "Hello, visitor."
+  end
+end
+                </pre><br />
+                <p>For advanced configurations scenarios please visit the <a href="https://github.com/jodosha/redis-store/wiki/Frameworks-Configuration" target="_blank" title="Redis Store's wiki"></a>wiki.</p>
+
+                <div class="clear"></div>
+                </div>
+
+                <div class="divider"></div>
+                <div class="text-right"><a href="javascript:void(0);" class="link-top">Back to Top</a></div>
+            </div>
+            <!--/ post content -->
+            <div class="clear"></div>
+        </div>
+        <!--/ post detail -->
+
+
+
+
+    <div class="clear"></div>
+    </div>
+    <!--/ content -->
+</div>
+</div>
+</body>
+</html>
