@@ -4,9 +4,8 @@ class Redis
       MAJOR = 1
       MINOR = 0
       TINY  = 0
-      BUILD = "rc1"
 
-      STRING = [MAJOR, MINOR, TINY, BUILD].join('.')
+      STRING = [MAJOR, MINOR, TINY].join('.')
     end
   end
 end

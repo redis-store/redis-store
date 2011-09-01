@@ -42,13 +42,13 @@ Made up of the following:
     password: secret
 
 If you want to specify the `namespace` option, you have to pass the `db` param too.
-#### __Important__: for now (rc1) `namespace` is only supported for single, non-distributed stores.
+#### __Important__: `namespace` is only supported for single, non-distributed stores.
 
 ### Set by Hash
 
     { :host => 192.168.1.100, :port => 23682, :db => 13, :namespace => "theplaylist", :password => "secret" }
 
-#### __Important__: for now (rc1) `namespace` is only supported for single, non-distributed stores.
+#### __Important__: `namespace` is only supported for single, non-distributed stores.
 
 ## Cache store
 
@@ -72,7 +72,7 @@ Provides a cache store for your Ruby web framework of choice.
 
     # Gemfile
     gem 'redis'
-    gem 'redis-store', '1.0.0.rc1'
+    gem 'redis-store', '1.0.0'
 
     # config/environments/production.rb
     config.cache_store = :redis_store, { ... optional configuration ... }
@@ -81,7 +81,7 @@ For advanced configurations scenarios please visit [the wiki](https://github.com
 
 ### Merb
 
-    dependency "redis-store", "1.0.0.rc1"
+    dependency "redis-store", "1.0.0"
     dependency("merb-cache", merb_gems_version) do
       Merb::Cache.setup do
         register(:redis, Merb::Cache::RedisStore, :servers => ["127.0.0.1:6379"])
@@ -162,7 +162,7 @@ Provides a Redis store for Rack::Session. See [http://rack.rubyforge.org/doc/Rac
     # Gemfile
     gem 'rails', '3.0.3'
     gem 'redis'
-    gem 'redis-store', '1.0.0.rc1'
+    gem 'redis-store', '1.0.0'
 
     # config/initializers/session_store.rb
     MyApp::Application.config.session_store :redis_session_store
@@ -171,7 +171,7 @@ For advanced configurations scenarios please visit [the wiki](https://github.com
 
 ### Merb
 
-    dependency "redis-store", "1.0.0.rc1"
+    dependency "redis-store", "1.0.0"
     Merb::Config.use do |c|
       c[:session_store] = "redis"
     end
@@ -236,4 +236,4 @@ If you are on **Snow Leopard** you have to run `env ARCHFLAGS="-arch x86_64" bun
 
 ## Copyright
 
-(c) 2009 - 2010 Luca Guidi - [http://lucaguidi.com](http://lucaguidi.com), released under the MIT license
+(c) 2009 - 2011 Luca Guidi - [http://lucaguidi.com](http://lucaguidi.com), released under the MIT license

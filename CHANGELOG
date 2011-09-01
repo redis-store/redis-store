@@ -1,3 +1,14 @@
+*1.0.0 (September 1, 2011)*
+
+  * Bump version v1.0.0
+  * Avoid encoding issues when sending strings to Redis. [Damian Janowski]
+  * Fixed a bug that caused all the users to share the same session (with a session_id of 0 or 1) [Mathieu Ravaux]
+  * ActiveSupport cache stores reply to read_multi with a hash, not an array. [Matt Griffin]
+  * Rack::Session && Rack::Cache store can be created with options [aligo]
+  * add destroy_session [aligo]
+  * compatible with rails 3.1. rely on Rack::Session::Redis stores API. [aligo]
+  * Fixed Marshalling semantic
+
 *1.0.0 [rc1] (June 5, 2011)*
 
   * Bump version v1.0.0.rc1
