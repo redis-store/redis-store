@@ -1,12 +1,8 @@
-$:.unshift(File.expand_path(File.join(File.dirname(__FILE__), "/../lib")))
-ARGV << "-b"
-require "rubygems"
-require "bundler"
-Bundler.setup
-require "ostruct"
-require "spec"
-require "redis"
-require "redis-store"
+require 'minitest/autorun'
+require 'purdytest'
+require 'mocha'
+require 'redis'
+require 'redis-store'
 
 $DEBUG = ENV["DEBUG"] === "true"
 

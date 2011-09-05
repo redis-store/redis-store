@@ -46,13 +46,13 @@ end
 
 class MainRedisRunner < RedisRunner
   def self.redisconfdir
-    File.expand_path(File.dirname(__FILE__) + "/../spec/config/redis.conf")
+    File.expand_path(File.dirname(__FILE__) + "/../test/config/redis.conf")
   end
 end
 
 class NodeOneRedisRunner < RedisRunner
   def self.redisconfdir
-    File.expand_path(File.dirname(__FILE__) + "/../spec/config/node-one.conf")
+    File.expand_path(File.dirname(__FILE__) + "/../test/config/node-one.conf")
   end
 
   def self.dtach_socket
@@ -66,7 +66,7 @@ end
 
 class NodeTwoRedisRunner < RedisRunner
   def self.redisconfdir
-    File.expand_path(File.dirname(__FILE__) + "/../spec/config/node-two.conf")
+    File.expand_path(File.dirname(__FILE__) + "/../test/config/node-two.conf")
   end
 
   def self.dtach_socket

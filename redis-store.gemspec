@@ -27,6 +27,8 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<git>, ["~> 1.2.5"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.14"])
       s.add_development_dependency(%q<rake>, ["~> 0.9.1"])
+      s.add_development_dependency(%q<purdytest>, ["~> 1.0.0"])
+      s.add_development_dependency(%q<mocha>, ["~> 0.9.12"])
       if RUBY_VERSION > '1.9'
         s.add_development_dependency(%q<ruby-debug19>, ["~> 0.11.6"])
       else
@@ -37,6 +39,9 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<redis>, ["~> 2.2.0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.14"])
       s.add_dependency(%q<rake>, ["~> 0.9.1"])
+      s.add_dependency(%q<rspec>, ["~> 2.6.0"])
+      s.add_dependency(%q<purdytest>, ["~> 1.0.0"])
+      s.add_dependency(%q<mocha>, ["~> 0.9.12"])
       if RUBY_VERSION > '1.9'
         s.add_dependency(%q<ruby-debug19>, ["~> 0.11.6"])
       else
@@ -48,6 +53,8 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<redis>, ["~> 2.2.0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.14"])
       s.add_dependency(%q<rake>, ["~> 0.9.1"])
+      s.add_dependency(%q<purdytest>, ["~> 1.0.0"])
+      s.add_dependency(%q<mocha>, ["~> 0.9.12"])
       if RUBY_VERSION > '1.9'
         s.add_dependency(%q<ruby-debug19>, ["~> 0.11.6"])
       else
