@@ -54,17 +54,9 @@ If you want to specify the `namespace` option, you have to pass the `db` param t
 
 Use `Rails.cache.reconnect` in your Unicorn hooks, in order to force the client reconnection.
 
-## Running specs
+## Running tests
 
-    gem install jeweler bundler
-    git clone git://github.com/jodosha/redis-store.git
-    cd redis-store
-    bundle install
-    REDIS_STORE_ENV=rails3 bundle install # to install Rails 3 gems
-    rake dtach:install
-    rake redis:install
-    rake
-    REDIS_STORE_ENV=rails3 rake # to test against Rails 3
+    TODO
 
 If you are on **Snow Leopard** you have to run `env ARCHFLAGS="-arch x86_64" bundle install`
 
