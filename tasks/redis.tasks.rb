@@ -3,6 +3,10 @@ require 'fileutils'
 require 'open-uri'
 
 class RedisRunner
+  def self.redisdir
+    File.expand_path(File.join(File.dirname(__FILE__), '..', 'vendor', 'redis'))
+  end
+
   def self.configuration
     File.expand_path(File.dirname(__FILE__) + "/../test/config/redis.conf")
   end
