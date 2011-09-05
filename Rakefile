@@ -22,7 +22,7 @@ namespace :test do
 end
 
 task :prepare do
-  `mkdir -p tmp && rm tmp/*.rdb`
+  `mkdir -p tmp/pids && rm tmp/*.rdb`
 end
 
 load 'tasks/redis.tasks.rb'

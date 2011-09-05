@@ -1,91 +1,57 @@
-# inspired by old Rake tasks from redis-rb
 require 'rake'
 require 'fileutils'
 require 'open-uri'
 
 class RedisRunner
-  def self.port
-    6379
+  def self.configuration
+    File.expand_path(File.dirname(__FILE__) + "/../test/config/redis.conf")
   end
 
-  def self.redisdir
-    @@redisdir ||= File.expand_path File.join(File.dirname(__FILE__), '..', 'vendor', 'redis')
+  def self.pid_file
+    File.expand_path(File.dirname(__FILE__) + "/../tmp/pids/redis.pid")
   end
 
-  def self.redisconfdir
-    '/etc/redis.conf'
-  end
-
-  def self.dtach_socket
-    '/tmp/redis.dtach'
-  end
-
-  # Just check for existance of dtach socket
-  def self.running?
-    File.exists? dtach_socket
+  def self.pid
+    File.open(pid_file).read.to_i
   end
 
   def self.start
-    puts 'Detach with Ctrl+\  Re-attach with rake redis:attach'
-    sleep 3
-    exec "dtach -A #{dtach_socket} redis-server #{redisconfdir}"
-  end
-
-  def self.start_detached
-    system "dtach -n #{dtach_socket} redis-server #{redisconfdir}"
-  end
-
-  def self.attach
-    exec "dtach -a #{dtach_socket}"
+    system %(redis-server #{configuration})
   end
 
   def self.stop
-    system %(redis-cli -p #{port} SHUTDOWN)
-  end
-end
-
-class MainRedisRunner < RedisRunner
-  def self.redisconfdir
-    File.expand_path(File.dirname(__FILE__) + "/../test/config/redis.conf")
+    Process.kill("SIGTERM", pid)
   end
 end
 
 class NodeOneRedisRunner < RedisRunner
-  def self.redisconfdir
+  def self.configuration
     File.expand_path(File.dirname(__FILE__) + "/../test/config/node-one.conf")
   end
 
-  def self.dtach_socket
-    "/tmp/redis-node-one.dtach"
-  end
-
-  def self.port
-    6380
+  def self.pid_file
+    File.expand_path(File.dirname(__FILE__) + "/../tmp/pids/node-one.pid")
   end
 end
 
 class NodeTwoRedisRunner < RedisRunner
-  def self.redisconfdir
+  def self.configuration
     File.expand_path(File.dirname(__FILE__) + "/../test/config/node-two.conf")
   end
 
-  def self.dtach_socket
-    "/tmp/redis-node-two.dtach"
-  end
-
-  def self.port
-    6381
+  def self.pid_file
+    File.expand_path(File.dirname(__FILE__) + "/../tmp/pids/node-two.pid")
   end
 end
 
 class RedisReplicationRunner
   def self.runners
-    [ MainRedisRunner, NodeOneRedisRunner, NodeTwoRedisRunner ]
+    [ RedisRunner, NodeOneRedisRunner, NodeTwoRedisRunner ]
   end
 
-  def self.start_detached
+  def self.start
     runners.each do |runner|
-      runner.start_detached
+      runner.start
     end
   end
 
@@ -100,27 +66,6 @@ namespace :redis do
   desc 'About redis'
   task :about do
     puts "\nSee http://code.google.com/p/redis/ for information about redis.\n\n"
-  end
-
-  desc 'Start redis'
-  task :start => 'dtach:check' do
-    RedisRunner.start
-  end
-
-  desc 'Stop redis'
-  task :stop do
-    RedisRunner.stop
-  end
-
-  desc 'Restart redis'
-  task :restart do
-    RedisRunner.stop
-    RedisRunner.start
-  end
-
-  desc 'Attach to redis dtach socket'
-  task :attach do
-    RedisRunner.attach
   end
 
   desc 'Install the lastest verison of Redis from Github (requires git, duh)'
@@ -161,18 +106,10 @@ namespace :redis do
     sh "cd #{RedisRunner.redisdir} && git #{arguments}"
   end
 
-  desc "Open an IRb session"
-  task :console do
-    RedisRunner.start_detached
-    system "bundle exec irb -I lib -I extra -r redis-store.rb"
-    RedisRunner.stop
-  end
-
   namespace :replication do
     desc "Starts redis replication servers"
-    task :start => 'dtach:check' do
-      result = RedisReplicationRunner.start_detached
-      raise("Could not start redis-server, aborting.") unless result
+    task :start do
+      RedisReplicationRunner.start
     end
 
     desc "Stops redis replication servers"
@@ -182,46 +119,10 @@ namespace :redis do
 
     desc "Open an IRb session with the master/slave replication"
     task :console do
-      RedisReplicationRunner.start_detached
+      RedisReplicationRunner.start
       system "bundle exec irb -I lib -I extra -r redis-store.rb"
       RedisReplicationRunner.stop
     end
-  end
-end
-
-namespace :dtach do
-  desc 'About dtach'
-  task :about do
-    puts "\nSee http://dtach.sourceforge.net/ for information about dtach.\n\n"
-  end
-
-  desc 'Check that dtach is available'
-  task :check do
-    if !ENV['TRAVIS'] && !system('which dtach')
-      raise "dtach is not installed. Install it manually or run 'rake dtach:install'"
-    end
-  end
-
-  desc 'Install dtach 0.8 from source'
-  task :install => [:about] do
-
-    Dir.chdir('/tmp/')
-    unless File.exists?('/tmp/dtach-0.8.tar.gz')
-      require 'net/http'
-
-      url = 'http://downloads.sourceforge.net/project/dtach/dtach/0.8/dtach-0.8.tar.gz'
-      open('/tmp/dtach-0.8.tar.gz', 'wb') do |file| file.write(open(url).read) end
-    end
-
-    unless File.directory?('/tmp/dtach-0.8')
-      system('tar xzf dtach-0.8.tar.gz')
-    end
-
-    Dir.chdir('/tmp/dtach-0.8/')
-    sh 'cd /tmp/dtach-0.8/ && ./configure && make'
-    sh 'sudo cp /tmp/dtach-0.8/dtach /usr/bin/'
-
-    puts 'Dtach successfully installed to /usr/bin.'
   end
 end
 
