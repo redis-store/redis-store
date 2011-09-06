@@ -1,9 +1,14 @@
 require 'bundler'
 Bundler.setup
 require 'rake'
-require 'rdoc/task'
 require 'rake/testtask'
 require 'bundler/gem_tasks'
+
+begin
+  require 'rdoc/task'
+rescue LoadError
+  require 'rake/rdoctask'
+end
 
 task :default => 'test:suite'
 
