@@ -27,7 +27,9 @@ namespace :test do
 end
 
 task :prepare do
-  `mkdir -p tmp/pids && rm tmp/*.rdb` rescue nil
+  require 'fileutils'
+  FileUtils.mkdir_p 'tmp/pids'
+  FileUtils.rm Dir.glob('tmp/*.rdb')
 end
 
 load 'tasks/redis.tasks.rb'
