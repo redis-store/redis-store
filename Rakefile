@@ -27,7 +27,7 @@ namespace :test do
 end
 
 task :prepare do
-  `mkdir -p tmp/pids && rm tmp/*.rdb`
+  `mkdir -p tmp/pids && rm tmp/*.rdb` rescue nil
 end
 
 load 'tasks/redis.tasks.rb'
