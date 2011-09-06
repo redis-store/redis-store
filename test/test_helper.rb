@@ -6,7 +6,7 @@ require 'redis-store'
 
 $DEBUG = ENV["DEBUG"] === "true"
 
-Redis::DistributedStore.class_variable_set(:@@timeout, 30)
+Redis::DistributedStore.send(:class_variable_set, :@@timeout, 30)
 
 # http://mentalized.net/journal/2010/04/02/suppress_warnings_from_ruby/
 module Kernel
