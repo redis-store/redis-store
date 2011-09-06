@@ -46,20 +46,17 @@ describe "Redis::Factory" do
         store.instance_variable_get(:@marshalling).must_equal(false)
       end
 
-      # FIXME it seems like dtach has some problems with Redis::DistributedStore initialization.
-
-      it "instantiates Redis::DistributedStore"
-      # it "should instantiate a Redis::DistributedStore store" do
-      #   store = Redis::Factory.create(
-      #     {:host => "localhost", :port => 6379},
-      #     {:host => "localhost", :port => 6380}
-      #   )
-      #   store.must_be_kind_of(Redis::DistributedStore)
-      #   store.nodes.map {|node| node.to_s }.must_equal([
-      #     "Redis Client connected to localhost:6379 against DB 0",
-      #     "Redis Client connected to localhost:6380 against DB 0",
-      #   ])
-      # end
+      it "should instantiate a Redis::DistributedStore store" do
+        store = Redis::Factory.create(
+          {:host => "localhost", :port => 6379},
+          {:host => "localhost", :port => 6380}
+        )
+        store.must_be_kind_of(Redis::DistributedStore)
+        store.nodes.map {|node| node.to_s }.must_equal([
+          "Redis Client connected to localhost:6379 against DB 0",
+          "Redis Client connected to localhost:6380 against DB 0",
+        ])
+      end
     end
 
     describe "when given a String" do
@@ -96,17 +93,14 @@ describe "Redis::Factory" do
         end
       end
 
-      # FIXME it seems like dtach has some problems with Redis::DistributedStore initialization.
-
-      it "instantiates Redis::DistributedStore"
-      # it "instantiates Redis::DistributedStore" do
-      #   store = Redis::Factory.create "redis://127.0.0.1:6379", "redis://127.0.0.1:6380"
-      #   store.must_be_kind_of(Redis::DistributedStore)
-      #   store.nodes.map {|node| node.to_s }.must_equal([
-      #     "Redis Client connected to 127.0.0.1:6379 against DB 0",
-      #     "Redis Client connected to 127.0.0.1:6380 against DB 0",
-      #   ])
-      # end
+      it "instantiates Redis::DistributedStore" do
+        store = Redis::Factory.create "redis://127.0.0.1:6379", "redis://127.0.0.1:6380"
+        store.must_be_kind_of(Redis::DistributedStore)
+        store.nodes.map {|node| node.to_s }.must_equal([
+          "Redis Client connected to 127.0.0.1:6379 against DB 0",
+          "Redis Client connected to 127.0.0.1:6380 against DB 0",
+        ])
+      end
     end
   end
 end

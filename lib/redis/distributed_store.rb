@@ -1,10 +1,11 @@
 class Redis
   class DistributedStore < Distributed
+    @@timeout = 5
     attr_reader :ring
 
     def initialize(addresses, options = { })
       nodes = addresses.map do |address|
-        ::Redis::Store.new address
+        ::Redis::Store.new _merge_options(address, options)
       end
       _extend_namespace options
       @ring = Redis::HashRing.new nodes
@@ -34,6 +35,10 @@ class Redis
       def _extend_namespace(options)
         @namespace = options[:namespace]
         extend ::Redis::Store::Namespace if @namespace
+      end
+
+      def _merge_options(address, options)
+        address.merge(:timeout => options[:timeout] || @@timeout)
       end
   end
 end
