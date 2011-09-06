@@ -1,4 +1,6 @@
-# Namespaced Redis stores for Ruby web frameworks
+# Namespaced Redis stores for Ruby frameworks
+
+[![Build Status](https://secure.travis-ci.org/jodosha/redis-store.png?branch=master)](http://travis-ci.org/jodosha/redis-store?branch=master)
 
 ## Installation
 
