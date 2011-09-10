@@ -4,15 +4,15 @@ require 'open-uri'
 
 class RedisRunner
   def self.redisdir
-    File.expand_path(File.join(File.dirname(__FILE__), '..', 'vendor', 'redis'))
+    File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'vendor', 'redis'))
   end
 
   def self.configuration
-    File.expand_path(File.dirname(__FILE__) + "/../test/config/redis.conf")
+    File.expand_path(File.dirname(__FILE__) + "/../../test/config/redis.conf")
   end
 
   def self.pid_file
-    File.expand_path(File.dirname(__FILE__) + "/../tmp/pids/redis.pid")
+    File.expand_path(File.dirname(__FILE__) + "/../../tmp/pids/redis.pid")
   end
 
   def self.pid
@@ -30,21 +30,21 @@ end
 
 class NodeOneRedisRunner < RedisRunner
   def self.configuration
-    File.expand_path(File.dirname(__FILE__) + "/../test/config/node-one.conf")
+    File.expand_path(File.dirname(__FILE__) + "/../../test/config/node-one.conf")
   end
 
   def self.pid_file
-    File.expand_path(File.dirname(__FILE__) + "/../tmp/pids/node-one.pid")
+    File.expand_path(File.dirname(__FILE__) + "/../../tmp/pids/node-one.pid")
   end
 end
 
 class NodeTwoRedisRunner < RedisRunner
   def self.configuration
-    File.expand_path(File.dirname(__FILE__) + "/../test/config/node-two.conf")
+    File.expand_path(File.dirname(__FILE__) + "/../../test/config/node-two.conf")
   end
 
   def self.pid_file
-    File.expand_path(File.dirname(__FILE__) + "/../tmp/pids/node-two.pid")
+    File.expand_path(File.dirname(__FILE__) + "/../../tmp/pids/node-two.pid")
   end
 end
 
@@ -140,3 +140,4 @@ def invoke_with_redis_replication(task_name)
     Rake::Task["redis:replication:stop"].invoke
   end
 end
+
