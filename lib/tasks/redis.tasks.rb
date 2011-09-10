@@ -5,11 +5,11 @@ require 'open-uri'
 
 class RedisRunner
   def self.redisdir
-    File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'vendor', 'redis'))
+    File.expand_path("../../../vendor/redis", __FILE__)
   end
 
   def self.configuration
-    File.expand_path(File.dirname(__FILE__) + "/../../test/config/redis.conf")
+    File.expand_path("../../../test/config/redis.conf", __FILE__)
   end
 
   def self.pid_file
@@ -31,7 +31,7 @@ end
 
 class NodeOneRedisRunner < RedisRunner
   def self.configuration
-    File.expand_path(File.dirname(__FILE__) + "/../../test/config/node-one.conf")
+    File.expand_path("../../../test/config/node-one.conf", __FILE__)
   end
 
   def self.pid_file
@@ -41,7 +41,7 @@ end
 
 class NodeTwoRedisRunner < RedisRunner
   def self.configuration
-    File.expand_path(File.dirname(__FILE__) + "/../../test/config/node-two.conf")
+    File.expand_path("../../../test/config/node-two.conf", __FILE__)
   end
 
   def self.pid_file
