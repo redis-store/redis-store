@@ -1,4 +1,5 @@
 require 'rake'
+require 'rake/testtask'
 require 'fileutils'
 require 'open-uri'
 
@@ -110,6 +111,25 @@ namespace :redis do
 
     arguments = commit.nil? ? "pull origin master" : "reset --hard #{commit}"
     sh "cd #{RedisRunner.redisdir} && git #{arguments}"
+  end
+
+  namespace :test do
+    desc "Run all the examples by starting a background Redis instance"
+    task :suite => 'redis:test:prepare' do
+      invoke_with_redis_replication 'redis:test:run'
+    end
+
+    Rake::TestTask.new(:run) do |t|
+      t.libs.push 'lib'
+      t.test_files = FileList['test/**/*_test.rb']
+      t.ruby_opts  = ["-I test"]
+      t.verbose    = true
+    end
+
+    task :prepare do
+      FileUtils.mkdir_p 'tmp/pids'
+      FileUtils.rm Dir.glob('tmp/*.rdb')
+    end
   end
 
   namespace :replication do
