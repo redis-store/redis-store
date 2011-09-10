@@ -1,3 +1,6 @@
+require 'redis/store/ttl'
+require 'redis/store/interface'
+
 class Redis
   class Store < self
     include Ttl, Interface

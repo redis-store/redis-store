@@ -1,11 +1,14 @@
-# TODO Autoload these modules
-require "redis"
-require "redis/distributed"
-require "redis/factory"
-require "redis/store/interface"
-require "redis/store/ttl"
-require "redis/store/namespace"
-require "redis/store/marshalling"
-require "redis/store/version"
-require "redis/store"
-require "redis/distributed_store"
+require 'redis'
+require 'redis/store'
+
+class Redis
+  autoload :Factory,          'redis/factory'
+  autoload :DistributedStore, 'redis/distributed_store'
+
+  class Store < self
+    autoload :Namespace,   'redis/store/namespace'
+    autoload :Marshalling, 'redis/store/marshalling'
+    autoload :Version,     'redis/store/version'
+  end
+end
+

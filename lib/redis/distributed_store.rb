@@ -1,3 +1,5 @@
+require 'redis/distributed'
+
 class Redis
   class DistributedStore < Distributed
     @@timeout = 5
