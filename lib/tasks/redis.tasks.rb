@@ -12,7 +12,7 @@ class RedisRunner
   end
 
   def self.pid_file
-    File.expand_path(File.dirname(__FILE__) + "/../../tmp/pids/redis.pid")
+    File.expand_path(Dir.pwd + "/tmp/pids/redis.pid")
   end
 
   def self.pid
@@ -34,7 +34,7 @@ class NodeOneRedisRunner < RedisRunner
   end
 
   def self.pid_file
-    File.expand_path(File.dirname(__FILE__) + "/../../tmp/pids/node-one.pid")
+    File.expand_path(Dir.pwd + "/tmp/pids/node-one.pid")
   end
 end
 
@@ -44,7 +44,7 @@ class NodeTwoRedisRunner < RedisRunner
   end
 
   def self.pid_file
-    File.expand_path(File.dirname(__FILE__) + "/../../tmp/pids/node-two.pid")
+    File.expand_path(Dir.pwd + "/tmp/pids/node-two.pid")
   end
 end
 
