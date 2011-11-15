@@ -7,7 +7,8 @@ module Rack
       def initialize(app, options = {})
         super
         @mutex = Mutex.new
-        options[:redis_server] ||= @default_options[:redis_server]
+        options.merge! ::Redis::Factory.convert_to_redis_client_options(options[:redis_server]) if options[:redis_server]
+        options.merge! ::Redis::Factory.convert_to_redis_client_options(DEFAULT_OPTIONS) unless options[:host]
         @pool = ::Redis::Factory.create options
       end
 
