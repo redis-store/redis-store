@@ -11,11 +11,9 @@ GEMS = %w(
   redis-sinatra
 ).freeze
 
-system('gem install bundler -v=1.1.rc --no-rdoc --no-ri')
-
 builds = GEMS.inject({}) do |result, rubygem|
   Dir.chdir(rubygem) do
-    result[rubygem] = system('bundle exec rake')
+    result[rubygem] = system('bundle install && bundle exec rake')
   end
 
   result
