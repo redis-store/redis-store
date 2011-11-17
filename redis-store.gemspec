@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_dependency(%q<redis>, ["~> 2.2.0"])
       s.add_development_dependency(%q<git>, ["~> 1.2.5"])
-      s.add_development_dependency(%q<bundler>, ["~> 1.0.14"])
+      s.add_development_dependency(%q<bundler>, ["~> 1.1.rc"])
       s.add_development_dependency(%q<rake>, ["~> 0.9.1"])
       s.add_development_dependency(%q<purdytest>, ["~> 1.0.0"])
       s.add_development_dependency(%q<mocha>, ["~> 0.9.12"])
