@@ -11,9 +11,21 @@ GEMS = %w(
   redis-sinatra
 ).freeze
 
-GEMS.each do |rubygem|
+builds = GEMS.inject({}) do |result, rubygem|
   Dir.chdir(rubygem) do
-    system 'bundle'
-    system 'bundle exec rake'
+    result[rubygem] = system('bundle exec rake')
   end
+
+  result
+end
+
+if builds.values.all? { |success| success }
+  puts
+  puts "Redis Store build SUCCESS"
+  exit(true)
+else
+  puts
+  puts "Redis Store build FAILED"
+  puts "Failed gems: #{builds.map {|rubygem, success| rubygem if not success }.compact.join(', ')}"
+  exit(false)
 end
