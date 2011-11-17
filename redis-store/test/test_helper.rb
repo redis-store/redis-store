@@ -1,5 +1,7 @@
+Bundler.setup
+gem 'minitest'
+require 'minitest/spec'
 require 'minitest/autorun'
-require 'purdytest'
 require 'mocha'
 require 'redis'
 require 'redis-store'

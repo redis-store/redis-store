@@ -1,0 +1,14 @@
+require 'bundler'
+Bundler.setup
+require 'rake'
+require 'bundler/gem_tasks'
+
+begin
+  require 'rdoc/task'
+rescue LoadError
+  require 'rake/rdoctask'
+end
+
+load 'tasks/redis.tasks.rb'
+task :default => 'redis:test:suite'
+

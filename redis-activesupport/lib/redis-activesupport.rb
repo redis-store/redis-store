@@ -1,0 +1,2 @@
+require 'redis/activesupport/version'
+
