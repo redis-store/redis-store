@@ -15,7 +15,7 @@ module Rack
 
         @mutex = Mutex.new
         options[:redis_server] ||= @default_options[:redis_server]
-        @pool = ::Redis::Factory.create options
+        @pool = ::Redis::Factory.create options[:redis_server]
       end
 
       def generate_sid
