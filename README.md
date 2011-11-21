@@ -62,6 +62,26 @@ Use `Rails.cache.reconnect` in your Unicorn hooks, in order to force the client 
 
 If you are on **Snow Leopard** you have to run `env ARCHFLAGS="-arch x86_64" bundle install`
 
+## Rails 3.x usage
+
+Add `redis-store` to your gemfile and run `bundle install`.
+
+``` ruby
+gem "redis-store"
+```
+
+Add the following to your `config/environments/production.rb` file.
+
+``` ruby
+config.cache_store = :redis_store
+```
+
+You can also pass an option hash as a second argument.
+
+``` ruby
+config.cache_store = :redis_store, { :host => 192.168.1.100, :port => 23682, :db => 13, :namespace => "theplaylist", :password => "secret" }
+```
+
 ## Copyright
 
 (c) 2009 - 2011 Luca Guidi - [http://lucaguidi.com](http://lucaguidi.com), released under the MIT license
