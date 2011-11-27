@@ -38,18 +38,17 @@ module Rack
       end
 
       def set_session(env, session_id, new_session, options)
-        expiry = options[:expire_after]
-        expiry = expiry.nil? ? 0 : expiry + 1
+        expiry = options[:expire_after] || 1
 
         with_lock(env, false) do
-          @pool.set session_id, expiry, new_session
+          @pool.set session_id, new_session, {:expire_after => expiry}
           session_id
         end
       end
 
       def destroy_session(env, session_id, options)
         with_lock(env) do
-          @pool.delete(session_id)
+          @pool.del(session_id)
           generate_sid unless options[:drop]
         end
       end
