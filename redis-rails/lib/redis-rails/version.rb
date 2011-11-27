@@ -1,4 +1,4 @@
-module Redis
+class Redis
   module Rails
     VERSION = "0.0.0"
   end

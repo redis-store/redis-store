@@ -1,6 +1,6 @@
 require "redis-sinatra/version"
 
-module Redis
+class Redis
   module Sinatra
     # Your code goes here...
   end

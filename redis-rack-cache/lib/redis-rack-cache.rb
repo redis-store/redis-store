@@ -1,6 +1,6 @@
 require "redis-rack-cache/version"
 
-module Redis
+class Redis
   module Rack
     module Cache
       # Your code goes here...

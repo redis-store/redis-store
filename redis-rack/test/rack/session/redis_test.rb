@@ -3,7 +3,7 @@ require 'rack/mock'
 require 'thread'
 
 describe Rack::Session::Redis do
-  session_key = Rack::Session::Redis::DEFAULT_OPTIONS[:key]
+  session_key = Rack::Session::Abstract::ID::DEFAULT_OPTIONS[:key]
   session_match = /#{session_key}=([0-9a-fA-F]+);/
   incrementor = lambda do |env|
     env["rack.session"]["counter"] ||= 0
@@ -26,14 +26,23 @@ describe Rack::Session::Redis do
   # test Redis connection
   Rack::Session::Redis.new(incrementor)
 
-  it "faults on no connection" do
-    lambda{
-      Rack::Session::Redis.new(incrementor, :redis_server => 'nosuchserver')
-    }.must_raise(Exception)
+  it "does not connect during initialization" do
+    pool = Rack::Session::Redis.new(incrementor, :redis_server => 'redis://nosuchserver')
+    pool.must_be_instance_of Rack::Session::Redis
   end
 
+  it "faults on no connection" do
+    lambda{
+      pool = Rack::Session::Redis.new(incrementor, :redis_server => 'redis://nosuchserver')
+      Rack::MockRequest.new(pool).get("/")
+    }.must_raise(SocketError)
+  end
+
+
   it "passes options to Redis" do
-    pool = Rack::Session::Redis.new(incrementor, :namespace => 'test:rack:session')
+    pool = Rack::Session::Redis.new(incrementor, {
+      :redis_server => 'redis://127.0.0.1:6379/0/test:rack:session'
+    })
     pool.pool.to_s.must_match('namespace test:rack:session')
   end
 
@@ -188,10 +197,10 @@ describe Rack::Session::Redis do
 
     res0 = req.get("/")
     session_id = (cookie = res0["Set-Cookie"])[session_match, 1]
-    ses0 = pool.pool.get(session_id, true)
+    ses0 = pool.pool.get(session_id)
 
     req.get("/", "HTTP_COOKIE" => cookie)
-    ses1 = pool.pool.get(session_id, true)
+    ses1 = pool.pool.get(session_id)
 
     ses1.wont_equal(ses0)
   end
