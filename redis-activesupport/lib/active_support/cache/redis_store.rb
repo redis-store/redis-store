@@ -134,6 +134,9 @@ module ActiveSupport
       protected
         def write_entry(key, entry, options)
           method = options && options[:unless_exist] ? :setnx : :set
+          if options[:raw]
+            entry = entry.is_a?(ActiveSupport::Cache::Entry) ? entry.value : entry
+          end
           @data.send method, key, entry, options
         rescue Errno::ECONNREFUSED => e
           false

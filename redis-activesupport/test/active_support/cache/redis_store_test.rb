@@ -60,10 +60,23 @@ describe ActiveSupport::Cache::RedisStore do
     end
   end
 
-  it "writes raw data" do
-    with_store_management do |store|
-      store.write "rabbit", @white_rabbit, :raw => true
-      store.read("rabbit", :raw => true).must_include("ActiveSupport::Cache::Entry")
+  if RUBY_VERSION.match /1\.9/
+    it "writes raw data" do
+      with_store_management do |store|
+        store.write "rabbit", @white_rabbit, :raw => true
+        result = store.read("rabbit", :raw => true)
+        result.wont_include("ActiveSupport::Cache::Entry")
+        result.must_include(@white_rabbit.to_s)
+      end
+    end
+  else
+    it "writes raw data" do
+      with_store_management do |store|
+        store.write "rabbit", @white_rabbit, :raw => true
+        result = store.read("rabbit", :raw => true)
+        result.wont_include("ActiveSupport::Cache::Entry")
+        result.must_include(@white_rabbit.to_s)
+      end
     end
   end
 
