@@ -1,6 +1,6 @@
 require "redis-rails/version"
 
-module Redis
+class Redis
   module Rails
     # Your code goes here...
   end

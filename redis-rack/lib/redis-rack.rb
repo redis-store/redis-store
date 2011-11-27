@@ -1,6 +1,6 @@
 require "redis-rack/version"
 
-module Redis
+class Redis
   module Rack
     # Your code goes here...
   end
