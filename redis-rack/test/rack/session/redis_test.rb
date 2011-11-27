@@ -188,10 +188,10 @@ describe Rack::Session::Redis do
 
     res0 = req.get("/")
     session_id = (cookie = res0["Set-Cookie"])[session_match, 1]
-    ses0 = pool.pool.get(session_id, true)
+    ses0 = pool.pool.get(session_id)
 
     req.get("/", "HTTP_COOKIE" => cookie)
-    ses1 = pool.pool.get(session_id, true)
+    ses1 = pool.pool.get(session_id)
 
     ses1.wont_equal(ses0)
   end
