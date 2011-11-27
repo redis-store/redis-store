@@ -9,3 +9,4 @@ group :test do
   end
 end
 
+gem 'redis-store', :path => File.expand_path('../../redis-store', __FILE__)

@@ -3,4 +3,11 @@ gemspec
 
 group :test do
   gem 'i18n'
+  if RUBY_VERSION > '1.9'
+    gem 'ruby-debug19'
+  else
+    gem 'ruby-debug'
+  end
 end
+
+gem 'redis-store', :path => File.expand_path('../../redis-store', __FILE__)
