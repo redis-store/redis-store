@@ -28,7 +28,7 @@ describe Rack::Session::Redis do
 
   it "faults on no connection" do
     lambda{
-      Rack::Session::Redis.new(incrementor, :redis_server => 'nosuchserver')
+      Rack::Session::Redis.new(incrementor, :redis_server => 'redis://nosuchserver')
     }.must_raise(Exception)
   end
 
