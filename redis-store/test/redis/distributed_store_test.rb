@@ -3,8 +3,8 @@ require 'test_helper'
 describe "Redis::DistributedStore" do
   def setup
     @dmr = Redis::DistributedStore.new [
-      {:host => "localhost", :port => "6380", :db => 0},
-      {:host => "localhost", :port => "6381", :db => 0}
+      {:host => "localhost", :port => "16380", :db => 0},
+      {:host => "localhost", :port => "16381", :db => 0}
     ]
     @rabbit = OpenStruct.new :name => "bunny"
     @white_rabbit = OpenStruct.new :color => "white"
@@ -16,10 +16,10 @@ describe "Redis::DistributedStore" do
   end
 
   it "accepts connection params" do
-    dmr = Redis::DistributedStore.new [ :host => "localhost", :port => "6380", :db => "1" ]
+    dmr = Redis::DistributedStore.new [ :host => "localhost", :port => "16380", :db => "1" ]
     dmr.ring.nodes.size == 1
     mr = dmr.ring.nodes.first
-    mr.to_s.must_equal("Redis Client connected to localhost:6380 against DB 1")
+    mr.to_s.must_equal("Redis Client connected to localhost:16380 against DB 1")
   end
 
   it "forces reconnection" do
@@ -42,8 +42,8 @@ describe "Redis::DistributedStore" do
   describe "namespace" do
     it "uses namespaced key" do
       @dmr = Redis::DistributedStore.new [
-        {:host => "localhost", :port => "6380", :db => 0},
-        {:host => "localhost", :port => "6381", :db => 0}
+        {:host => "localhost", :port => "16380", :db => 0},
+        {:host => "localhost", :port => "16381", :db => 0}
       ], :namespace => "theplaylist"
 
       @dmr.expects(:node_for).with("theplaylist:rabbit").returns(@dmr.nodes.first)

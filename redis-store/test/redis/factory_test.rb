@@ -48,13 +48,13 @@ describe "Redis::Factory" do
 
       it "should instantiate a Redis::DistributedStore store" do
         store = Redis::Factory.create(
-          {:host => "localhost", :port => 6379},
-          {:host => "localhost", :port => 6380}
+          {:host => "localhost", :port => 16379},
+          {:host => "localhost", :port => 16380}
         )
         store.must_be_kind_of(Redis::DistributedStore)
         store.nodes.map {|node| node.to_s }.must_equal([
-          "Redis Client connected to localhost:6379 against DB 0",
-          "Redis Client connected to localhost:6380 against DB 0",
+          "Redis Client connected to localhost:16379 against DB 0",
+          "Redis Client connected to localhost:16380 against DB 0",
         ])
       end
     end
@@ -81,24 +81,24 @@ describe "Redis::Factory" do
       end
 
       it "uses specified password" do
-        store = Redis::Factory.create "redis://:secret@127.0.0.1:6379/0/theplaylist"
+        store = Redis::Factory.create "redis://:secret@127.0.0.1:16379/0/theplaylist"
         store.instance_variable_get(:@client).password.must_equal("secret")
       end
 
       # TODO why we need this?
       it "allows to specify password without scheme" do
         suppress_warnings do
-          store = Redis::Factory.create ":secret@127.0.0.1:6379/0/theplaylist"
+          store = Redis::Factory.create ":secret@127.0.0.1:16379/0/theplaylist"
           store.instance_variable_get(:@client).password.must_equal("secret")
         end
       end
 
       it "instantiates Redis::DistributedStore" do
-        store = Redis::Factory.create "redis://127.0.0.1:6379", "redis://127.0.0.1:6380"
+        store = Redis::Factory.create "redis://127.0.0.1:16379", "redis://127.0.0.1:16380"
         store.must_be_kind_of(Redis::DistributedStore)
         store.nodes.map {|node| node.to_s }.must_equal([
-          "Redis Client connected to 127.0.0.1:6379 against DB 0",
-          "Redis Client connected to 127.0.0.1:6380 against DB 0",
+          "Redis Client connected to 127.0.0.1:16379 against DB 0",
+          "Redis Client connected to 127.0.0.1:16380 against DB 0",
         ])
       end
     end
