@@ -34,19 +34,8 @@ describe "Redis::Store::Namespace" do
   it "namespaces decrby"
   it "namespaces mget"
 
-  # it "should only decorate instances that needs to be namespaced" do
-  #   @store = Redis::Store.new
-  #   client = @store.instance_variable_get(:@client)
-  #   client.should_receive(:call).with([:get, "rabbit"])
-  #   @store.get("rabbit")
-  # end
-  #
-  # it "should not namespace a key which is already namespaced" do
-  #   @store.send(:interpolate, "#{@namespace}:rabbit").should == "#{@namespace}:rabbit"
-  # end
-  #
   # it "should namespace get" do
-  #   @client.should_receive(:call).with([:get, "#{@namespace}:rabbit"])
+  #   @client.expects(:call).with([:get, "#{@namespace}:rabbit"]).once
   #   @store.get("rabbit")
   # end
   #
