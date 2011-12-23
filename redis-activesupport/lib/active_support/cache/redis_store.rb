@@ -28,6 +28,14 @@ module ActiveSupport
         super(addresses.extract_options!)
       end
 
+      def write(name, value, options = nil)
+        options = merged_options(options)
+        instrument(:write, name, options) do |payload|
+          entry = options[:raw].present? ? value : Entry.new(value, options)
+          write_entry(namespaced_key(name, options), entry, options)
+        end
+      end
+
       # Delete objects for matched keys.
       #
       # Example:

@@ -63,7 +63,7 @@ describe ActiveSupport::Cache::RedisStore do
   it "writes raw data" do
     with_store_management do |store|
       store.write "rabbit", @white_rabbit, :raw => true
-      store.read("rabbit", :raw => true).must_include("ActiveSupport::Cache::Entry")
+      store.read("rabbit", :raw => true).must_equal(%(#<OpenStruct color=\"white\">))
     end
   end
 
