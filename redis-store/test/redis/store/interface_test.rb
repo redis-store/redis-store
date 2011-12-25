@@ -20,4 +20,8 @@ describe Redis::Store::Interface do
   it "should setnx an element" do
     lambda { @r.setnx("key", "value", :option => true) } #.wont_raise ArgumentError
   end
+
+  it "should setex an element" do
+    lambda { @r.setex("key", 1, "value", :option => true) } #.wont_raise ArgumentError
+  end
 end

@@ -49,14 +49,21 @@ describe "Redis::Marshalling" do
     @store.get("rabbit").must_equal(@rabbit)
   end
 
-  it "marshals on set_unless_exists" do
+  it "marshals on set unless exists" do
     @store.setnx "rabbit2", @white_rabbit
     @store.get("rabbit2").must_equal(@white_rabbit)
   end
 
-  it "doesn't marshal on set_unless_exists if raw option is true" do
+  it "doesn't marshal on set unless exists if raw option is true" do
     @store.setnx "rabbit2", @white_rabbit, :raw => true
     @store.get("rabbit2", :raw => true).must_equal(%(#<OpenStruct color="white">))
+  end
+
+  it "marshals on set expire" do
+    @store.setex "rabbit2", 1, @white_rabbit
+    @store.get("rabbit2").must_equal(@white_rabbit)
+    sleep 2
+    @store.get("rabbit2").must_be_nil
   end
 
   it "doesn't unmarshal on multi get" do

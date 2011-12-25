@@ -9,6 +9,10 @@ class Redis
         _marshal(value, options) { |value| super encode(key), encode(value), options }
       end
 
+      def setex(key, expiry, value, options = nil)
+        _marshal(value, options) { |value| super encode(key), expiry, encode(value), options }
+      end
+
       def get(key, options = nil)
         _unmarshal super(key), options
       end
