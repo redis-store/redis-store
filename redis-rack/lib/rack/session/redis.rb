@@ -21,7 +21,7 @@ module Rack
       def generate_sid
         loop do
           sid = super
-          break sid unless @pool.get(sid, true) # <=== WTF? <tt>true</tt>
+          break sid unless @pool.get(sid)
         end
       end
 
@@ -38,18 +38,21 @@ module Rack
       end
 
       def set_session(env, session_id, new_session, options)
-        expiry = options[:expire_after]
-        expiry = expiry.nil? ? 0 : expiry + 1
-
+        expiry = options[:expire_after].to_i
         with_lock(env, false) do
-          @pool.set session_id, expiry, new_session
+          if expiry.zero?
+            @pool.set session_id, new_session
+          else
+            @pool.setex session_id, (expiry + 1), new_session
+          end
+
           session_id
         end
       end
 
       def destroy_session(env, session_id, options)
         with_lock(env) do
-          @pool.delete(session_id)
+          @pool.del(session_id)
           generate_sid unless options[:drop]
         end
       end

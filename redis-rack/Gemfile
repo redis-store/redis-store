@@ -1,6 +1,8 @@
 source "http://rubygems.org"
 gemspec
 
+gem 'redis-store', '~> 1.1.0', :path => File.expand_path('../../redis-store', __FILE__)
+
 group :test do
   if RUBY_VERSION > '1.9'
     gem 'ruby-debug19'
