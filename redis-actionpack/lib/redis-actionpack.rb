@@ -1,2 +1,2 @@
-require "redis/actionpack/version"
+require 'redis/actionpack/version'
 
