@@ -1,8 +1,10 @@
+require 'uri'
+
 class Redis
   class Factory
     def self.create(*redis_client_options)
       redis_client_options = redis_client_options.flatten.compact.inject([]) do |result, address|
-        result << convert_to_redis_client_options(address)
+        result << resolve(address)
         result
       end
       if redis_client_options.size > 1
@@ -12,32 +14,26 @@ class Redis
       end
     end
 
-    def self.convert_to_redis_client_options(address_or_options)
-      if address_or_options.is_a?(Hash)
-        options = address_or_options.dup
+    def self.resolve(uri) #:api: private
+      if uri.is_a?(Hash)
+        options = uri.dup
         options[:namespace] ||= options.delete(:key_prefix) # RailsSessionStore
         options
       else
-        if address_or_options =~ /redis\:\/\//
-          require 'uri'
-          uri = URI.parse address_or_options
-          _, db, namespace = if uri.path
-            uri.path.split /\//
-          end
-        else
-          warn "[DEPRECATION] `#{address_or_options}` is deprecated. Please use `redis://#{address_or_options}` instead."
-          address_or_options, password = address_or_options.split(/\@/).reverse
-          password = password.gsub(/\:/, "") if password
-          host, port = address_or_options.split /\:/
-          port, db, namespace = port.split /\// if port
+        uri = URI.parse(uri)
+        _, db, namespace = if uri.path
+          uri.path.split /\//
         end
 
-        options = {}
-        options[:host] = host || uri && uri.host
-        options[:port] = port || uri && uri.port
-        options[:db]  = db.to_i if db
+        options = {
+          :host     => uri.host,
+          :port     => uri.port,
+          :password => uri.password
+        }
+
+        options[:db]        = db.to_i   if db
         options[:namespace] = namespace if namespace
-        options[:password]  = password || uri && uri.password
+
         options
       end
     end

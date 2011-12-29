@@ -25,7 +25,7 @@ module ActionDispatch
         servers = [ options.delete(:servers) ].flatten.compact
         servers = [ "redis://localhost:6379/0" ] if servers.empty?
         servers.map! do |server|
-          server = Redis::Factory.convert_to_redis_client_options(server)
+          server = Redis::Factory.resolve(server)
           server.merge(options)
         end
 

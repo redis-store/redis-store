@@ -13,7 +13,7 @@ module Rack
         attr_reader :cache
 
         def self.resolve(uri)
-          new ::Redis::Factory.convert_to_redis_client_options(uri.to_s)
+          new ::Redis::Factory.resolve(uri.to_s)
         end
       end
 

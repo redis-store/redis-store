@@ -85,14 +85,6 @@ describe "Redis::Factory" do
         store.instance_variable_get(:@client).password.must_equal("secret")
       end
 
-      # TODO why we need this?
-      it "allows to specify password without scheme" do
-        suppress_warnings do
-          store = Redis::Factory.create ":secret@127.0.0.1:6379/0/theplaylist"
-          store.instance_variable_get(:@client).password.must_equal("secret")
-        end
-      end
-
       it "instantiates Redis::DistributedStore" do
         store = Redis::Factory.create "redis://127.0.0.1:6379", "redis://127.0.0.1:6380"
         store.must_be_kind_of(Redis::DistributedStore)
