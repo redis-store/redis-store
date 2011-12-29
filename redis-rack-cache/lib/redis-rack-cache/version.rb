@@ -1,7 +1,7 @@
-module Redis
+class Redis
   module Rack
     module Cache
-      VERSION = "0.0.0"
+      VERSION = '1.1.0'
     end
   end
 end
