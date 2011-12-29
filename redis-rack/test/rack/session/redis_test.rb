@@ -33,7 +33,7 @@ describe Rack::Session::Redis do
   # end
 
   it "passes options to Redis" do
-    pool = Rack::Session::Redis.new(incrementor, :namespace => 'test:rack:session')
+    pool = Rack::Session::Redis.new(incrementor, :redis_server => {:namespace => 'test:rack:session'})
     pool.pool.to_s.must_match('namespace test:rack:session')
   end
 
