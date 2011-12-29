@@ -25,7 +25,11 @@ class RedisRunner
   end
 
   def self.stop
-    Process.kill("SIGTERM", pid)
+    begin
+      Process.kill('SIGTERM', pid)
+    rescue
+      # Suppress exceptions for Travis CI
+    end
   end
 end
 
