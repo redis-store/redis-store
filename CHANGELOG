@@ -1,3 +1,56 @@
+*1.1.0 (Unreleased)*
+
+  * CHANGELOG
+  * Use strict dependencies.
+  * READMEs and Licenses
+  * redis-actionpack now depends on redis-rack-cache
+  * Redis::Factory.convert_to_redis_client_options => Redis::Factory.resolve. 
+  * Don't use autoload
+  * Make redis-rack-cache tests to pass again
+  * Target Rack::Cache 1.1 for redis-rack-cache
+  * Target Rack 1.4.0 for redis-rack
+  * Gemspecs, dependencies and versions
+  * Make redis-rails tests to pass again
+  * redis-actionpack dependencies
+  * redis-activesupport dependencies
+  * Fix for redis-rack tests
+  * Fix for redis-activesupport tests
+  * Make redis-sinatra tests to pass again
+  * Make redis-actionpack tests to pass again
+  * Install bundler 1.1 RC on travis-ci.org [Michael Klishin]
+  * Make redis-rack tests to pass again
+  * Added SETEX support to Interface and Marshalling
+  * Make redis-i18n tests to pass again
+  * Make redis-activesupport tests to pass again
+  * More tests for redis-store core
+  * Redis::Factory is created with general options and not the redis_server [Julien Kirch]
+  * Moved README.md
+  * Split gems in subdirectories
+  * Moved everything under redis-store
+  * Use bundler 1.1.rc
+  * Better Ruby idiom on File.expand_path
+  * Moved Rake test tasks into lib/tasks/redis.tasks.rb, in order to DRY Rake
+  * Testing: Use relative paths when referring to pid files
+  * Autoload modules
+  * Moved Rake test tasks under lib/ in order to make them accessible to all 
+  * Let the Redis::DistributedStore test to pass
+  * Let Redis Rake tasks to work again
+  * Run tests without dtach
+  * Switch from RSpec to MiniTest::Unit
+  * Removed all the references to Rails, Merb, Sinatra, Rack, i18n, Rack::Session and Rack::Cache
+  * Gemfile is now depending on the gemspec. Removed Jewler.
+
+*1.0.0 (September 1, 2011)*
+
+  * Bump version v1.0.0
+  * Avoid encoding issues when sending strings to Redis. [Damian Janowski]
+  * Fixed a bug that caused all the users to share the same session (with a session_id of 0 or 1) [Mathieu Ravaux]
+  * ActiveSupport cache stores reply to read_multi with a hash, not an array. [Matt Griffin]
+  * Rack::Session && Rack::Cache store can be created with options [aligo]
+  * add destroy_session [aligo]
+  * compatible with rails 3.1. rely on Rack::Session::Redis stores API. [aligo]
+  * Fixed Marshalling semantic
+
 *1.0.0 [rc1] (June 5, 2011)*
 
   * Bump version v1.0.0.rc1

@@ -2,7 +2,7 @@
 
 __Redis Store__ provides a full set of stores (*Cache*, *I18n*, *Session*, *HTTP Cache*) for all the modern Ruby frameworks like: __Ruby on Rails__, __Sinatra__, __Rack__, __Rack::Cache__ and __I18n__. It natively supports object marshalling, timeouts, single or multiple nodes and namespaces.
 
-Please check the *README* file of each gem, to be informed about the usage.
+This is the core for all the other gems, please check the *READMEs* to be informed about the usage.
 
 ## Redis Installation
 
@@ -22,14 +22,10 @@ Download and install Redis from [http://redis.io](http://redis.io/)
     cd redis
     make
 
-## Build Status
-
-[![Build Status](https://secure.travis-ci.org/jodosha/redis-store.png?branch=master)](http://travis-ci.org/jodosha/redis-store?branch=master)
-
 ## Running tests
 
     git clone git://github.com/jodosha/redis-store.git
-	cd redis-store
+	cd redis-store/redis-store
 	gem install bundler --pre # required version: 1.1.rc
 	ruby ci/run.rb
 

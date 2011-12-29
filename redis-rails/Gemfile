@@ -1,0 +1,7 @@
+source "http://rubygems.org"
+gemspec
+
+gem 'redis-store',         '~> 1.1.0', :path => File.expand_path('../../redis-store',         __FILE__)
+gem 'redis-activesupport', '3.1.3', :path => File.expand_path('../../redis-activesupport', __FILE__)
+gem 'redis-actionpack',    '3.1.3', :path => File.expand_path('../../redis-actionpack',    __FILE__)
+gem 'redis-rack-cache',    '1.1',   :path => File.expand_path('../../redis-rack-cache',    __FILE__)
