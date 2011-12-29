@@ -1,14 +1,12 @@
 require 'redis'
 require 'redis/store'
+require 'redis/factory'
+require 'redis/distributed_store'
+require 'redis/store/namespace'
+require 'redis/store/marshalling'
+require 'redis/store/version'
 
 class Redis
-  autoload :Factory,          'redis/factory'
-  autoload :DistributedStore, 'redis/distributed_store'
-
   class Store < self
-    autoload :Namespace,   'redis/store/namespace'
-    autoload :Marshalling, 'redis/store/marshalling'
-    autoload :Version,     'redis/store/version'
   end
 end
-
