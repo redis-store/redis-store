@@ -1,66 +1,39 @@
 # Namespaced Redis stores for Ruby frameworks
 
-[![Build Status](https://secure.travis-ci.org/jodosha/redis-store.png?branch=master)](http://travis-ci.org/jodosha/redis-store?branch=master)
+__Redis Store__ provides a full set of stores (*Cache*, *I18n*, *Session*, *HTTP Cache*) for all the modern Ruby frameworks like: __Ruby on Rails__, __Sinatra__, __Rack__, __Rack::Cache__ and __I18n__. It natively supports object marshalling, timeouts, single or multiple nodes and namespaces.
 
-## Installation
+Please check the *README* file of each gem, to be informed about the usage.
 
-### Redis, Option 1: Homebrew
+## Redis Installation
+
+### Option 1: Homebrew
 
 MacOS X users should use [Homebrew](https://github.com/mxcl/homebrew) to install Redis:
 
     brew install redis
 
-### Redis, Option 2: From Source
+### Option 2: From Source
 
-Download and install Redis from [http://code.google.com/p/redis/](http://code.google.com/p/redis/)
+Download and install Redis from [http://redis.io](http://redis.io/)
 
-    wget http://redis.googlecode.com/files/redis-2.0.0.tar.gz
-    tar -zxf redis-2.0.0.tar.gz
-    mv redis-2.0.0 redis
+	wget http://redis.googlecode.com/files/redis-2.4.5.tar.gz
+    tar -zxf redis-2.4.5.tar.gz
+    mv redis-2.4.5 redis
     cd redis
     make
 
-### Install the Gem
+## Build Status
 
-Assuming you're using RVM or on Windows, install the gem with:
-
-    gem install redis-store
-
-## Options
-You can specify the Redis configuration details using a URI or a hash.  By default the gem will attempt to connect to `localhost` port `6379` and the db `0`.
-
-### Set by URI
-
-For example
-
-    "redis://:secret@192.168.1.100:23682/13/theplaylist"
-
-Made up of the following:
-
-    host: 192.168.1.100
-    port: 23682
-    db: 13
-    namespace: theplaylist
-    password: secret
-
-If you want to specify the `namespace` option, you have to pass the `db` param too.
-#### __Important__: `namespace` is only supported for single, non-distributed stores.
-
-### Set by Hash
-
-    { :host => 192.168.1.100, :port => 23682, :db => 13, :namespace => "theplaylist", :password => "secret" }
-
-#### __Important__: `namespace` is only supported for single, non-distributed stores.
-
-## Unicorn
-
-Use `Rails.cache.reconnect` in your Unicorn hooks, in order to force the client reconnection.
+[![Build Status](https://secure.travis-ci.org/jodosha/redis-store.png?branch=master)](http://travis-ci.org/jodosha/redis-store?branch=master)
 
 ## Running tests
 
-    TODO
+    git clone git://github.com/jodosha/redis-store.git
+	cd redis-store
+	gem install bundler --pre # required version: 1.1.rc
+	ruby ci/run.rb
 
-If you are on **Snow Leopard** you have to run `env ARCHFLAGS="-arch x86_64" bundle install`
+If you are on **Snow Leopard** you have to run `env ARCHFLAGS="-arch x86_64" ruby ci/run.rb`
 
 ## Copyright
 
