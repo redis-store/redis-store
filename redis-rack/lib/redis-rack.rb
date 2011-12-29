@@ -1,7 +1,3 @@
-require "redis-rack/version"
-
-module Redis
-  module Rack
-    # Your code goes here...
-  end
-end
+require 'redis-store'
+require 'redis-rack/version'
+require 'rack/session/redis'
