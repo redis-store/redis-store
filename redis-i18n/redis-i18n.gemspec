@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_runtime_dependency 'redis-store',   '~> 1.1.0'
-  s.add_runtime_dependency 'i18n',          '~> 0.6.0'
+  s.add_runtime_dependency 'i18n',          '0.6.0'
 
   s.add_development_dependency 'rake',      '~> 0.9.2.2'
   s.add_development_dependency 'bundler',   '~> 1.1.rc'
