@@ -256,7 +256,7 @@ describe Rack::Cache::MetaStore::Redis do
       @response = mock_response(200, {'Cache-Control' => 'max-age=420'}, ['test'])
       body = @response.body
       cache_key = @store.store(@request, @response, @entity_store)
-      @response.body.should.not.be.same_as body
+      @response.body.must_equal(body)
       cache_key
     end
 

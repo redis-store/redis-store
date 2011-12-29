@@ -11,11 +11,11 @@ describe Rack::Cache::EntityStore::Redis do
     @store = ::Rack::Cache::EntityStore::Redis.new :host => 'localhost'
   end
 
-  it "should have the class referenced by homonym constant" do
+  it 'has the class referenced by homonym constant' do
     ::Rack::Cache::EntityStore::REDIS.must_equal(::Rack::Cache::EntityStore::Redis)
   end
 
-  it "should resolve the connection uri" do
+  it 'resolves the connection uri' do
     cache = ::Rack::Cache::EntityStore::Redis.resolve(uri("redis://127.0.0.1")).cache
     cache.must_be_kind_of(::Redis)
     cache.id.must_equal("redis://127.0.0.1:6379/0")
