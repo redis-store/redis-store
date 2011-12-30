@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Luca Guidi"]
   s.email       = ["guidi.luca@gmail.com"]
   s.homepage    = ""
-  s.summary     = %q{Redis backed stores for Ruby web frameworks}
+  s.summary     = %q{Redis stores for Ruby frameworks}
   s.description = %q{Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks.}
 
   s.rubyforge_project = "redis-store"
