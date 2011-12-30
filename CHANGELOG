@@ -1,5 +1,8 @@
-*1.1.0 (Unreleased)*
+*1.1.0 [rc] (December 30, 2011)*
 
+  * Bump version v1.1.0.rc
+  * Prepare RCs
+  * redis-store 1.1.0.rc
   * CHANGELOG
   * Use strict dependencies.
   * READMEs and Licenses
