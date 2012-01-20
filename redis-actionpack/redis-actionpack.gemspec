@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'redis-store',      '1.1.0.rc'
   s.add_runtime_dependency 'actionpack',       '3.1.3'
-  s.add_runtime_dependency 'redis-rack-cache', '1.1.rc'
+  s.add_runtime_dependency 'redis-rack-cache', '1.1.rc2'
 
   s.add_development_dependency 'rake',      '~> 0.9.2.2'
   s.add_development_dependency 'bundler',   '~> 1.1.rc'
