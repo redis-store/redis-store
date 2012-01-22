@@ -63,7 +63,7 @@ module RedisStore
     end
   end
 end
-if ::Redis::Store.rails31?
+if ::Redis::Store.rails31? || ::Redis::Store.rails32?
   require 'action_dispatch/middleware/session/abstract_store'
   class ActionDispatch::Session::RedisSessionStore < Rack::Session::Redis
     include ActionDispatch::Session::Compatibility
