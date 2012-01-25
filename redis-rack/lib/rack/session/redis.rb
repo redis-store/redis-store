@@ -1,5 +1,6 @@
 require 'rack/session/abstract/id'
 require 'redis-store'
+require 'thread'
 
 module Rack
   module Session
