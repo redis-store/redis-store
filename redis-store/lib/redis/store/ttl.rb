@@ -21,7 +21,7 @@ class Redis
         def setnx_with_expire(key, value, ttl)
           multi do
             setnx(key, value)
-            expire(key, expires_in)
+            expire(key, ttl)
           end
         end
 
