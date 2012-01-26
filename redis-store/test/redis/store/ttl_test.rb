@@ -1,7 +1,20 @@
 require 'test_helper'
 
+module StubInterface
+  def setex(key, ttl, value, options = nil)
+    stub_op(:setex, key, ttl, value, options)
+  end
+
+  def setnx(key, value, options = nil)
+    stub_op(:setnx, key, value, options)
+  end
+
+  def stub_op(op, key, value, options)
+  end
+end
+
 class RedisWithTtl < Redis
-  include Redis::Store::Ttl
+  include StubInterface, Redis::Store::Ttl
 end
 
 describe RedisWithTtl do
@@ -21,7 +34,7 @@ describe RedisWithTtl do
 
     describe '#set' do
       describe 'without options' do
-        it 'must call set with key and value' do
+        it 'must call super with key and value' do
           RedisWithTtl.any_instance.expects(:super).with(key, value)
 
           redis.set(key, value)
@@ -29,8 +42,8 @@ describe RedisWithTtl do
       end
 
       describe 'with options' do
-        it 'must call setex with proper expiry' do
-          RedisWithTtl.any_instance.expects(:setex).with(key, options[:expire_after], value)
+        it 'must call setex with proper expiry and set raw to true' do
+          RedisWithTtl.any_instance.expects(:stub_op).with(:setex, key, options[:expire_after], value, :raw => true)
 
           redis.set(key, value, options)
         end
@@ -38,13 +51,13 @@ describe RedisWithTtl do
     end
 
     describe '#setnx' do
-      it 'must call setnx with key and value' do
-        RedisWithTtl.any_instance.expects(:super).with(key, value)
+      describe 'without expiry' do
+        it 'must call super with key and value' do
+          RedisWithTtl.any_instance.expects(:super).with(key, value)
 
-        redis.setnx(key, value)
-      end
+          redis.setnx(key, value)
+        end
 
-      describe 'without options' do
         it 'must not call expire' do
           RedisWithTtl.any_instance.expects(:expire).never
 
@@ -52,7 +65,11 @@ describe RedisWithTtl do
         end
       end
 
-      describe 'with options' do
+      describe 'with expiry' do
+        it 'must call setnx with key and value and set raw to true' do
+          RedisWithTtl.any_instance.expects(:stub_op).with(:setnx, key, value, :raw => true)
+        end
+
         it 'must call expire' do
           RedisWithTtl.any_instance.expects(:expire).with(key, options[:expire_after])
 
