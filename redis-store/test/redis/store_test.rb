@@ -14,4 +14,16 @@ describe Redis::Store do
     @client.expects(:reconnect)
     @store.reconnect
   end
+
+  describe 'with expiry' do
+    let(:key) { 'key' }
+    let(:value) { 'value' }
+    let(:options) { { :expire_after => 3600 } }
+
+    it 'should not double marshall' do
+      Marshal.expects(:dump).once
+
+      @store.set(key, value, options)
+    end
+  end
 end

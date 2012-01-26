@@ -3,7 +3,7 @@ require 'redis/store/interface'
 
 class Redis
   class Store < self
-    include Ttl, Interface
+    include Interface, Ttl
 
     def initialize(options = { })
       super
