@@ -92,14 +92,15 @@ describe Rack::Session::Redis do
     res = Rack::MockRequest.new(pool).get('/')
     res.body.must_include('"counter"=>1')
     cookie = res["Set-Cookie"]
+    sid = cookie[session_match, 1]
     res = Rack::MockRequest.new(pool).get('/', "HTTP_COOKIE" => cookie)
-    res["Set-Cookie"].must_equal(cookie)
+    res["Set-Cookie"][session_match, 1].must_equal(sid)
     res.body.must_include('"counter"=>2')
     puts 'Sleeping to expire session' if $DEBUG
     sleep 4
     res = Rack::MockRequest.new(pool).get('/', "HTTP_COOKIE" => cookie)
-    res["Set-Cookie"].wont_equal(cookie)
-    res.body.must_include('"counter"=>3')
+    res["Set-Cookie"][session_match, 1].wont_equal(sid)
+    res.body.must_include('"counter"=>1')
   end
 
   it "does not send the same session id if it did not change" do
@@ -107,7 +108,7 @@ describe Rack::Session::Redis do
     req = Rack::MockRequest.new(pool)
 
     res0 = req.get("/")
-    cookie = res0["Set-Cookie"][session_match]
+    cookie = res0["Set-Cookie"]
     res0.body.must_equal('{"counter"=>1}')
 
     res1 = req.get("/", "HTTP_COOKIE" => cookie)
