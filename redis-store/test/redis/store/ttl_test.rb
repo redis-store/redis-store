@@ -1,43 +1,67 @@
 require 'test_helper'
 
-module StubOps
-  def setnx(key, value, options = nil)
-    stub_op(:setnx, key, value, options)
-  end
-end
-
 class MockRedis
-  def set(key,  value, options = nil)
-    stub_op(:set, key, value, options)
+  def initialize
+    @sets = []
+    @setexes = []
+    @setnxes = []
+    @expires = []
   end
 
-  def setex(key, ttl, value, options = nil)
-    stub_op(:setex, key, ttl, value, options)
+  def set(*a)
+    @sets << a
   end
 
-  def setnx(key, value, options = nil)
-    extend StubOps
+  def has_set?(*a)
+    @sets.include?(a)
   end
 
-  def multi
-    yield
+  def setex(*a)
+    @setexes << a
   end
 
-  def expire(key, ttl); end
+  def has_setex?(*a)
+    @setexes.include?(a)
+  end
 
-  def stub_op(op, key, value, options); end
+  def setnx(*a)
+    @setnxes << a
+  end
+
+  def has_setnx?(*a)
+    @setnxes.include?(a)
+  end
+
+  def multi(&block)
+    instance_eval do
+      def setnx(*a)
+        @setnxes << a
+      end
+
+      block.call
+    end
+  end
+
+  def expire(*a)
+    @expires << a
+  end
+
+  def has_expire?(*a)
+    @expires.include?(a)
+  end
+
 end
 
-class RedisWithTtl < MockRedis
+class MockTtlStore < MockRedis
   include Redis::Store::Ttl
 end
 
-describe RedisWithTtl do
+describe MockTtlStore do
   describe 'an instance' do
     let(:key) { 'hello' }
     let(:value) { 'value' }
     let(:options) { { :expire_after => 3600 } }
-    let(:redis) { RedisWithTtl.new }
+    let(:redis) { MockTtlStore.new }
 
     it 'must respond to set' do
       redis.must_respond_to(:set)
@@ -50,17 +74,15 @@ describe RedisWithTtl do
     describe '#set' do
       describe 'without options' do
         it 'must call super with key and value' do
-          RedisWithTtl.any_instance.expects(:super).with(key, value)
-
           redis.set(key, value)
+          redis.has_set?(key, value)
         end
       end
 
       describe 'with options' do
         it 'must call setex with proper expiry and set raw to true' do
-          RedisWithTtl.any_instance.expects(:stub_op).with(:setex, key, options[:expire_after], value, :raw => true)
-
           redis.set(key, value, options)
+          redis.has_setex?(key, options[:expire_after], value)
         end
       end
     end
@@ -68,13 +90,12 @@ describe RedisWithTtl do
     describe '#setnx' do
       describe 'without expiry' do
         it 'must call super with key and value' do
-          RedisWithTtl.any_instance.expects(:super).with(key, value)
-
           redis.setnx(key, value)
+          redis.has_setnx?(key, value)
         end
 
         it 'must not call expire' do
-          RedisWithTtl.any_instance.expects(:expire).never
+          MockTtlStore.any_instance.expects(:expire).never
 
           redis.setnx(key, value)
         end
@@ -82,15 +103,13 @@ describe RedisWithTtl do
 
       describe 'with expiry' do
         it 'must call setnx with key and value and set raw to true' do
-          RedisWithTtl.any_instance.expects(:stub_op).with(:setnx, key, value, :raw => true)
-
           redis.setnx(key, value, options)
+          redis.has_setnx?(key, value, :raw => true).must_equal true
         end
 
         it 'must call expire' do
-          RedisWithTtl.any_instance.expects(:expire).with(key, options[:expire_after])
-
           redis.setnx(key, value, options)
+          redis.has_expire?(key, options[:expire_after]).must_equal true
         end
       end
     end
