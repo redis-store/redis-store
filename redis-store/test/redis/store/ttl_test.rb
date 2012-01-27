@@ -1,20 +1,35 @@
 require 'test_helper'
 
-module StubInterface
+module StubOps
+  def setnx(key, value, options = nil)
+    stub_op(:setnx, key, value, options)
+  end
+end
+
+class MockRedis
+  def set(key,  value, options = nil)
+    stub_op(:set, key, value, options)
+  end
+
   def setex(key, ttl, value, options = nil)
     stub_op(:setex, key, ttl, value, options)
   end
 
   def setnx(key, value, options = nil)
-    stub_op(:setnx, key, value, options)
+    extend StubOps
   end
 
-  def stub_op(op, key, value, options)
+  def multi
+    yield
   end
+
+  def expire(key, ttl); end
+
+  def stub_op(op, key, value, options); end
 end
 
-class RedisWithTtl < Redis
-  include StubInterface, Redis::Store::Ttl
+class RedisWithTtl < MockRedis
+  include Redis::Store::Ttl
 end
 
 describe RedisWithTtl do
@@ -68,6 +83,8 @@ describe RedisWithTtl do
       describe 'with expiry' do
         it 'must call setnx with key and value and set raw to true' do
           RedisWithTtl.any_instance.expects(:stub_op).with(:setnx, key, value, :raw => true)
+
+          redis.setnx(key, value, options)
         end
 
         it 'must call expire' do
