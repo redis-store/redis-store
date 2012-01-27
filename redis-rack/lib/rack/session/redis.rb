@@ -38,14 +38,8 @@ module Rack
       end
 
       def set_session(env, session_id, new_session, options)
-        expiry = options[:expire_after].to_i
         with_lock(env, false) do
-          if expiry.zero?
-            @pool.set session_id, new_session
-          else
-            @pool.setex session_id, (expiry + 1), new_session
-          end
-
+          @pool.set session_id, new_session, options
           session_id
         end
       end
