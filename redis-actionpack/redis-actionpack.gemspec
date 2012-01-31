@@ -23,10 +23,10 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'redis-rack-cache', '1.1.rc2'
   s.add_runtime_dependency 'redis-rack',       '1.3.5.rc'
 
-  s.add_development_dependency 'rake',      '~> 0.9.2.2'
-  s.add_development_dependency 'bundler',   '~> 1.1.rc'
-  s.add_development_dependency 'mocha',     '~> 0.10.0'
-  s.add_development_dependency 'minitest',  '~> 2.8.0'
-  s.add_development_dependency 'purdytest', '~> 1.0.0'
+  s.add_development_dependency 'rake',           '~> 0.9.2.2'
+  s.add_development_dependency 'bundler',        '~> 1.1.rc'
+  s.add_development_dependency 'minitest',       '~> 2.8.0'
+  s.add_development_dependency 'purdytest',      '~> 1.0.0'
+  s.add_development_dependency 'minitest-rails', '~> 0.0.5'
+  s.add_development_dependency 'tzinfo'
 end
-
