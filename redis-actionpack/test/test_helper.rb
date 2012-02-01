@@ -8,6 +8,7 @@ require "rails/test_help"
 
 Rails.backtrace_cleaner.remove_silencers!
 
+# TODO: remove once https://github.com/blowmage/minitest-rails/issues/12 is resolved
 class MiniTest::Rails::IntegrationTest < MiniTest::Rails::Spec
   include ActiveSupport::Testing::SetupAndTeardown
 
