@@ -71,14 +71,23 @@ class RedisStoreIntegrationTest < MiniTest::Rails::IntegrationTest
     response.body.must_equal session_id
   end
 
-  it "should deserialize serialized values" do
-    get '/set_serialized_session_value'
-    response.must_be :success?
-    cookies['_session_id'].wont_be_nil
+  it "should auto-load unloaded class" do
+    with_autoload_path "session_autoload_test" do
+      get '/set_serialized_session_value'
+      response.must_be :success?
+      cookies['_session_id'].wont_be_nil
+    end
 
-    get '/get_session_value'
-    response.must_be :success?
-    response.body.must_equal 'foo: #<Foo bar:"baz">'
+    with_autoload_path "session_autoload_test" do
+      get '/get_session_id'
+      assert_response :success
+    end
+
+    with_autoload_path "session_autoload_test" do
+      get '/get_session_value'
+      response.must_be :success?
+      response.body.must_equal 'foo: #<SessionAutoloadTest::Foo bar:"baz">'
+    end
   end
 
   it "should not resend the cookie again if session_id cookie is already exists" do

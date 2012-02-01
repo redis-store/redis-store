@@ -14,7 +14,7 @@ class TestController < ActionController::Base
   end
 
   def set_serialized_session_value
-    session[:foo] = Foo.new
+    session[:foo] = SessionAutoloadTest::Foo.new
     head :ok
   end
 
