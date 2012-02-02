@@ -32,9 +32,19 @@ describe Rack::Session::Redis do
   #   }.must_raise(Exception)
   # end
 
-  it "passes options to Redis" do
+  it "uses the default Redis server and namespace when not provided" do
+    pool = Rack::Session::Redis.new(incrementor)
+    pool.pool.to_s.must_match(/127\.0\.0\.1:6379 against DB 0 with namespace rack:session$/)
+  end
+
+  it "uses the specified namespace when provided" do
     pool = Rack::Session::Redis.new(incrementor, :redis_server => {:namespace => 'test:rack:session'})
-    pool.pool.to_s.must_match('namespace test:rack:session')
+    pool.pool.to_s.must_match(/namespace test:rack:session$/)
+  end
+
+  it "uses the specified Redis server when provided" do
+    pool = Rack::Session::Redis.new(incrementor, :redis_server => 'redis://127.0.0.1:6380/1')
+    pool.pool.to_s.must_match(/127\.0\.0\.1:6380 against DB 1$/)
   end
 
   it "creates a new cookie" do

@@ -8,15 +8,13 @@ module Rack
       attr_reader :mutex, :pool
 
       DEFAULT_OPTIONS = Abstract::ID::DEFAULT_OPTIONS.merge \
-        :namespace    => 'rack:session',
-        :redis_server => 'redis://127.0.0.1:6379/0'
+        :redis_server => 'redis://127.0.0.1:6379/0/rack:session'
 
       def initialize(app, options = {})
         super
 
         @mutex = Mutex.new
-        options[:redis_server] ||= @default_options[:redis_server]
-        @pool = ::Redis::Factory.create options[:redis_server]
+        @pool = ::Redis::Factory.create @default_options[:redis_server]
       end
 
       def generate_sid
