@@ -66,14 +66,14 @@ describe MockTtlStore do
     describe 'without options' do
       it 'must call super with key and value' do
         redis.set(key, value)
-        redis.has_set?(key, value)
+        redis.has_set?(key, value).must_equal true
       end
     end
 
     describe 'with options' do
       it 'must call setex with proper expiry and set raw to true' do
         redis.set(key, value, options)
-        redis.has_setex?(key, options[:expire_after], value)
+        redis.has_setex?(key, options[:expire_after], value, :raw => true).must_equal true
       end
     end
   end
