@@ -6,6 +6,6 @@ describe Redis::Rails do
   end
 
   it "must require ActionPack dependency" do
-    assert defined?(ActionDispatch::Session::RedisSessionStore)
+    assert defined?(ActionDispatch::Session::RedisStore)
   end
 end
