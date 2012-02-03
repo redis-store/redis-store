@@ -9,7 +9,7 @@ module ActionDispatch
       include StaleSessionCheck
       def initialize(app, options = {})
         options = options.dup
-        options[:redis_server] = options[:servers]
+        options[:redis_server] ||= options[:servers]
         super
       end
     end
