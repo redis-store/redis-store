@@ -7,6 +7,11 @@ module ActionDispatch
     class RedisStore < Rack::Session::Redis
       include Compatibility
       include StaleSessionCheck
+      def initialize(app, options = {})
+        options = options.dup
+        options[:redis_server] = options[:servers]
+        super
+      end
     end
   end
 end
