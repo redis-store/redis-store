@@ -35,6 +35,10 @@ Download and install Redis from [http://redis.io](http://redis.io/)
 
 If you are on **Snow Leopard** you have to run `env ARCHFLAGS="-arch x86_64" ruby ci/run.rb`
 
+## Contributors
+
+  * Matt Horan ([@mhoran](https://github.com/mhoran))
+
 ## Copyright
 
-(c) 2009 - 2011 Luca Guidi - [http://lucaguidi.com](http://lucaguidi.com), released under the MIT license
+(c) 2009 - 2012 Luca Guidi - [http://lucaguidi.com](http://lucaguidi.com), released under the MIT license
