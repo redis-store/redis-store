@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency 'redis-store',      '1.1.0.rc'
+  s.add_runtime_dependency 'redis-store',      '1.1.0.rc2'
   s.add_runtime_dependency 'actionpack',       '3.1.3'
   s.add_runtime_dependency 'redis-rack-cache', '1.1.rc2'
   s.add_runtime_dependency 'redis-rack',       '1.3.5.rc'
