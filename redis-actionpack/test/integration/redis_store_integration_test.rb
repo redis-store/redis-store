@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RedisStoreIntegrationTest < MiniTest::Rails::IntegrationTest
+class RedisStoreIntegrationTest < ActionController::IntegrationTest
   it "reads the data" do
     get '/set_session_value'
     response.must_be :success?
