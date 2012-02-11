@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'bundler',        '~> 1.1.rc'
   s.add_development_dependency 'minitest',       '~> 2.8.0'
   s.add_development_dependency 'purdytest',      '~> 1.0.0'
-  s.add_development_dependency 'minitest-rails', '~> 0.0.5'
   s.add_development_dependency 'tzinfo'
+  s.add_development_dependency 'mini_specunit'
+  s.add_development_dependency 'mini_backtrace'
 end
