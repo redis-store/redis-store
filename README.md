@@ -16,9 +16,9 @@ MacOS X users should use [Homebrew](https://github.com/mxcl/homebrew) to install
 
 Download and install Redis from [http://redis.io](http://redis.io/)
 
-	wget http://redis.googlecode.com/files/redis-2.4.5.tar.gz
-    tar -zxf redis-2.4.5.tar.gz
-    mv redis-2.4.5 redis
+	wget http://redis.googlecode.com/files/redis-2.4.7.tar.gz
+    tar -zxf redis-2.4.7.tar.gz
+    mv redis-2.4.7 redis
     cd redis
     make
 

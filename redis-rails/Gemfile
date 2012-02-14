@@ -1,8 +1,8 @@
 source "http://rubygems.org"
 gemspec
 
-gem 'redis-store',         '1.1.0.rc2',  :path => File.expand_path('../../redis-store',         __FILE__)
+gem 'redis-store',         '1.1.0',     :path => File.expand_path('../../redis-store',         __FILE__)
 gem 'redis-activesupport', '3.2.1.rc',  :path => File.expand_path('../../redis-activesupport', __FILE__)
-gem 'redis-actionpack',    '3.2.1.rc', :path => File.expand_path('../../redis-actionpack',    __FILE__)
-gem 'redis-rack',          '1.4.0.rc2',  :path => File.expand_path('../../redis-rack',    __FILE__)
+gem 'redis-actionpack',    '3.2.1.rc',  :path => File.expand_path('../../redis-actionpack',    __FILE__)
+gem 'redis-rack',          '1.4.0.rc2', :path => File.expand_path('../../redis-rack',          __FILE__)
 gem 'SystemTimer', :platform => :mri_18
