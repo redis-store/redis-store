@@ -13,7 +13,7 @@ GEMS = %w(
 
 builds = GEMS.inject({}) do |result, rubygem|
   Dir.chdir(rubygem) do
-    result[rubygem] = system('bundle install && bundle exec rake')
+    result[rubygem] = system('bundle update && bundle exec rake')
   end
 
   result
