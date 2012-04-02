@@ -5,8 +5,8 @@ require "redis/actionpack/version"
 Gem::Specification.new do |s|
   s.name        = "redis-actionpack"
   s.version     = Redis::ActionPack::VERSION
-  s.authors     = ["Luca Guidi"]
-  s.email       = ["guidi.luca@gmail.com"]
+  s.authors     = ["Luca Guidi", "Matt Horan"]
+  s.email       = ["me@lucaguidi.com"]
   s.homepage    = "http://jodosha.github.com/redis-store"
   s.summary     = %q{Redis session store for ActionPack}
   s.description = %q{Redis session store for ActionPack}

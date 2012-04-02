@@ -5,8 +5,8 @@ require "redis-rails/version"
 Gem::Specification.new do |s|
   s.name        = "redis-rails"
   s.version     = Redis::Rails::VERSION
-  s.authors     = ["Luca Guidi"]
-  s.email       = ["guidi.luca@gmail.com"]
+  s.authors     = ["Luca Guidi", "Matt Horan"]
+  s.email       = ["me@lucaguidi.com"]
   s.homepage    = "http://jodosha.github.com/redis-store"
   s.summary     = %q{Redis for Ruby on Rails}
   s.description = %q{Redis for Ruby on Rails}

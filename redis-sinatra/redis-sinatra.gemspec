@@ -5,8 +5,8 @@ require "redis-sinatra/version"
 Gem::Specification.new do |s|
   s.name        = "redis-sinatra"
   s.version     = Redis::Sinatra::VERSION
-  s.authors     = ["Luca Guidi"]
-  s.email       = ["guidi.luca@gmail.com"]
+  s.authors     = ["Luca Guidi", "Matt Horan"]
+  s.email       = ["me@lucaguidi.com"]
   s.homepage    = "http://jodosha.github.com/redis-store"
   s.summary     = %q{Redis for Sinatra}
   s.description = %q{Redis for Sinatra}
