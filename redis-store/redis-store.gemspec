@@ -5,9 +5,9 @@ require "redis/store/version"
 Gem::Specification.new do |s|
   s.name        = "redis-store"
   s.version     = Redis::Store::VERSION
-  s.authors     = ["Luca Guidi"]
-  s.email       = ["guidi.luca@gmail.com"]
-  s.homepage    = ""
+  s.authors     = ["Luca Guidi", "Matt Horan"]
+  s.email       = ["me@lucaguidi.com"]
+  s.homepage    = "http://jodosha.github.com/redis-store"
   s.summary     = %q{Redis stores for Ruby frameworks}
   s.description = %q{Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks.}
 

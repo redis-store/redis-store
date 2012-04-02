@@ -5,9 +5,9 @@ require 'redis/activesupport/version'
 Gem::Specification.new do |s|
   s.name        = 'redis-activesupport'
   s.version     = Redis::ActiveSupport::VERSION
-  s.authors     = ['Luca Guidi', 'Mattew Horan']
-  s.email       = ['guidi.luca@gmail.com', 'matt@matthoran.com']
-  s.homepage    = 'http://jodosha.github.com/redis-store'
+  s.authors     = ["Luca Guidi", "Matt Horan"]
+  s.email       = ["me@lucaguidi.com"]
+  s.homepage    = "http://jodosha.github.com/redis-store"
   s.summary     = %q{Redis store for ActiveSupport::Cache}
   s.description = %q{Redis store for ActiveSupport::Cache}
 

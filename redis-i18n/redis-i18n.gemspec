@@ -5,8 +5,8 @@ require "redis/i18n/version"
 Gem::Specification.new do |s|
   s.name        = "redis-i18n"
   s.version     = Redis::I18n::VERSION
-  s.authors     = ["Luca Guidi"]
-  s.email       = ["guidi.luca@gmail.com"]
+  s.authors     = ["Luca Guidi", "Matt Horan"]
+  s.email       = ["me@lucaguidi.com"]
   s.homepage    = "http://jodosha.github.com/redis-store"
   s.summary     = %q{Redis store for i18n}
   s.description = %q{Redis backed store for i18n}
