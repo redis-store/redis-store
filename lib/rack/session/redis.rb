@@ -28,7 +28,6 @@ module Rack
           ret = @pool.set sid, session
           raise "Session collision on '#{sid.inspect}'" unless ret
         end
-        session.instance_variable_set('@old', {}.merge(session))
         return [sid, session]
       rescue Errno::ECONNREFUSED
         warn "#{self} is unable to find server."
@@ -47,8 +46,7 @@ module Rack
           session_id = generate_sid
           @pool.set session_id, 0
         end
-        old_session = new_session.instance_variable_get('@old') || {}
-        session = merge_sessions session_id, old_session, new_session, session
+        session = merge_sessions session_id, new_session, session
         @pool.set session_id, session, options
         return session_id
       rescue Errno::ECONNREFUSED
@@ -65,18 +63,18 @@ module Rack
       end
 
       private
-        def merge_sessions(sid, old, new, cur=nil)
+        def merge_sessions(sid, new, cur=nil)
           cur ||= {}
-          unless Hash === old and Hash === new
-            warn 'Bad old or new sessions provided.'
+          unless Hash === new
+            warn 'Bad new session provided.'
             return cur
           end
 
-          delete = old.keys - new.keys
+          delete = cur.keys - new.keys
           warn "//@#{sid}: dropping #{delete*','}" if $DEBUG and not delete.empty?
           delete.each{|k| cur.delete k }
 
-          update = new.keys.select{|k| new[k] != old[k] }
+          update = new.keys.select{|k| new[k] != cur[k] }
           warn "//@#{sid}: updating #{update*','}" if $DEBUG and not update.empty?
           update.each{|k| cur[k] = new[k] }
 
