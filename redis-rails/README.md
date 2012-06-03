@@ -29,6 +29,9 @@ Download and install Redis from [http://redis.io](http://redis.io/)
 
     # config/environments/production.rb
 	config.cache_store = :redis_store # { ... optional configuration ... }
+	# config.cache_store = :redis_store, 'redis://localhost:6379/'
+	# config.cache_store = :redis_store, 'redis://localhost:6379/0' # database 0
+	# config.cache_store = :redis_store, 'redis://localhost:6379/0/cache' # database: 0, namespace: cache
 
 ### Session Store:
 
