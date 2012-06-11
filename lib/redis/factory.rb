@@ -38,6 +38,7 @@ class Redis
         options[:db]  = db.to_i if db
         options[:namespace] = namespace if namespace
         options[:password]  = password || uri && uri.password
+        [:host, :port, :password].each { |o| options.delete(o) if options[o].nil? }
         options
       end
     end
