@@ -27,7 +27,7 @@ class Redis
 
         options = {
           :host     => uri.host,
-          :port     => uri.port,
+          :port     => uri.port || 6379,
           :password => uri.password
         }
 
