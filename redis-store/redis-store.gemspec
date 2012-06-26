@@ -20,8 +20,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'redis', '>= 2.2.0'
 
-  s.add_development_dependency 'rake',      '~> 0.9.2.2'
-  s.add_development_dependency 'bundler',   '~> 1.1.rc'
+  s.add_development_dependency 'rake',      '~> 0.9.2'
+  s.add_development_dependency 'bundler',   '~> 1.1.0'
   s.add_development_dependency 'mocha',     '~> 0.10.0'
   s.add_development_dependency 'minitest',  '~> 2.8.0'
   s.add_development_dependency 'purdytest', '~> 1.0.0'
