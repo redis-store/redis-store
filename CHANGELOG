@@ -1,3 +1,32 @@
+*1.1.1 (June 26, 2012)*
+
+  * Bump version v1.1.1
+  * README, CHANGELOG
+  * Bumped redis-sinatra 1.3.3
+  * Bumped redis-rack 1.4.2
+  * Bumped redis-i18n 0.6.1
+  * Relaxing dependencies
+  * Relax requirement on redis (use >= 2.2.0)
+      Because resque still depends on redis 2.x and sidekiq on redis 3.x,
+      using >= 2.2.0 instead of ~> 3.0.0 allows compatibility with both. [Lukas Westermann]
+  * Use default value for port, otherwise factory_test.rb:65 fails (port = 0) [Lukas Westermann]
+  * Use redis 3.x [Lukas Westermann]
+  * Adding examples for rails cache store config with URLs [aliix]
+  * Bumped redis-rack-cache 1.2
+  * Bump: [Matt Horan]
+    - redis-rails 3.2.3
+    - redis-actionpack 3.2.3
+    - redis-activesupport 3.2.3
+  * Loosen actionpack version requirement for possible Rails 3.2.3 compatibility [Filip Tepper]
+  * Add Rails 3.2.2 support for redis-actionpack, redis-activesupport, redis-rails [Jack Chu]
+  * Bumped redis-rack 1.4.1
+  * Bumped:
+    - redis-rack 1.4.0
+    - redis-activesupport 3.2.1
+    - redis-actionpack 3.2.1
+    - redis-rails 3.2.1
+  * Bump redis-sinatra 1.3.2
+
 *1.1.0 (February 14, 2012)*
 
   * Bump version v1.1.0

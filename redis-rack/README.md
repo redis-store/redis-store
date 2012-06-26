@@ -14,9 +14,9 @@ MacOS X users should use [Homebrew](https://github.com/mxcl/homebrew) to install
 
 Download and install Redis from [http://redis.io](http://redis.io/)
 
-	wget http://redis.googlecode.com/files/redis-2.4.5.tar.gz
-    tar -zxf redis-2.4.5.tar.gz
-    mv redis-2.4.5 redis
+	wget http://redis.googlecode.com/files/redis-2.4.15.tar.gz
+    tar -zxf redis-2.4.15.tar.gz
+    mv redis-2.4.15 redis
     cd redis
     make
 
@@ -41,7 +41,7 @@ For advanced configuration options, please check the [Redis Store Wiki](https://
 
     git clone git://github.com/jodosha/redis-store.git
 	cd redis-store/redis-rack
-	gem install bundler --pre # required version: 1.1.rc
+	gem install bundler
 	bundle exec rake
 
 If you are on **Snow Leopard** you have to run `env ARCHFLAGS="-arch x86_64" bundle exec rake`
