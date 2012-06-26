@@ -1,17 +1,17 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
-require "redis/store/version"
+$:.push File.expand_path('../lib', __FILE__)
+require 'redis/store/version'
 
 Gem::Specification.new do |s|
-  s.name        = "redis-store"
+  s.name        = 'redis-store'
   s.version     = Redis::Store::VERSION
-  s.authors     = ["Luca Guidi", "Matt Horan"]
-  s.email       = ["me@lucaguidi.com"]
-  s.homepage    = "http://jodosha.github.com/redis-store"
+  s.authors     = ['Luca Guidi', 'Matt Horan']
+  s.email       = ['me@lucaguidi.com']
+  s.homepage    = 'http://jodosha.github.com/redis-store'
   s.summary     = %q{Redis stores for Ruby frameworks}
   s.description = %q{Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks.}
 
-  s.rubyforge_project = "redis-store"
+  s.rubyforge_project = 'redis-store'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
