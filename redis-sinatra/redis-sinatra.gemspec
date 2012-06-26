@@ -1,17 +1,17 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
-require "redis-sinatra/version"
+$:.push File.expand_path('../lib', __FILE__)
+require 'redis-sinatra/version'
 
 Gem::Specification.new do |s|
-  s.name        = "redis-sinatra"
+  s.name        = 'redis-sinatra'
   s.version     = Redis::Sinatra::VERSION
-  s.authors     = ["Luca Guidi", "Matt Horan"]
-  s.email       = ["me@lucaguidi.com"]
-  s.homepage    = "http://jodosha.github.com/redis-store"
+  s.authors     = ['Luca Guidi', 'Matt Horan']
+  s.email       = ['me@lucaguidi.com']
+  s.homepage    = 'http://jodosha.github.com/redis-store'
   s.summary     = %q{Redis for Sinatra}
   s.description = %q{Redis for Sinatra}
 
-  s.rubyforge_project = "redis-sinatra"
+  s.rubyforge_project = 'redis-sinatra'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
