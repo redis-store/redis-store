@@ -29,6 +29,9 @@ describe Rack::Cache::EntityStore::Redis do
     cache = ::Rack::Cache::EntityStore::Redis.resolve(uri("redis://:secret@127.0.0.1")).cache
     cache.id.must_equal("redis://127.0.0.1:6379/0")
     cache.client.password.must_equal('secret')
+    
+    cache = Rack::Cache::MetaStore::Redis.resolve(uri("redis://127.0.0.1:6380/0/entitystore")).cache
+    cache.to_s.must_equal("Redis Client connected to 127.0.0.1:6380 against DB 0 with namespace entitystore")
   end
 
   it 'responds to all required messages' do
