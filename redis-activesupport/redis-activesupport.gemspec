@@ -18,8 +18,8 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency 'redis-store',   '1.1.0'
-  s.add_runtime_dependency 'activesupport', '3.1.3'
+  s.add_runtime_dependency 'redis-store',   '~> 1.1.0'
+  s.add_runtime_dependency 'activesupport', '~> 3.1.3'
 
   s.add_development_dependency 'rake',      '~> 0.9.2.2'
   s.add_development_dependency 'bundler',   '~> 1.1.rc'
