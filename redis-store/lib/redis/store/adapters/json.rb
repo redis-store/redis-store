@@ -19,7 +19,7 @@ class Redis
           def self.serialize(object)
             case object
             when Hash
-              object.each { |k,v| puts k, v.class; object[k] = serialize(v) }
+              object.each { |k,v| object[k] = serialize(v) }
             when Array
               object.each_with_index { |v, i| object[i] = serialize(v) }
             when *SERIALIZABLE
