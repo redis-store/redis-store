@@ -2,7 +2,7 @@ class Redis
   class Store < self
     module Adapters
       module Json
-        SERIALIZABLE = [String, TrueClass, FalseClass, NilClass, Date, Time].freeze
+        SERIALIZABLE = [String, TrueClass, FalseClass, NilClass, Numeric, Date, Time].freeze
         
         def self.dump(object)
           object = serialize(object)
