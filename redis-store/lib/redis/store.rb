@@ -1,5 +1,6 @@
 require 'redis/store/ttl'
 require 'redis/store/interface'
+require 'active_support/inflector'
 
 class Redis
   class Store < self
@@ -7,6 +8,7 @@ class Redis
 
     def initialize(options = { })
       super
+      _set_adapter        options
       _extend_marshalling options
       _extend_namespace   options
     end
@@ -20,6 +22,16 @@ class Redis
     end
 
     private
+      def _set_adapter(options)
+        adapter = options[:adapter] || :marshal
+
+        @adapter = case adapter
+          when Symbol then "Redis::Store::Adapters::#{adapter.to_s.classify}".constantize
+          when String then adapter.constantize
+          else adapter
+        end
+      end
+
       def _extend_marshalling(options)
         @marshalling = !(options[:marshalling] === false) # HACK - TODO delegate to Factory
         extend Marshalling if @marshalling
@@ -28,6 +40,10 @@ class Redis
       def _extend_namespace(options)
         @namespace = options[:namespace]
         extend Namespace if @namespace
+      end
+
+      def adapter
+        @adapter
       end
   end
 end
