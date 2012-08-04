@@ -26,7 +26,7 @@ class Redis
 
       private
         def _marshal(val, options)
-          yield marshal?(options) ? adapter.dump(val): val
+          yield marshal?(options) ? adapter.dump(val) : val
         end
 
         def _unmarshal(val, options)
