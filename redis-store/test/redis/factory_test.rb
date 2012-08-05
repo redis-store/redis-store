@@ -41,9 +41,29 @@ describe "Redis::Factory" do
         store.instance_variable_get(:@client).password.must_equal("secret")
       end
 
-      it "allows/disable marshalling" do
-        store = Redis::Factory.create :marshalling => false
-        store.instance_variable_get(:@marshalling).must_equal(false)
+      it "allows json strategy option" do
+        store = Redis::Factory.create :strategy => :json
+        store.instance_variable_get(:@strategy).must_equal(Redis::Store::Strategy::Json)
+      end
+
+      it "allows marshal strategy option" do
+        store = Redis::Factory.create :strategy => :marshal
+        store.instance_variable_get(:@strategy).must_equal(Redis::Store::Strategy::Marshal)
+      end
+
+      it "allows yaml strategy option" do
+        store = Redis::Factory.create :strategy => :yaml
+        store.instance_variable_get(:@strategy).must_equal(Redis::Store::Strategy::Yaml)
+      end
+
+      it "allows false strategy option" do
+        store = Redis::Factory.create :strategy => false
+        store.instance_variable_get(:@strategy).must_be_nil
+      end
+
+      it "defaults to marshal strategy" do
+        store = Redis::Factory.create
+        store.instance_variable_get(:@strategy).must_equal(Redis::Store::Strategy::Marshal)
       end
 
       it "should instantiate a Redis::DistributedStore store" do

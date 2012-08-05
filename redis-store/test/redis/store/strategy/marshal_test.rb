@@ -1,8 +1,8 @@
 require 'test_helper'
 
-describe "Redis::Marshalling" do
+describe "Redis::Store::Strategy::Marshal" do
   def setup
-    @store = Redis::Store.new :marshalling => true
+    @store = Redis::Store.new :strategy => :marshal
     @rabbit = OpenStruct.new :name => "bunny"
     @white_rabbit = OpenStruct.new :color => "white"
     @store.set "rabbit", @rabbit
@@ -32,7 +32,7 @@ describe "Redis::Marshalling" do
     end
   end
 
-  it "doesn't marshal set if raw option is true" do
+  it "doesn't marshal on set if raw option is true" do
     @store.set "rabbit", @white_rabbit, :raw => true
     @store.get("rabbit", :raw => true).must_equal(%(#<OpenStruct color="white">))
   end
@@ -90,38 +90,32 @@ describe "Redis::Marshalling" do
   end
 
   describe "binary safety" do
-    it "marshals objects" do
-      utf8_key = [51339].pack("U*")
-      ascii_rabbit = OpenStruct.new(:name => [128].pack("C*"))
+    before do
+      @utf8_key = [51339].pack("U*")
+      @ascii_string = [128].pack("C*")
+      @ascii_rabbit = OpenStruct.new(:name => @ascii_string)
+    end
 
-      @store.set(utf8_key, ascii_rabbit)
-      @store.get(utf8_key).must_equal(ascii_rabbit)
+    it "marshals objects" do
+      @store.set(@utf8_key, @ascii_rabbit)
+      @store.get(@utf8_key).must_equal(@ascii_rabbit)
     end
 
     it "gets and sets raw values" do
-      utf8_key = [51339].pack("U*")
-      ascii_string = [128].pack("C*")
-
-      @store.set(utf8_key, ascii_string, :raw => true)
-      @store.get(utf8_key, :raw => true).bytes.to_a.must_equal(ascii_string.bytes.to_a)
+      @store.set(@utf8_key, @ascii_string, :raw => true)
+      @store.get(@utf8_key, :raw => true).bytes.to_a.must_equal(@ascii_string.bytes.to_a)
     end
 
     it "marshals objects on setnx" do
-      utf8_key = [51339].pack("U*")
-      ascii_rabbit = OpenStruct.new(:name => [128].pack("C*"))
-
-      @store.del(utf8_key)
-      @store.setnx(utf8_key, ascii_rabbit)
-      @store.get(utf8_key).must_equal(ascii_rabbit)
+      @store.del(@utf8_key)
+      @store.setnx(@utf8_key, @ascii_rabbit)
+      @store.get(@utf8_key).must_equal(@ascii_rabbit)
     end
 
     it "gets and sets raw values on setnx" do
-      utf8_key = [51339].pack("U*")
-      ascii_string = [128].pack("C*")
-
-      @store.del(utf8_key)
-      @store.setnx(utf8_key, ascii_string, :raw => true)
-      @store.get(utf8_key, :raw => true).bytes.to_a.must_equal(ascii_string.bytes.to_a)
+      @store.del(@utf8_key)
+      @store.setnx(@utf8_key, @ascii_string, :raw => true)
+      @store.get(@utf8_key, :raw => true).bytes.to_a.must_equal(@ascii_string.bytes.to_a)
     end
   end if defined?(Encoding)
 end
