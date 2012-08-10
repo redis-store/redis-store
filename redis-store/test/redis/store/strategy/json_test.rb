@@ -19,12 +19,6 @@ describe "Redis::Store::Strategy::Json" do
     @store.quit
   end
 
-  # JSON's escape method forces non-ASCII UTF-8 to use \uXXXX notation.  This
-  # forces it back to hex-encoded UTF-8.
-  def unicode_to_ascii(str)
-    str.gsub(/\\u([0-9a-z]{4})/) { |s| [$1.to_i(16)].pack("U") }
-  end
-  
   it "unmarshals on get" do
     @store.get("rabbit").must_equal(@bunnicula)
   end

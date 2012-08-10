@@ -43,27 +43,29 @@ describe "Redis::Factory" do
 
       it "allows json strategy option" do
         store = Redis::Factory.create :strategy => :json
-        store.instance_variable_get(:@strategy).must_equal(Redis::Store::Strategy::Json)
+        store.must_be_kind_of(Redis::Store::Strategy::Json)
       end
 
       it "allows marshal strategy option" do
         store = Redis::Factory.create :strategy => :marshal
-        store.instance_variable_get(:@strategy).must_equal(Redis::Store::Strategy::Marshal)
+        store.must_be_kind_of(Redis::Store::Strategy::Marshal)
       end
 
       it "allows yaml strategy option" do
         store = Redis::Factory.create :strategy => :yaml
-        store.instance_variable_get(:@strategy).must_equal(Redis::Store::Strategy::Yaml)
+        store.must_be_kind_of(Redis::Store::Strategy::Yaml)
       end
 
       it "allows false strategy option" do
         store = Redis::Factory.create :strategy => false
-        store.instance_variable_get(:@strategy).must_be_nil
+        store.wont_be_kind_of(Redis::Store::Strategy::Json)
+        store.wont_be_kind_of(Redis::Store::Strategy::Marshal)
+        store.wont_be_kind_of(Redis::Store::Strategy::Yaml)
       end
 
       it "defaults to marshal strategy" do
         store = Redis::Factory.create
-        store.instance_variable_get(:@strategy).must_equal(Redis::Store::Strategy::Marshal)
+        store.must_be_kind_of(Redis::Store::Strategy::Marshal)
       end
 
       it "should instantiate a Redis::DistributedStore store" do

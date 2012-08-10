@@ -1,13 +1,13 @@
 class Redis
   class Store < self
     module Strategy
-      class Yaml < Base
+      module Yaml
         private
-          def self._dump(object)
+          def _dump(object)
             YAML.dump(object)
           end
           
-          def self._load(string)
+          def _load(string)
             YAML.load(string)
           end
       end

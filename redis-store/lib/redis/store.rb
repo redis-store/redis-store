@@ -31,8 +31,8 @@ class Redis
         strategy = options[:strategy]
 
         unless strategy === false
-          @strategy = STRATEGIES[strategy] || STRATEGIES[:marshal]
-          extend Strategy
+          strategy_class = STRATEGIES[strategy] || STRATEGIES[:marshal]
+          extend Strategy, strategy_class
         end
       end
 
