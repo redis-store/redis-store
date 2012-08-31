@@ -41,6 +41,10 @@ class Redis
         "#{super} with namespace #{@namespace}"
       end
 
+      def flushdb
+        del *keys
+      end
+
       private
         def namespace(key)
           yield interpolate(key)
