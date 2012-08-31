@@ -23,6 +23,17 @@ describe "Redis::Store::Namespace" do
     @store.send(:interpolate, "#{@namespace}:rabbit").must_equal("#{@namespace}:rabbit")
   end
 
+  it "should ony delete namespaced keys" do
+    other_store = Redis::Store.new
+  
+    other_store.set 'abc', 'cba'
+    @store.set 'def', 'fed'
+
+    @store.flushdb
+    @store.get('def').must_equal(nil)
+    other_store.get('abc').must_equal('cba')
+  end
+
   it "namespaces get"
   it "namespaces set"
   it "namespaces setnx"
@@ -33,7 +44,7 @@ describe "Redis::Store::Namespace" do
   it "namespaces incrby"
   it "namespaces decrby"
   it "namespaces mget"
-
+  
   # it "should namespace get" do
   #   @client.expects(:call).with([:get, "#{@namespace}:rabbit"]).once
   #   @store.get("rabbit")
