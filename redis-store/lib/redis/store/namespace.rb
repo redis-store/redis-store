@@ -30,11 +30,11 @@ class Redis
       end
 
       def del(*keys)
-        super *keys.map {|key| interpolate(key) }
+        super *keys.map {|key| interpolate(key) } if keys.any?
       end
 
       def mget(*keys)
-        super *keys.map {|key| interpolate(key) }
+        super *keys.map {|key| interpolate(key) } if keys.any?
       end
 
       def to_s
