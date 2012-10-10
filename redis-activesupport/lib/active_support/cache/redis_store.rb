@@ -90,9 +90,11 @@ module ActiveSupport
       #
       #   cache.increment "rabbit"
       #   cache.read "rabbit", :raw => true       # => "1"
-      def increment(key, amount = 1)
+      def increment(key, amount = 1, options = nil)
+        options = merged_options(options)
         instrument(:increment, key, :amount => amount) do
           @data.incrby key, amount
+          @data.expire key, options[:expires_in] if options[:expires_in]
         end
       end
 
@@ -117,9 +119,11 @@ module ActiveSupport
       #
       #   cache.decrement "rabbit"
       #   cache.read "rabbit", :raw => true       # => "-1"
-      def decrement(key, amount = 1)
+      def decrement(key, amount = 1, options = nil)
+        options = merged_options(options)
         instrument(:decrement, key, :amount => amount) do
           @data.decrby key, amount
+          @data.expire key, options[:expires_in] if options[:expires_in]
         end
       end
 

@@ -127,11 +127,30 @@ describe ActiveSupport::Cache::RedisStore do
     end
   end
 
+  it "increments a key with expiration time" do
+    with_store_management do |store|
+      store.increment "counter", 3, :expires_in => 1.second
+      store.read("counter", :raw => true).to_i.must_equal(3)
+      sleep 2
+      store.read("counter").must_be_nil
+    end
+  end
+
   it "decrements a key by given value" do
     with_store_management do |store|
       3.times { store.increment "counter" }
       store.decrement "counter", 2
       store.read("counter", :raw => true).to_i.must_equal(1)
+    end
+  end
+
+  it "decrements a key with expiration time" do
+    with_store_management do |store|
+      3.times { store.increment "counter" }
+      store.decrement "counter", 2, :expires_in => 1.second
+      store.read("counter", :raw => true).to_i.must_equal(1)
+      sleep 2
+      store.read("counter").must_be_nil
     end
   end
 
