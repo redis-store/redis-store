@@ -50,6 +50,7 @@ describe "Redis::Store::Namespace" do
   it "namespaces incrby"
   it "namespaces decrby"
   it "namespaces mget"
+  it "namespaces expire"
 
   # it "should namespace get" do
   #   @client.expects(:call).with([:get, "#{@namespace}:rabbit"]).once
