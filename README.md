@@ -22,9 +22,9 @@ Download and install Redis from [http://redis.io](http://redis.io/)
     cd redis
     make
 
-## Build Status
+## Code
 
-[![Build Status](https://secure.travis-ci.org/jodosha/redis-store.png?branch=master)](http://travis-ci.org/jodosha/redis-store?branch=master)
+[![Build Status](https://secure.travis-ci.org/jodosha/redis-store.png?branch=master)](http://travis-ci.org/jodosha/redis-store?branch=master) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/jodosha/redis-store)
 
 ## Running tests
 
