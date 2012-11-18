@@ -155,7 +155,7 @@ gem 'rails', '3.0.10'
 gem 'redis-store'
 
 # config/initializers/session_store.rb
-MyApp::Application.config.session_store :redis_session_store
+MyApp::Application.config.session_store :redis_store
                 </pre><br />
 
                 <div class="slide_meta"><a name="rails2-bundler"></a>Rails 2.x (with Bundler)</div>
@@ -177,7 +177,7 @@ ActionController::Base.session = {
   :key_prefix  => Rails.env
 }
 
-ActionController::Base.session_store = :redis_session_store
+ActionController::Base.session_store = :redis_store
                 </pre><br />
 
                 <div class="slide_meta"><a name="rails2"></a>Rails 2.x</div>
@@ -199,7 +199,7 @@ ActionController::Base.session = {
   :key_prefix  => Rails.env
 }
 
-ActionController::Base.session_store = :redis_session_store
+ActionController::Base.session_store = :redis_store
                 </pre><br />
                 <p>For advanced configurations scenarios please visit the <a href="https://github.com/jodosha/redis-store/wiki/Frameworks-Configuration" target="_blank" title="Redis Store's wiki"></a>wiki.</p>
 
