@@ -25,6 +25,8 @@ Download and install Redis from [http://redis.io](http://redis.io/)
     # Gemfile
 	gem 'redis-rails'
 
+  Warning: You must __NOT__ use the same redis instance for caching and persistant data. The reason for this is that any call to flush the cache (ie. Rails.cache.clear) will flush the entire redis DB.
+
 ### Cache Store:
 
     # config/environments/production.rb
