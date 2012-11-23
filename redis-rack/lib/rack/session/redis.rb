@@ -53,7 +53,7 @@ module Rack
       def with_lock(env, default=nil)
         @mutex.lock if env['rack.multithread']
         yield
-      rescue Errno::ECONNREFUSED
+      rescue Errno::ECONNREFUSED, Redis::CannotConnectError
         if $VERBOSE
           warn "#{self} is unable to find Redis server."
           warn $!.inspect
