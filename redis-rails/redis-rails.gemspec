@@ -22,9 +22,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'redis-activesupport', '~> 3.2.3'
   s.add_dependency 'redis-actionpack',    '~> 3.2.3'
 
-  s.add_development_dependency 'rake',      '~> 0.9.2'
-  s.add_development_dependency 'bundler',   '~> 1.1'
-  s.add_development_dependency 'mocha',     '~> 0.10.0'
-  s.add_development_dependency 'minitest',  '~> 2.8.0'
-  s.add_development_dependency 'purdytest', '~> 1.0.0'
+  s.add_development_dependency 'rake',     '~> 10'
+  s.add_development_dependency 'bundler',  '~> 1.2'
+  s.add_development_dependency 'mocha',    '~> 0.13.0'
+  s.add_development_dependency 'minitest', '~> 4.3.1'
 end
