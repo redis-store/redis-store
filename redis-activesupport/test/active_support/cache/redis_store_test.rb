@@ -322,6 +322,16 @@ describe ActiveSupport::Cache::RedisStore do
     end
   end
 
+  describe "interface compliance" do
+    ActiveSupport::Cache::Store.instance_methods.each do |method|
+      it "conforms to the cache store interface for ##{method}" do
+        ours   = ActiveSupport::Cache::RedisStore.instance_method( method ).parameters
+        theirs = ActiveSupport::Cache::Store.instance_method( method ).parameters
+        ours.must_equal theirs
+      end
+    end
+  end
+
   private
     def instantiate_store(addresses = nil)
       ActiveSupport::Cache::RedisStore.new(addresses).instance_variable_get(:@data)
