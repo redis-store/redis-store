@@ -323,10 +323,11 @@ describe ActiveSupport::Cache::RedisStore do
   end
 
   describe "interface compliance" do
+    test = ( [ :parameters, :arity ] & UnboundMethod.instance_methods ).first
     ActiveSupport::Cache::Store.instance_methods.each do |method|
       it "conforms to the cache store interface for ##{method}" do
-        ours   = ActiveSupport::Cache::RedisStore.instance_method( method ).parameters
-        theirs = ActiveSupport::Cache::Store.instance_method( method ).parameters
+        ours   = ActiveSupport::Cache::RedisStore.instance_method( method ).send test
+        theirs = ActiveSupport::Cache::Store.instance_method( method ).send test
         ours.must_equal theirs
       end
     end
