@@ -130,7 +130,7 @@ module ActiveSupport
       end
 
       # Clear all the data from the store.
-      def clear
+      def clear(options = nil)
         instrument(:clear, nil, nil) do
           @data.flushdb
         end
