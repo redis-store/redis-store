@@ -1,8 +1,10 @@
+[![Build Status](https://secure.travis-ci.org/jodosha/redis-store.png?branch=master)](http://travis-ci.org/jodosha/redis-store?branch=master) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/jodosha/redis-store)
+
 # Redis stores for Ruby frameworks
 
-__Redis Store__ provides a full set of stores (*Cache*, *I18n*, *Session*, *HTTP Cache*) for all the modern Ruby frameworks like: __Ruby on Rails__, __Sinatra__, __Rack__, __Rack::Cache__ and __I18n__. It natively supports object marshalling, timeouts, single or multiple nodes and namespaces.
+__Redis Store__ provides a full set of stores (*Cache*, *I18n*, *Session*, *HTTP Cache*) for modern Ruby frameworks like: __Ruby on Rails__, __Sinatra__, __Rack__, __Rack::Cache__ and __I18n__. It supports object marshalling, timeouts, single or multiple nodes, and namespaces.
 
-Please check the *README* file of each gem, to be informed about the usage.
+Please check the *README* file of each gem for usage and installation guidelines.
 
 ## Redis Installation
 
@@ -16,22 +18,18 @@ MacOS X users should use [Homebrew](https://github.com/mxcl/homebrew) to install
 
 Download and install Redis from [http://redis.io](http://redis.io/)
 
-	wget http://redis.googlecode.com/files/redis-2.4.15.tar.gz
+    wget http://redis.googlecode.com/files/redis-2.4.15.tar.gz
     tar -zxf redis-2.4.15.tar.gz
     mv redis-2.4.15 redis
     cd redis
     make
 
-## Code
-
-[![Build Status](https://secure.travis-ci.org/jodosha/redis-store.png?branch=master)](http://travis-ci.org/jodosha/redis-store?branch=master) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/jodosha/redis-store)
-
 ## Running tests
 
     git clone git://github.com/jodosha/redis-store.git
-	cd redis-store
-	gem install bundler
-	ruby ci/run.rb
+	  cd redis-store
+	  gem install bundler
+	  ruby ci/run.rb
 
 If you are on **Snow Leopard** you have to run `env ARCHFLAGS="-arch x86_64" ruby ci/run.rb`
 
