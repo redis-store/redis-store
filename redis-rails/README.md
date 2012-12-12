@@ -1,64 +1,39 @@
 # Redis stores for Ruby on Rails
 
-__`redis-rails`__ provides a full set of stores (*Cache*, *Session*, *HTTP Cache*) for __Ruby on Rails__. It natively supports object marshalling, timeouts, single or multiple nodes and namespaces.
+__`redis-rails`__ provides a full set of stores (*Cache*, *Session*, *HTTP Cache*) for __Ruby on Rails__. See the main [redis-store readme](https://github.com/jodosha/redis-store) for general guidelines.
 
-## Redis Installation
-
-### Option 1: Homebrew
-
-MacOS X users should use [Homebrew](https://github.com/mxcl/homebrew) to install Redis:
-
-    brew install redis
-
-### Option 2: From Source
-
-Download and install Redis from [http://redis.io](http://redis.io/)
-
-	wget http://redis.googlecode.com/files/redis-2.4.15.tar.gz
-    tar -zxf redis-2.4.15.tar.gz
-    mv redis-2.4.15 redis
-    cd redis
-    make
-
-## Usage
+## Installation
 
     # Gemfile
-	gem 'redis-rails'
+    gem 'redis-rails' # Will install several other redis- gems
 
-### Cache Store:
+### Usage
 
-    # config/environments/production.rb
-	config.cache_store = :redis_store # { ... optional configuration ... }
-	# config.cache_store = :redis_store, 'redis://localhost:6379/'
-	# config.cache_store = :redis_store, 'redis://localhost:6379/0' # database 0
-	# config.cache_store = :redis_store, 'redis://localhost:6379/0/cache' # database: 0, namespace: cache
+For Rails 3.2:
 
-### Session Store:
+    # config/application.rb
+    config.cache_store = :redis_store, "redis://localhost:6379/0/cache", { expires_in: 90.minutes }
+
+Configuration values at the end are optional. If you want to use Redis as a backend for sessions, you will also need to set:
 
     # config/initializers/session_store.rb
-	MyApplication::Application.config.session_store :redis_store
+    MyApplication::Application.config.session_store :redis_store
 
-### HTTP Cache
+And if you would like to use Redis as a rack-cache backend for HTTP caching:
 
-    # config.ru
-	require 'rack'
-	require 'rack/cache'
-	require 'redis-rack-cache'
-
-	use Rack::Cache,
-	  :metastore   => 'redis://localhost:6379/0/metastore',
-	  :entitystore => 'redis://localhost:6380/0/entitystore'
-
-#### Configuration
-
-For advanced configuration options, please check the [Redis Store Wiki](https://github.com/jodosha/redis-store/wiki).
+    # config/environments/production.rb
+    config.action_dispatch.rack_cache = {
+      metastore:   "redis://localhost:6379/1/metastore",
+      entitystore: "redis://localhost:6379/1/entitystore"
+    }
 
 ## Running tests
 
+    gem install bundler
     git clone git://github.com/jodosha/redis-store.git
-	cd redis-store/redis-rails
-	gem install bundler
-	bundle exec rake
+    cd redis-store/redis-rails
+    bundle install
+    bundle exec rake
 
 If you are on **Snow Leopard** you have to run `env ARCHFLAGS="-arch x86_64" bundle exec rake`
 
