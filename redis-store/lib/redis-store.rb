@@ -3,7 +3,6 @@ require 'redis/store'
 require 'redis/factory'
 require 'redis/distributed_store'
 require 'redis/store/namespace'
-require 'redis/store/marshalling'
 require 'redis/store/version'
 
 class Redis

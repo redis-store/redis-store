@@ -3,7 +3,7 @@ require 'test_helper'
 describe "Redis::Store::Namespace" do
   def setup
     @namespace = "theplaylist"
-    @store  = Redis::Store.new :namespace => @namespace, :marshalling => false # TODO remove mashalling option
+    @store  = Redis::Store.new :namespace => @namespace, :strategy => false
     @client = @store.instance_variable_get(:@client)
     @rabbit = "bunny"
   end

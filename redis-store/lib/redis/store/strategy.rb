@@ -1,44 +1,48 @@
+require 'redis/store/strategy/json'
+require 'redis/store/strategy/marshal'
+require 'redis/store/strategy/yaml'
+
 class Redis
   class Store < self
-    module Marshalling
+    module Strategy
       def set(key, value, options = nil)
-        _marshal(value, options) { |value| super encode(key), encode(value), options }
+        dump(value, options) { |value| super encode(key), encode(value), options }
       end
 
       def setnx(key, value, options = nil)
-        _marshal(value, options) { |value| super encode(key), encode(value), options }
+        dump(value, options) { |value| super encode(key), encode(value), options }
       end
 
       def setex(key, expiry, value, options = nil)
-        _marshal(value, options) { |value| super encode(key), expiry, encode(value), options }
+        dump(value, options) { |value| super encode(key), expiry, encode(value), options }
       end
 
       def get(key, options = nil)
-        _unmarshal super(key), options
+        load super(key), options
       end
 
       def mget(*keys)
         options = keys.flatten.pop if keys.flatten.last.is_a?(Hash)
         super(*keys).map do |result|
-          _unmarshal result, options
+          load result, options
         end
       end
 
       private
-        def _marshal(val, options)
-          yield marshal?(options) ? Marshal.dump(val) : val
+        def dump(val, options)
+          yield dump?(options) ? _dump(val) : val
         end
 
-        def _unmarshal(val, options)
-          unmarshal?(val, options) ? Marshal.load(val) : val
+        def load(val, options)
+          load?(val, options) ? _load(val) : val
         end
 
-        def marshal?(options)
+        def dump?(options)
           !(options && options[:raw])
         end
 
-        def unmarshal?(result, options)
-          result && result.size > 0 && marshal?(options)
+        def load?(result, options)
+          result && result.size > 0 && dump?(options)
         end
 
         if defined?(Encoding)
