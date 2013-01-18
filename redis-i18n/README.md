@@ -1,44 +1,25 @@
 # Redis stores for I18n
 
-__`redis-i18n`__ provides a Redis backend for __I18n__. It natively supports object marshalling, timeouts, single or multiple nodes and namespaces.
+__`redis-i18n`__ provides a Redis backend for __I18n__. See the main [redis-store readme](https://github.com/jodosha/redis-store) for general guidelines.
 
-## Redis Installation
-
-### Option 1: Homebrew
-
-MacOS X users should use [Homebrew](https://github.com/mxcl/homebrew) to install Redis:
-
-    brew install redis
-
-### Option 2: From Source
-
-Download and install Redis from [http://redis.io](http://redis.io/)
-
-	wget http://redis.googlecode.com/files/redis-2.4.15.tar.gz
-    tar -zxf redis-2.4.15.tar.gz
-    mv redis-2.4.15 redis
-    cd redis
-    make
-
-## Usage
+## Installation
 
     # Gemfile
-	gem 'redis-i18n'
+    gem 'redis-i18n'
 
-### Backend:
+### Usage
 
-	I18n.backend = I18n::Backend::Redis.new
+If you are using redis-store with Rails, consider using the [redis-rails gem](https://github.com/jodosha/redis-store/tree/master/redis-rails) instead. For standalone usage:
 
-#### Configuration
-
-For advanced configuration options, please check the [Redis Store Wiki](https://github.com/jodosha/redis-store/wiki).
+    I18n.backend = I18n::Backend::Redis.new
 
 ## Running tests
 
+    gem install bundler
     git clone git://github.com/jodosha/redis-store.git
-	cd redis-store/redis-i18n
-	gem install bundler
-	bundle exec rake
+    cd redis-store/redis-i18n
+    bundle install
+    bundle exec rake
 
 If you are on **Snow Leopard** you have to run `env ARCHFLAGS="-arch x86_64" bundle exec rake`
 
