@@ -90,9 +90,12 @@ module ActiveSupport
       #
       #   cache.increment "rabbit"
       #   cache.read "rabbit", :raw => true       # => "1"
-      def increment(key, amount = 1)
+      def increment(key, amount = 1, options = nil)
+        options = merged_options(options)
         instrument(:increment, key, :amount => amount) do
-          @data.incrby key, amount
+          value = @data.incrby key, amount
+          @data.expire key, options[:expires_in] if options[:expires_in]
+          value
         end
       end
 
@@ -117,14 +120,17 @@ module ActiveSupport
       #
       #   cache.decrement "rabbit"
       #   cache.read "rabbit", :raw => true       # => "-1"
-      def decrement(key, amount = 1)
+      def decrement(key, amount = 1, options = nil)
+        options = merged_options(options)
         instrument(:decrement, key, :amount => amount) do
-          @data.decrby key, amount
+          value = @data.decrby key, amount
+          @data.expire key, options[:expires_in] if options[:expires_in]
+          value
         end
       end
 
       # Clear all the data from the store.
-      def clear
+      def clear(options = nil)
         instrument(:clear, nil, nil) do
           @data.flushdb
         end
