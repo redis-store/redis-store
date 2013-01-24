@@ -82,6 +82,24 @@ describe ActiveSupport::Cache::RedisStore do
     end
   end
 
+  # in integration way
+  # it "avoid failed if too much key to delete" do
+  #   with_store_management do |store|
+  #     (1..131_100).each do |num|
+  #       store.write "inc-#{num}", num
+  #     end
+  #     store.delete_matched "inc*"
+  #   end
+  # end
+
+  # in unit way
+  it "avoid failed if too much key to delete" do
+    with_store_management do |store|
+      store.instance_variable_get(:@data).stubs(:keys).with("inc*").returns((1..132_000).to_a)
+      store.delete_matched "inc*"
+    end
+  end
+
   it "verifies existence of an object in the store" do
     with_store_management do |store|
       store.exist?("rabbit").must_equal(true)
