@@ -45,7 +45,11 @@ module ActiveSupport
         instrument(:delete_matched, matcher.inspect) do
           matcher = key_matcher(matcher, options)
           begin
-            !(keys = @data.keys(matcher)).empty? && @data.del(*keys)
+            unless (keys = @data.keys(matcher)).empty?
+              keys.each_slice(130_000) do |keys_to_del|
+                @data.del(*keys_to_del)
+              end
+            end
           rescue Errno::ECONNREFUSED => e
             false
           end
