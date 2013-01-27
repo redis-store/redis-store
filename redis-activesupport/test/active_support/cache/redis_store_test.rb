@@ -75,10 +75,24 @@ describe ActiveSupport::Cache::RedisStore do
     end
   end
 
+  it "delete also supports deleting pattern match keys" do
+    with_store_management do |store|
+      store.write "rabbin", "some-foo"
+      
+      store.delete "rabb*"
+      
+      store.read("rabbit").must_be_nil
+      store.read("rabbin").must_be_nil
+    end
+  end
+
   it "deletes matched data" do
     with_store_management do |store|
+      store.write "white-rabbit", @white_rabbit
       store.delete_matched "rabb*"
+      
       store.read("rabbit").must_be_nil
+      store.read("white-rabbit").wont_be_nil
     end
   end
 
@@ -220,8 +234,8 @@ describe ActiveSupport::Cache::RedisStore do
       end
 
       delete = @events.first
-      delete.name.must_equal('cache_delete.active_support')
-      delete.payload.must_equal({ :key => 'the new cardigans' })
+      delete.name.must_equal('cache_delete_matched.active_support')
+      delete.payload.must_equal({ :key => %("the new cardigans") })
     end
 
     it "notifies on #exist?" do

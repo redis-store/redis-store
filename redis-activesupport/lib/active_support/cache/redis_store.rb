@@ -36,16 +36,30 @@ module ActiveSupport
         end
       end
 
+      # Delete objects for both pattern match and exact match keys
+      # This method is just an alias to delete_matched
+      #
+      # Example:
+      #   cache.delete "rabbit" 
+      #   cache.delete "rabb*"
+      def delete(key, options = nil)
+        options = merged_options(options)
+        instrument(:delete_matched, key.inspect) do |payload|
+          delete_matched(namespaced_key(key, options), options)
+        end
+      end
+
       # Delete objects for matched keys.
       #
       # Example:
-      #   cache.del_matched "rab*"
+      #   cache.delete_matched "rab*"
       def delete_matched(matcher, options = nil)
         options = merged_options(options)
+        matcher = key_matcher(matcher, options)
+        keys = @data.keys(matcher)
         instrument(:delete_matched, matcher.inspect) do
-          matcher = key_matcher(matcher, options)
           begin
-            !(keys = @data.keys(matcher)).empty? && @data.del(*keys)
+            keys.present? && @data.del(*keys)
           rescue Errno::ECONNREFUSED => e
             false
           end
