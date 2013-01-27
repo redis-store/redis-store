@@ -27,12 +27,24 @@ describe ActiveSupport::Cache::RedisStore do
     end
   end
 
-  it "writes the data with expiration time" do
-    with_store_management do |store|
-      store.write "rabbit", @white_rabbit, :expires_in => 1.second
-      # store.read("rabbit").must_equal(@white_rabbit)
-      sleep 2
-      store.read("rabbit").must_be_nil
+  describe "expiration time" do
+    it "writes the data with expiration time" do
+      with_store_management do |store|
+        store.write "rabbit", @white_rabbit, :expires_in => 1.second
+        # store.read("rabbit").must_equal(@white_rabbit)
+        sleep 2
+        store.read("rabbit").must_be_nil
+      end
+    end
+
+    it "writes the data with the store default expiration time" do
+      @store = ActiveSupport::Cache::RedisStore.new "redis://127.0.0.1:6379/0", { :expires_in => 1.second }
+
+      with_store_management do |store|
+        store.write "rabbit", @white_rabbit
+        sleep 2
+        store.read("rabbit").must_be_nil
+      end
     end
   end
 
