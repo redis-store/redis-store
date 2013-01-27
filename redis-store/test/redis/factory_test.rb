@@ -94,5 +94,14 @@ describe "Redis::Factory" do
         ])
       end
     end
+
+    describe "when given a String with a hash of options" do
+      it "uses specified host, port & db" do
+        store = Redis::Factory.create "redis://127.0.0.1:6380/13", { :expires_in => 1 }
+        store.wont_be_kind_of(Redis::DistributedStore)
+        store.must_be_kind_of(Redis::Store)
+        store.to_s.must_equal("Redis Client connected to 127.0.0.1:6380 against DB 13")
+      end
+    end
   end
 end
