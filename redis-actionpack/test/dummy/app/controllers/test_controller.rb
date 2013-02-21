@@ -9,7 +9,6 @@ class TestController < ActionController::Base
   end
 
   def set_session_value_with_expiry
-    request.session_options[:expire_after] = 1.second
     set_session_value
   end
 

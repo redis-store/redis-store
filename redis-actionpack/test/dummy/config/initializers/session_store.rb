@@ -2,8 +2,13 @@
 
 Dummy::Application.config.session_store :redis_store,
   :key => '_session_id',
-  :servers => ["redis://127.0.0.1:6380/1/theplaylist",
-    "redis://127.0.0.1:6381/1/theplaylist"]
+  :servers => {
+    host: "127.0.0.1",
+    port: 6380,
+    db: 1,
+    namespace: 'theplaylist',
+    expire_after: 1
+  }
 
 # Use the database for sessions instead of the cookie-based default,
 # which shouldn't be used to store highly confidential information
