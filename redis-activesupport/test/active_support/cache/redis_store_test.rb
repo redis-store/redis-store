@@ -14,6 +14,40 @@ describe ActiveSupport::Cache::RedisStore do
     end
   end
 
+  it "creates a normal store when given no addresses" do
+    underlying_store = instantiate_store
+    underlying_store.must_be_instance_of(::Redis::Store)
+  end
+
+  it "creates a normal store when given options only" do
+    underlying_store = instantiate_store(:expires_in => 1.second)
+    underlying_store.must_be_instance_of(::Redis::Store)
+  end
+
+  it "creates a normal store when given a single address" do
+    underlying_store = instantiate_store("redis://127.0.0.1:6380/1")
+    underlying_store.must_be_instance_of(::Redis::Store)
+  end
+
+  it "creates a normal store when given a single address and options" do
+    underlying_store = instantiate_store("redis://127.0.0.1:6380/1",
+                                         { :expires_in => 1.second})
+    underlying_store.must_be_instance_of(::Redis::Store)
+  end
+
+  it "creates a distributed store when given multiple addresses" do
+    underlying_store = instantiate_store("redis://127.0.0.1:6380/1", 
+                                         "redis://127.0.0.1:6381/1")
+    underlying_store.must_be_instance_of(::Redis::DistributedStore)
+  end
+
+  it "creates a distributed store when given multiple address and options" do
+    underlying_store = instantiate_store("redis://127.0.0.1:6380/1",
+                                         "redis://127.0.0.1:6381/1",
+                                         :expires_in => 1.second)
+    underlying_store.must_be_instance_of(::Redis::DistributedStore)
+  end
+
   it "reads the data" do
     with_store_management do |store|
       store.read("rabbit").must_equal(@rabbit)
@@ -278,8 +312,8 @@ describe ActiveSupport::Cache::RedisStore do
   end
 
   private
-    def instantiate_store(addresses = nil)
-      ActiveSupport::Cache::RedisStore.new(addresses).instance_variable_get(:@data)
+    def instantiate_store(*addresses)
+      ActiveSupport::Cache::RedisStore.new(*addresses).instance_variable_get(:@data)
     end
 
     def with_store_management
