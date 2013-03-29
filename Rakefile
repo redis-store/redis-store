@@ -2,7 +2,6 @@ $:.unshift 'lib'
 require 'rubygems'
 require 'rake'
 require 'rake/testtask'
-require 'rake/rdoctask'
 require 'spec/rake/spectask'
 
 task :default => "spec:suite"
@@ -13,9 +12,9 @@ begin
     gemspec.name        = "#{ENV["GEM_PREFIX"]}redis-store"
     gemspec.summary     = "Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks."
     gemspec.description = "Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks."
-    gemspec.email       = "guidi.luca@gmail.com"
-    gemspec.homepage    = "http://github.com/jodosha/redis-store"
-    gemspec.authors     = [ "Luca Guidi" ]
+    gemspec.email       = "alainbloch@gmail.com"
+    gemspec.homepage    = "http://github.com/alainbloch/redis-store"
+    gemspec.authors     = [ "Alain Bloch" ]
     gemspec.executables = [ ]
     gemspec.add_dependency "redis", ">= 2.0.0"
   end

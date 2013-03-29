@@ -2,10 +2,17 @@ class Redis
   class Store < self
     include Ttl, Interface
 
+    STRATEGIES = {
+      :marshal      => Strategy::Marshal,
+      :json         => Strategy::Json,
+      :json_session => Strategy::JsonSession,
+      :yaml         => Strategy::Yaml,
+    }.freeze
+
     def initialize(options = { })
       super
-      _extend_marshalling options
-      _extend_namespace   options
+      _extend_strategy  options
+      _extend_namespace options
     end
 
     def self.rails3? #:nodoc:
@@ -25,9 +32,13 @@ class Redis
     end
 
     private
-      def _extend_marshalling(options)
-        @marshalling = !(options[:marshalling] === false) # HACK - TODO delegate to Factory
-        extend Marshalling if @marshalling
+      def _extend_strategy(options)
+        strategy = options[:strategy]
+
+        unless strategy === false
+          strategy_class = STRATEGIES[strategy] || STRATEGIES[:marshal]
+          extend Strategy, strategy_class
+        end
       end
 
       def _extend_namespace(options)

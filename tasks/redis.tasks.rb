@@ -1,5 +1,6 @@
 # inspired by old Rake tasks from redis-rb
 require 'rake'
+require 'rake/testtask'
 require 'fileutils'
 require 'open-uri'
 
