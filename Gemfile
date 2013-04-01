@@ -12,7 +12,7 @@ group :development, :test, :rails3 do
   gem "rspec", "1.3.0"
   gem "i18n"
   gem "debugger"
-  gem "json_pure"
+  gem "json_pure", require: nil
 
   if RUBY_VERSION > '1.9'
     gem "methopara" # required by merb.
