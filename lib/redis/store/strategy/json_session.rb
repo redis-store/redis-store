@@ -1,4 +1,4 @@
-require 'json'
+require 'json/pure'
 
 class Redis
   class Store < self
@@ -20,12 +20,12 @@ class Redis
 
           def _dump(object)
             object = _marshal(object)
-            object.to_json
+            JSON.generate(object)
           end
 
           def _load(string)
             object =
-            string.start_with?(*MARSHAL_INDICATORS) ? ::Marshal.load(string) : JSON.parse(string, :symbolize_names => true)
+              string.start_with?(*MARSHAL_INDICATORS) ? ::Marshal.load(string) : JSON.parse(string, :symbolize_names => true)
             _unmarshal(object)
           end
 
@@ -35,6 +35,9 @@ class Redis
               object.each { |k,v| object[k] = _marshal(v) }
             when Array
               object.each_with_index { |v, i| object[i] = _marshal(v) }
+            when String
+              object = object.to_json_raw_object if object.encoding == Encoding::ASCII_8BIT
+              object
             when *SERIALIZABLE
               object
             else

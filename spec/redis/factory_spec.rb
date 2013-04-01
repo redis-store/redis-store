@@ -37,8 +37,8 @@ describe "Redis::Factory" do
       end
 
       it "should allow to specify marshalling" do
-        store = Redis::Factory.create :marshalling => false
-        store.instance_variable_get(:@marshalling).should be_false
+        store = Redis::Factory.create :strategy => false
+        store.instance_variable_get(:@strategy).should be_false
       end
 
       it "should allow to specify password" do

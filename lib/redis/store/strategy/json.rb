@@ -1,4 +1,4 @@
-require 'json'
+require 'json/pure'
 
 class Redis
   class Store < self
