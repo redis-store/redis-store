@@ -12,7 +12,7 @@ class Redis
         end
 
         private
-          SERIALIZABLE = [String, TrueClass, FalseClass, NilClass, Numeric, Date, Time]
+          SERIALIZABLE = [String, TrueClass, FalseClass, NilClass, Numeric, Date, Time, Symbol]
           MARSHAL_INDICATORS = ["\x04", "\004", "\u0004"]
 
           def _dump(object)
