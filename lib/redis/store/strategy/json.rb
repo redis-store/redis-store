@@ -2,9 +2,6 @@ class Redis
   class Store < self
     module Strategy
       module Json
-
-        require 'json/pure'
-
         class Error < StandardError
         end
 
