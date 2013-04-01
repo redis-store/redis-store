@@ -1,7 +1,5 @@
 require 'redis/store/strategy/json'
-require 'redis/store/strategy/json_session'
 require 'redis/store/strategy/marshal'
-require 'redis/store/strategy/yaml'
 
 class Redis
   class Store < self
@@ -12,10 +10,6 @@ class Redis
 
       def setnx(key, value, options = nil)
         dump(value, options) { |value| super encode(key), encode(value), options }
-      end
-
-      def setex(key, expiry, value, options = nil)
-        dump(value, options) { |value| super encode(key), expiry, encode(value), options }
       end
 
       def get(key, options = nil)

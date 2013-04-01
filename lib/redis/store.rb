@@ -5,8 +5,6 @@ class Redis
     STRATEGIES = {
       :marshal      => Strategy::Marshal,
       :json         => Strategy::Json,
-      :json_session => Strategy::JsonSession,
-      :yaml         => Strategy::Yaml,
     }.freeze
 
     def initialize(options = { })
@@ -33,10 +31,10 @@ class Redis
 
     private
       def _extend_strategy(options)
-        strategy = options[:strategy]
+        @strategy = options[:strategy]
 
-        unless strategy === false
-          strategy_class = STRATEGIES[strategy] || STRATEGIES[:marshal]
+        unless @strategy === false
+          strategy_class = STRATEGIES[@strategy] || STRATEGIES[:marshal]
           extend Strategy, strategy_class
         end
       end
