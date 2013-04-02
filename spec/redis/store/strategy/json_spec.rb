@@ -84,6 +84,39 @@ describe "Redis::Store::Strategy::Json" do
     rabbit.should eql(@peter)
   end
 
+  context "flash key value" do
+
+    before do
+      @flash_value = {:show_login => true }
+      @flash_data = {:flash => @flash_value}
+    end
+
+    context "when ActionDispatch is available" do
+
+      before do
+        ActionDispatch = FakeActionDispatch
+        @store.class.send(:include, ActionDispatch)
+      end
+
+      it "returns a flash object instead of a hash" do
+        @store.set "flash", @flash_data
+        flash_store = @store.get "flash"
+        flash_store.should_not == @flash_data
+        flash_hash = flash_store[:flash]
+        flash_hash.class.should eql(FakeActionDispatch::Flash::FlashHash)
+        flash_hash.instance_variable_get('@flashes').should == @flash_value
+      end
+
+    end
+
+    it "returns a hash" do
+      @store.set "flash", @flash_data
+      flash = @store.get "flash"
+      flash.should == @flash_data
+    end
+
+  end
+
   context "binary safety" do
     before do
       @utf8_key = [51339].pack("U*")
