@@ -60,7 +60,9 @@ class Redis
           # Unfortunately rails requires the flash hash to be put into a flash hash object
           def _flash_unmarshal(value)
             flash_hash = ActionDispatch::Flash::FlashHash.new
-            value.each{|k,v| flash_hash[k] = v }
+            value.each do |k,v|
+              flash_hash[k] = (v.kind_of?(String) ? v.html_safe : v)
+            end
             return flash_hash
           rescue NameError => e
             # NameError will be thrown if ActionDispatch is not available
