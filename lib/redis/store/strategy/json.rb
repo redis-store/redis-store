@@ -32,6 +32,8 @@ class Redis
               object.each { |k,v| object[k] = _marshal(v) }
             when Array
               object.each_with_index { |v, i| object[i] = _marshal(v) }
+            when Set
+              _marshal(object.to_a)
             when String
               object = object.to_json_raw_object if object.encoding == Encoding::ASCII_8BIT
               object

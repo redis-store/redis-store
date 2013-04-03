@@ -84,6 +84,12 @@ describe "Redis::Store::Strategy::Json" do
     rabbit.should eql(@peter)
   end
 
+  it "can set a Set object" do
+    @store.set "set_object", Set.new([1,2])
+    set_object = @store.get("set_object")
+    set_object.should eql([1,2])
+  end
+
   context "flash key value" do
 
     before do
