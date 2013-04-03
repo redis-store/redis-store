@@ -28,6 +28,9 @@ class Redis
 
           def _marshal(object)
             case object
+            when ActionDispatch::Flash::FlashHash
+              # we need to treat FlashHash object in Rails different
+              ::Marshal.dump(object)
             when Hash
               object.each { |k,v| object[k] = _marshal(v) }
             when Array
@@ -47,7 +50,7 @@ class Redis
           def _unmarshal(object)
             case object
             when Hash
-              object.each { |k,v| object[k] = k.to_sym == :flash ? _flash_unmarshal(v) :  _unmarshal(v) }
+              object.each { |k,v| object[k] = _unmarshal(v) }
             when Array
               object.each_with_index { |v, i| object[i] = _unmarshal(v) }
             when String
@@ -55,18 +58,6 @@ class Redis
             else
               object
             end
-          end
-
-          # Unfortunately rails requires the flash hash to be put into a flash hash object
-          def _flash_unmarshal(value)
-            flash_hash = ActionDispatch::Flash::FlashHash.new
-            value.each do |k,v|
-              flash_hash[k] = (v.kind_of?(String) ? v.html_safe : v)
-            end
-            return flash_hash
-          rescue NameError => e
-            # NameError will be thrown if ActionDispatch is not available
-            return value
           end
 
       end
