@@ -45,18 +45,7 @@ end
 # For faking rails flash objects retrieved from session
 module FakeActionDispatch
   class Flash
-    class FlashHash
-      def initialize
-        @flashes = {}
-      end
-
-      def []=(k, v) #:nodoc:
-        @flashes[k] = v
-      end
-
-      def [](k)
-        @flashes[k]
-      end
+    class FlashHash < Hash
     end
   end
 end

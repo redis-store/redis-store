@@ -107,10 +107,9 @@ describe "Redis::Store::Strategy::Json" do
       it "returns a flash object instead of a hash" do
         @store.set "flash", @flash_data
         flash_store = @store.get "flash"
-        flash_store.should_not == @flash_data
         flash_hash = flash_store[:flash]
         flash_hash.class.should eql(FakeActionDispatch::Flash::FlashHash)
-        flash_hash.instance_variable_get('@flashes').should == @flash_value
+        flash_hash.should == @flash_value
       end
 
     end
