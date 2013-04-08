@@ -123,5 +123,29 @@ describe "Redis::Marshalling" do
       @store.setnx(utf8_key, ascii_string, :raw => true)
       @store.get(utf8_key, :raw => true).bytes.to_a.must_equal(ascii_string.bytes.to_a)
     end
+
+    describe 'time' do
+      require 'time'
+
+      it "marshals time" do
+
+        # This is one of special cases that demonstrates the problem
+        time = Time.utc(2013, 4, 8, 12, 47, 44)
+
+        @store.set('t', time)
+        @store.get('t').must_equal(time)
+      end
+
+      it "unmarshals multiple times" do
+        time = Time.utc(2013, 4, 8, 12, 47, 45)
+        time2 = Time.utc(2013, 4, 8, 12, 47, 44)
+
+        @store.set "t", time
+        @store.set "t2", time2
+        t1, t2 = @store.mget "t", "t2"
+        t1.must_equal(time)
+        t2.must_equal(time2)
+      end
+    end
   end if defined?(Encoding)
 end

@@ -14,13 +14,13 @@ class Redis
       end
 
       def get(key, options = nil)
-        _unmarshal super(key), options
+        _unmarshal encode(super(encode(key))), options
       end
 
       def mget(*keys)
         options = keys.flatten.pop if keys.flatten.last.is_a?(Hash)
-        super(*keys).map do |result|
-          _unmarshal result, options
+        super(*keys.map{|key| encode(key)}).map do |result|
+          _unmarshal encode(result), options
         end
       end
 
@@ -43,7 +43,11 @@ class Redis
 
         if defined?(Encoding)
           def encode(string)
-            string.to_s.force_encoding(Encoding::BINARY)
+            if string.nil?
+              string
+            else
+              string.to_s.force_encoding(Encoding::BINARY)
+            end
           end
         else
           def encode(string)
