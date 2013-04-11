@@ -25,12 +25,10 @@ Gem::Specification.new do |s|
     "VERSION",
     "lib/action_controller/session/redis_session_store.rb",
     "lib/active_support/cache/redis_store.rb",
-    "lib/cache/merb/redis_store.rb",
     "lib/cache/sinatra/redis_store.rb",
     "lib/i18n/backend/redis.rb",
     "lib/rack/cache/redis_entitystore.rb",
     "lib/rack/cache/redis_metastore.rb",
-    "lib/rack/session/merb.rb",
     "lib/rack/session/redis.rb",
     "lib/redis-store.rb",
     "lib/redis/distributed_store.rb",
@@ -44,7 +42,6 @@ Gem::Specification.new do |s|
     "redis-store.gemspec",
     "spec/action_controller/session/redis_session_store_spec.rb",
     "spec/active_support/cache/redis_store_spec.rb",
-    "spec/cache/merb/redis_store_spec.rb",
     "spec/cache/sinatra/redis_store_spec.rb",
     "spec/config/node-one.conf",
     "spec/config/node-two.conf",
@@ -78,7 +75,6 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<jeweler>, [">= 0"])
       s.add_development_dependency(%q<git>, [">= 0"])
       s.add_development_dependency(%q<rack-cache>, [">= 0"])
-      s.add_development_dependency(%q<merb>, ["= 1.1.0"])
       s.add_development_dependency(%q<rspec>, ["= 1.3.0"])
       s.add_development_dependency(%q<i18n>, [">= 0"])
       s.add_development_dependency(%q<ruby-debug>, [">= 0"])
@@ -87,7 +83,6 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<jeweler>, [">= 0"])
       s.add_dependency(%q<git>, [">= 0"])
       s.add_dependency(%q<rack-cache>, [">= 0"])
-      s.add_dependency(%q<merb>, ["= 1.1.0"])
       s.add_dependency(%q<rspec>, ["= 1.3.0"])
       s.add_dependency(%q<i18n>, [">= 0"])
       s.add_dependency(%q<ruby-debug>, [">= 0"])
@@ -97,7 +92,6 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<jeweler>, [">= 0"])
     s.add_dependency(%q<git>, [">= 0"])
     s.add_dependency(%q<rack-cache>, [">= 0"])
-    s.add_dependency(%q<merb>, ["= 1.1.0"])
     s.add_dependency(%q<rspec>, ["= 1.3.0"])
     s.add_dependency(%q<i18n>, [">= 0"])
     s.add_dependency(%q<ruby-debug>, [">= 0"])
