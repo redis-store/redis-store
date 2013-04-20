@@ -3,12 +3,10 @@ ARGV << "-b"
 require "rubygems"
 require "bundler"
 Bundler.setup
-require "methopara" if RUBY_VERSION.match /1\.9/
 require "ostruct"
 require "spec"
 require "spec/autorun"
 require "redis"
-require "merb"
 require "i18n"
 require "rack/cache"
 require "rack/cache/metastore"
@@ -39,5 +37,13 @@ module Kernel
     result = yield
     $VERBOSE = original_verbosity
     return result
+  end
+end
+
+# For faking rails flash objects retrieved from session
+module FakeActionDispatch
+  class Flash
+    class FlashHash < Hash
+    end
   end
 end

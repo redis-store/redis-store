@@ -79,15 +79,6 @@ Provides a cache store for your Ruby web framework of choice.
 
 For advanced configurations scenarios please visit [the wiki](https://github.com/jodosha/redis-store/wiki/Frameworks-Configuration).
 
-### Merb
-
-    dependency "redis-store", "1.0.0.1"
-    dependency("merb-cache", merb_gems_version) do
-      Merb::Cache.setup do
-        register(:redis, Merb::Cache::RedisStore, :servers => ["127.0.0.1:6379"])
-      end
-    end
-
 ### Sinatra
 
     require "sinatra"
@@ -168,16 +159,6 @@ Provides a Redis store for Rack::Session. See [http://rack.rubyforge.org/doc/Rac
     MyApp::Application.config.session_store :redis_session_store
 
 For advanced configurations scenarios please visit [the wiki](https://github.com/jodosha/redis-store/wiki/Frameworks-Configuration).
-
-### Merb
-
-    dependency "redis-store", "1.0.0.1"
-    Merb::Config.use do |c|
-      c[:session_store] = "redis"
-    end
-    Merb::BootLoader.before_app_loads do
-      Merb::SessionContainer.subclasses << "Merb::RedisSession"
-    end
 
 ### Sinatra
 
