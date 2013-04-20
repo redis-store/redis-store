@@ -12,8 +12,8 @@ begin
     gemspec.name        = "#{ENV["GEM_PREFIX"]}redis-store"
     gemspec.summary     = "Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks."
     gemspec.description = "Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks."
-    gemspec.email       = "alainbloch@gmail.com"
-    gemspec.homepage    = "http://github.com/alainbloch/redis-store"
+    gemspec.email       = "alain@change.org"
+    gemspec.homepage    = "http://github.com/change/redis-store"
     gemspec.authors     = [ "Alain Bloch" ]
     gemspec.executables = [ ]
     gemspec.add_dependency "redis", ">= 2.0.0"
