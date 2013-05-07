@@ -36,11 +36,8 @@ module Rack
           buf = StringIO.new
           key, size = slurp(body){|part| buf.write(part) }
 
-          if ttl.zero?
-            [key, size] if cache.set(key, buf.string)
-          else
-            [key, size] if cache.setex(key, ttl, buf.string)
-          end
+          ttl = [RedisRackCache.max_cache_seconds, ttl==0 ? RedisRackCache.max_cache_seconds : ttl].min
+          [key, size] if cache.set(key, buf.string, :expire_in => ttl)
         end
 
         def purge(key)
