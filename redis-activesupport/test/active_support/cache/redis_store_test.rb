@@ -165,8 +165,8 @@ describe ActiveSupport::Cache::RedisStore do
   it "reads multiple keys" do
     @store.write "irish whisky", "Jameson"
     result = @store.read_multi "rabbit", "irish whisky"
-    result['rabbit'].value.must_equal(@rabbit)
-    result['irish whisky'].value.must_equal("Jameson")
+    result['rabbit'].must_equal(@rabbit)
+    result['irish whisky'].must_equal("Jameson")
   end
 
   it "reads multiple keys and returns only the matched ones" do

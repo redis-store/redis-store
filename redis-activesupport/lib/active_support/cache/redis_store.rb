@@ -60,6 +60,7 @@ module ActiveSupport
       #   cache.read_multi "rabbit", "white-rabbit", :raw => true
       def read_multi(*names)
         values = @data.mget(*names)
+        values.map! { |v| v.is_a?(ActiveSupport::Cache::Entry) ? v.value : v }
 
         # Remove the options hash before mapping keys to values
         names.extract_options!
