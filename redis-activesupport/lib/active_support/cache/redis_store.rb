@@ -24,10 +24,11 @@ module ActiveSupport
       #   RedisStore.new "localhost:6379/0", "localhost:6380/0"
       #     # => instantiate a cluster
       def initialize(*addresses)
+        options = addresses.extract_options!
         @data = ::Redis::Factory.create(addresses)
-        super(addresses.extract_options!)
+        super(options)
       end
-
+      
       def write(name, value, options = nil)
         options = merged_options(options)
         instrument(:write, name, options) do |payload|
