@@ -27,7 +27,7 @@ module I18n
       #   RedisStore.new "localhost:6379/0", "localhost:6380/0"
       #     # => instantiate a cluster
       def initialize(*addresses)
-        @store = ::Redis::Factory.create(addresses)
+        @store = ::Redis::Store::Factory.create(addresses)
       end
 
       def translate(locale, key, options = {})

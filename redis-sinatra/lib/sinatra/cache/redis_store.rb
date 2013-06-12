@@ -29,7 +29,7 @@ module Sinatra
       #   RedisStore.new "localhost:6379/0", "localhost:6380/0"
       #     # => instantiate a cluster
       def initialize(*addresses)
-        @data = Redis::Factory.create addresses
+        @data = Redis::Store::Factory.create addresses
       end
 
       def write(key, value, options = nil)
