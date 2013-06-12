@@ -6,3 +6,14 @@ gem 'redis-rack',          '~> 1.4.0', :path => File.expand_path('../../redis-ra
 gem 'redis-activesupport',    '3.2.3', :path => File.expand_path('../../redis-activesupport', __FILE__)
 gem 'redis-actionpack',       '3.2.3', :path => File.expand_path('../../redis-actionpack',    __FILE__)
 gem 'SystemTimer', :platform => :mri_18
+
+version = ENV["RAILS_VERSION"] || "3.2"
+
+rails = case version
+when "master"
+  {:github => "rails/rails"}
+else
+  "~> #{version}.0"
+end
+
+gem "rails", rails

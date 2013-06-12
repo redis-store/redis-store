@@ -13,7 +13,7 @@ GEMS = %w(
 
 builds = GEMS.inject({}) do |result, rubygem|
   Dir.chdir(rubygem) do
-    result[rubygem] = system('bundle update && bundle exec rake')
+    result[rubygem] = system("RAILS_VERSION='#{ENV['RAILS_VERSION']}' bundle update && RAILS_VERSION='#{ENV['RAILS_VERSION']}' bundle exec rake")
   end
 
   result
