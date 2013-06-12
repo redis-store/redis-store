@@ -23,6 +23,12 @@ describe "Redis::Store::Namespace" do
     @store.send(:interpolate, "#{@namespace}:rabbit").must_equal("#{@namespace}:rabbit")
   end
 
+  it "dynamically namespaces when the namespace is a lambda" do
+    namespace = lambda { "dynamic" }
+    store = Redis::Store.new :namespace => namespace
+    store.send(:interpolate, "rabbit").must_equal("dynamic:rabbit")
+  end
+
   it "should only delete namespaced keys" do
     other_store = Redis::Store.new
 
