@@ -94,5 +94,41 @@ describe "Redis::Store::Factory" do
         ])
       end
     end
+
+    describe 'when given host Hash and options Hash' do 
+      it 'instantiates Redis::Store and merges options' do
+        store = Redis::Store::Factory.create(
+          { :host => '127.0.0.1', :port => '6379' }, 
+          { :namespace => 'theplaylist' }
+        )
+      end
+
+      it 'instantiates Redis::DistributedStore and merges options' do 
+        store = Redis::Store::Factory.create(
+          { :host => '127.0.0.1', :port => '6379' }, 
+          { :host => '127.0.0.1', :port => '6380' }, 
+          { :namespace => 'theplaylist' }
+        )
+        store.nodes.map {|node| node.to_s }.must_equal([
+          "Redis Client connected to 127.0.0.1:6379 against DB 0 with namespace theplaylist",
+          "Redis Client connected to 127.0.0.1:6380 against DB 0 with namespace theplaylist"
+        ])
+      end
+    end
+
+    describe 'when given host String and options Hash' do 
+      it 'instantiates Redis::Store and merges options' do 
+        store = Redis::Store::Factory.create "redis://127.0.0.1", { :namespace => 'theplaylist' }
+        store.to_s.must_equal("Redis Client connected to 127.0.0.1:6379 against DB 0 with namespace theplaylist")
+      end
+
+      it 'instantiates Redis::DistributedStore and merges options' do 
+        store = Redis::Store::Factory.create "redis://127.0.0.1:6379", "redis://127.0.0.1:6380", { :namespace => 'theplaylist' }
+        store.nodes.map {|node| node.to_s }.must_equal([
+          "Redis Client connected to 127.0.0.1:6379 against DB 0 with namespace theplaylist",
+          "Redis Client connected to 127.0.0.1:6380 against DB 0 with namespace theplaylist",
+        ])
+      end
+    end
   end
 end
