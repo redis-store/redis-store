@@ -75,9 +75,9 @@ describe ActiveSupport::Cache::RedisStore do
     end
   end
 
-  it "deletes matched data" do
-    with_store_management do |store|
-      store.delete_matched "rabb*"
+  it "forwards delete to delete_matched if redis matcher is found" do 
+    with_store_management do |store| 
+      store.delete "rabb*" 
       store.read("rabbit").must_be_nil
     end
   end
@@ -234,9 +234,9 @@ describe ActiveSupport::Cache::RedisStore do
       exist.payload.must_equal({ :key => 'the smiths' })
     end
 
-    it "notifies on #delete_matched" do
+    it "notifies with delete_matched if forwarded by delete" do
       with_notifications do
-        @store.delete_matched "afterhours*"
+        @store.delete "afterhours*"
       end
 
       delete_matched = @events.first

@@ -3,6 +3,29 @@ require 'redis-store'
 module ActiveSupport
   module Cache
     class RedisStore < Store
+      class KeyName
+        def initialize(matcher)
+          @matcher = matcher
+          run_match
+        end
+
+        def run_match
+          cleanup_matcher
+          @scanned = @matcher.scan(/(\?|\*|\[.+\])/i)
+        end
+
+        def is_matcher? 
+          @scanned.count > 0 
+        end
+
+        def cleanup_matcher
+          @matcher = @matcher.gsub('\*', '')
+          @matcher = @matcher.gsub('\?', '')
+          @matcher = @matcher.gsub('\[', '')
+          @matcher = @matcher.gsub('\]', '')
+        end
+      end
+
       # Instantiate the store.
       #
       # Example:
@@ -36,14 +59,34 @@ module ActiveSupport
         end
       end
 
-      # Delete objects for matched keys.
-      #
-      # Example:
-      #   cache.del_matched "rab*"
-      def delete_matched(matcher, options = nil)
+      def delete(name, options = nil)
         options = merged_options(options)
+
+        if include_redis_matcher?(name)
+          delete_wildcard_matched(name, options) 
+        else
+          instrument(:delete, name) do |payload|
+            delete_entry(namespaced_key(name, options), options)
+          end
+        end
+      end
+
+      # This method is invoked by activesupport when a RegExp is 
+      # detected. Since RegExp keys are not supported in Redis an 
+      # exception is thrown.
+      #
+      def delete_matched(matcher, option = nil) 
+        raise_on_regexps
+      end
+
+      def raise_on_regexps
+        raise "Regexps aren't supported, please use string with wildcards." 
+      end
+      private :raise_on_regexps
+
+      def delete_wildcard_matched(matcher, options = nil)
         instrument(:delete_matched, matcher.inspect) do
-          matcher = key_matcher(matcher, options)
+          matcher = namespaced_key(matcher, options)
           begin
             !(keys = @data.keys(matcher)).empty? && @data.del(*keys)
           rescue Errno::ECONNREFUSED => e
@@ -51,6 +94,7 @@ module ActiveSupport
           end
         end
       end
+      private :delete_wildcard_matched
 
       # Reads multiple keys from the cache using a single call to the
       # servers for all keys. Options can be passed in the last argument.
