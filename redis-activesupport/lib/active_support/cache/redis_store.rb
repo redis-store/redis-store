@@ -24,8 +24,9 @@ module ActiveSupport
       #   RedisStore.new "localhost:6379/0", "localhost:6380/0"
       #     # => instantiate a cluster
       def initialize(*addresses)
+        opts  = addresses.extract_options!
         @data = ::Redis::Store::Factory.create(addresses)
-        super(addresses.extract_options!)
+        super(opts)
       end
 
       def write(name, value, options = nil)
