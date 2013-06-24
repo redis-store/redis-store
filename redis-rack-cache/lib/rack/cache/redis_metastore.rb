@@ -13,7 +13,7 @@ module Rack
         attr_reader :cache
 
         def self.resolve(uri)
-          new ::Redis::Factory.resolve(uri.to_s)
+          new ::Redis::Store::Factory.resolve(uri.to_s)
         end
       end
 
@@ -22,7 +22,7 @@ module Rack
         attr_reader :cache
 
         def initialize(server, options = {})
-          @cache = ::Redis::Factory.create(server)
+          @cache = ::Redis::Store::Factory.create(server)
         end
 
         def read(key)

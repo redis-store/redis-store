@@ -11,9 +11,11 @@ GEMS = %w(
   redis-sinatra
 ).freeze
 
+rails_version = ENV['RAILS_VERSION'] || '3.2' 
+
 builds = GEMS.inject({}) do |result, rubygem|
   Dir.chdir(rubygem) do
-    result[rubygem] = system('bundle update && bundle exec rake')
+    result[rubygem] = system("RAILS_VERSION='#{rails_version}' bundle update && RAILS_VERSION='#{rails_version}' bundle exec rake")
   end
 
   result
