@@ -9,6 +9,7 @@ class Redis
       nodes = addresses.map do |address|
         ::Redis::Store.new _merge_options(address, options)
       end
+
       _extend_namespace options
       @ring = Redis::HashRing.new nodes
     end
@@ -40,7 +41,10 @@ class Redis
       end
 
       def _merge_options(address, options)
-        address.merge(:timeout => options[:timeout] || @@timeout)
+        address.merge({
+          :timeout => options[:timeout] || @@timeout, 
+          :namespace => options[:namespace]
+        })
       end
   end
 end
