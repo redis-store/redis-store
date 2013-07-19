@@ -43,7 +43,8 @@ class Redis
 
         if defined?(Encoding)
           def encode(string)
-            string.to_s.force_encoding(Encoding::BINARY)
+            key = string.to_s.dup
+            key.force_encoding(Encoding::BINARY)
           end
         else
           def encode(string)
