@@ -28,7 +28,7 @@ module Rack
         with_lock(env, [nil, {}]) do
           unless sid and session = @pool.get(sid)
             sid, session = generate_sid, {}
-            unless /^OK/ =~ @pool.set(sid, session)
+            unless /^OK/ =~ @pool.set(sid, session, @default_options)
               raise "Session collision on '#{sid.inspect}'"
             end
           end
