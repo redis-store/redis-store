@@ -38,6 +38,11 @@ module ActiveSupport
 
       # Delete objects for matched keys.
       #
+      # Performance note: this operation can be dangerous for large production
+      # databases, as it uses the Redis "KEYS" command, which is O(N) over the
+      # total number of keys in the database. Users of large Redis caches should
+      # avoid this method.
+      #
       # Example:
       #   cache.del_matched "rab*"
       def delete_matched(matcher, options = nil)
