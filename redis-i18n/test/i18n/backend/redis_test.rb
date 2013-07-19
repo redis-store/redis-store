@@ -21,6 +21,12 @@ describe "I18n::Backend::Redis" do
     I18n.t(:"baz", :scope => :"foo.bar").must_equal(:bang)
   end
 
+  it "gets translations with count" do
+    I18n.backend.store_translations :en, :bar => { :one => :bar, :other => "%{count} bars" }
+    I18n.t(:bar, :count => 1).must_equal(:bar)
+    I18n.t(:bar, :count => 10).must_equal("10 bars")
+  end
+
   it "raises an exception when a proc translation is being saved" do
     lambda {
       I18n.backend.store_translations :en, :foo => lambda {|| }
