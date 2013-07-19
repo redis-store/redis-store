@@ -129,6 +129,10 @@ module ActiveSupport
         end
       end
 
+      def expire(key, ttl)
+        @data.expire key, ttl
+      end
+
       # Clear all the data from the store.
       def clear
         instrument(:clear, nil, nil) do
