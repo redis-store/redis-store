@@ -14,6 +14,12 @@ describe ActiveSupport::Cache::RedisStore do
     end
   end
 
+  it "initializes with options" do
+    store = ActiveSupport::Cache::RedisStore.new "redis://127.0.0.1:6380/1", :compress => true
+    store.instance_variable_get(:@data).must_be_instance_of(Redis::Store)
+    store.options.must_equal({:compress => true})
+  end
+
   it "reads the data" do
     with_store_management do |store|
       store.read("rabbit").must_equal(@rabbit)
