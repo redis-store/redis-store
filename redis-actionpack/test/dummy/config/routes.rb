@@ -1,3 +1,3 @@
 Dummy::Application.routes.draw do
-  match ':action', :to => TestController
+  get ':action', :to => TestController
 end
