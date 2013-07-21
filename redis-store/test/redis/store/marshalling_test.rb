@@ -28,7 +28,7 @@ describe "Redis::Marshalling" do
     end
   else
     it "doesn't unmarshal on get if raw option is true" do
-      @store.get("rabbit", :raw => true).must_equal("\004\bU:\017OpenStruct{\006:\tname\"\nbunny")
+      @store.get("rabbit", :raw => true).must_include("\x04\bU:\x0FOpenStruct{\x06:\tname")
     end
   end
 
@@ -84,8 +84,8 @@ describe "Redis::Marshalling" do
     it "doesn't unmarshal on multi get if raw option is true" do
       @store.set "rabbit2", @white_rabbit
       rabbit, rabbit2 = @store.mget "rabbit", "rabbit2", :raw => true
-      rabbit.must_equal("\004\bU:\017OpenStruct{\006:\tname\"\nbunny")
-      rabbit2.must_equal("\004\bU:\017OpenStruct{\006:\ncolor\"\nwhite")
+      rabbit.must_include("\x04\bU:\x0FOpenStruct{\x06:\tname")
+      rabbit2.must_include("\x04\bU:\x0FOpenStruct{\x06:\ncolor")
     end
   end
 
