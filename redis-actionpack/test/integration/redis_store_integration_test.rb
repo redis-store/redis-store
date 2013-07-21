@@ -1,7 +1,7 @@
 require 'test_helper'
 
-class RedisStoreIntegrationTest < ActionController::IntegrationTest
-  it "reads the data" do
+class RedisStoreIntegrationTest < ActionDispatch::IntegrationTest
+  test "reads the data" do
     get '/set_session_value'
     response.must_be :success?
     cookies['_session_id'].wont_be_nil
@@ -11,13 +11,13 @@ class RedisStoreIntegrationTest < ActionController::IntegrationTest
     response.body.must_equal 'foo: "bar"'
   end
 
-  it "should get nil session value" do
+  test "should get nil session value" do
     get '/get_session_value'
     response.must_be :success?
     response.body.must_equal 'foo: nil'
   end
 
-  it "should delete the data after session reset" do
+  test "should delete the data after session reset" do
     get '/set_session_value'
     response.must_be :success?
     cookies['_session_id'].wont_be_nil
@@ -34,14 +34,14 @@ class RedisStoreIntegrationTest < ActionController::IntegrationTest
     response.body.must_equal 'foo: nil'
   end
 
-  it "should not send cookies on write, not read" do
+  test "should not send cookies on write, not read" do
     get '/get_session_value'
     response.must_be :success?
     response.body.must_equal 'foo: nil'
     cookies['_session_id'].must_be_nil
   end
 
-  it "should set session value after session reset" do
+  test "should set session value after session reset" do
     get '/set_session_value'
     response.must_be :success?
     cookies['_session_id'].wont_be_nil
@@ -60,7 +60,7 @@ class RedisStoreIntegrationTest < ActionController::IntegrationTest
     response.body.wont_equal session_id
   end
 
-  it "should be able to read session id without accessing the session hash" do
+  test "should be able to read session id without accessing the session hash" do
     get '/set_session_value'
     response.must_be :success?
     cookies['_session_id'].wont_be_nil
@@ -71,7 +71,7 @@ class RedisStoreIntegrationTest < ActionController::IntegrationTest
     response.body.must_equal session_id
   end
 
-  it "should auto-load unloaded class" do
+  test "should auto-load unloaded class" do
     with_autoload_path "session_autoload_test" do
       get '/set_serialized_session_value'
       response.must_be :success?
@@ -90,7 +90,7 @@ class RedisStoreIntegrationTest < ActionController::IntegrationTest
     end
   end
 
-  it "should not resend the cookie again if session_id cookie is already exists" do
+  test "should not resend the cookie again if session_id cookie is already exists" do
     get '/set_session_value'
     response.must_be :success?
     cookies['_session_id'].wont_be_nil
@@ -100,7 +100,7 @@ class RedisStoreIntegrationTest < ActionController::IntegrationTest
     headers['Set-Cookie'].must_be_nil
   end
 
-  it "should prevent session fixation" do
+  test "should prevent session fixation" do
     get '/get_session_value'
     response.must_be :success?
     response.body.must_equal 'foo: nil'
@@ -113,7 +113,7 @@ class RedisStoreIntegrationTest < ActionController::IntegrationTest
     cookies['_session_id'].wont_equal session_id
   end
 
-  it "should write the data with expiration time" do
+  test "should write the data with expiration time" do
     get '/set_session_value_with_expiry'
     response.must_be :success?
 
