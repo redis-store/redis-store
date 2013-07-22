@@ -76,7 +76,7 @@ describe ActiveSupport::Cache::RedisStore do
       with_store_management do |store|
         result = store.read("rabbit", :raw => true)
         result.must_include("ActiveSupport::Cache::Entry")
-        result.must_include("\017OpenStruct{\006:\tname\"\nbunny")
+        result.must_include("\017OpenStruct{\006:\tname")
       end
     end
   end

@@ -12,3 +12,5 @@ tmp/
 .bundle/
 Gemfile.lock
 .rvmrc
+Vagrantfile
+.vagrant
