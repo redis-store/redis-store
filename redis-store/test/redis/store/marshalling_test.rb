@@ -24,7 +24,7 @@ describe "Redis::Marshalling" do
 
   if RUBY_VERSION.match /1\.9/
     it "doesn't unmarshal on get if raw option is true" do
-      @store.get("rabbit", :raw => true).must_equal("\x04\bU:\x0FOpenStruct{\x06:\tnameI\"\nbunny\x06:\x06EF")
+      @store.get("rabbit", :raw => true).must_equal("\x04\bU:\x0FOpenStruct{\x06:\tnameI\"\nbunny\x06:\x06ET")
     end
   else
     it "doesn't unmarshal on get if raw option is true" do
@@ -77,8 +77,8 @@ describe "Redis::Marshalling" do
     it "doesn't unmarshal on multi get if raw option is true" do
       @store.set "rabbit2", @white_rabbit
       rabbit, rabbit2 = @store.mget "rabbit", "rabbit2", :raw => true
-      rabbit.must_equal("\x04\bU:\x0FOpenStruct{\x06:\tnameI\"\nbunny\x06:\x06EF")
-      rabbit2.must_equal("\x04\bU:\x0FOpenStruct{\x06:\ncolorI\"\nwhite\x06:\x06EF")
+      rabbit.must_equal("\x04\bU:\x0FOpenStruct{\x06:\tnameI\"\nbunny\x06:\x06ET")
+      rabbit2.must_equal("\x04\bU:\x0FOpenStruct{\x06:\ncolorI\"\nwhite\x06:\x06ET")
     end
   else
     it "doesn't unmarshal on multi get if raw option is true" do

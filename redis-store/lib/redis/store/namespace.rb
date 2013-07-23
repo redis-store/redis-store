@@ -37,6 +37,10 @@ class Redis
         super *keys.map {|key| interpolate(key) } if keys.any?
       end
 
+      def expire(key, ttl)
+        namespace(key) { |key| super(key, ttl) }
+      end
+
       def to_s
         "#{super} with namespace #{@namespace}"
       end
