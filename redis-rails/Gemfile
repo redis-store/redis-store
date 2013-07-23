@@ -3,9 +3,8 @@ gemspec
 
 gem 'redis-store',         '~> 1.1.0', :path => File.expand_path('../../redis-store',         __FILE__)
 gem 'redis-rack',          '~> 1.4.0', :path => File.expand_path('../../redis-rack',          __FILE__)
-gem 'redis-activesupport',    '3.2.3', :path => File.expand_path('../../redis-activesupport', __FILE__)
-gem 'redis-actionpack',       '3.2.3', :path => File.expand_path('../../redis-actionpack',    __FILE__)
-gem 'SystemTimer', :platform => :mri_18
+gem 'redis-activesupport',    '4.0.0', :path => File.expand_path('../../redis-activesupport', __FILE__)
+gem 'redis-actionpack',       '4.0.0', :path => File.expand_path('../../redis-actionpack',    __FILE__)
 
 version = ENV["RAILS_VERSION"] || "3.2"
 
