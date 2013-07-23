@@ -23,7 +23,8 @@ class TestController < ActionController::Base
   end
 
   def get_session_id
-    render :text => "#{request.session_options[:id]}"
+    session_id = request.session_options[:id] || cookies["_session_id"]
+    render :text => session_id
   end
 
   def call_reset_session
