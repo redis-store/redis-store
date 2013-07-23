@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require 'redis-store'
 
 module ActiveSupport
@@ -138,6 +139,13 @@ module ActiveSupport
         instrument(:clear, nil, nil) do
           @data.flushdb
         end
+      end
+
+      # fixed problem with invalid exists? method
+      # https://github.com/rails/rails/commit/cad2c8f5791d5bd4af0f240d96e00bae76eabd2f
+      def exist?(name, options = nil)
+        res = super(name, options)
+        res || false
       end
 
       def stats
