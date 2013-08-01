@@ -17,20 +17,24 @@ module Rack
         @pool = ::Redis::Factory.create @default_options[:redis_server]
       end
 
-      def generate_unique_sid
+      def generate_unique_sid(session)
         loop do
           sid = generate_sid
-          session = {}
-          break sid, session if [1, 1] == @pool.setnx(sid, session, @default_options)
+          break sid if [1, 1] == @pool.setnx(sid, session, @default_options)
         end
       end
 
       def get_session(env, sid)
-        with_lock(env, [nil, {}]) do
-          unless sid and session = @pool.get(sid)
-            sid, session = generate_unique_sid
+        if env['rack.session.options'][:skip]
+          [generate_sid, {}]
+        else
+          with_lock(env, [nil, {}]) do
+            unless sid and session = @pool.get(sid)
+              session = {}
+              sid = generate_unique_sid(session)
+            end
+            [sid, session]
           end
-          [sid, session]
         end
       end
 
