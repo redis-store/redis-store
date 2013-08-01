@@ -20,7 +20,7 @@ module Rack
       def generate_unique_sid(session)
         loop do
           sid = generate_sid
-          break sid if [1, 1] == @pool.setnx(sid, session, @default_options)
+          break sid if [1, true].include?([*@pool.setnx(sid, session, @default_options)].first)
         end
       end
 
