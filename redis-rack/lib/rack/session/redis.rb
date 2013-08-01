@@ -17,20 +17,18 @@ module Rack
         @pool = ::Redis::Store::Factory.create @default_options[:redis_server]
       end
 
-      def generate_sid
+      def generate_unique_sid
         loop do
-          sid = super
-          break sid unless @pool.get(sid)
+          sid = generate_sid
+          session = {}
+          break sid, session if [1, 1] == @pool.setnx(sid, session, @default_options)
         end
       end
 
       def get_session(env, sid)
         with_lock(env, [nil, {}]) do
           unless sid and session = @pool.get(sid)
-            sid, session = generate_sid, {}
-            unless /^OK/ =~ @pool.set(sid, session, @default_options)
-              raise "Session collision on '#{sid.inspect}'"
-            end
+            sid, session = generate_unique_sid
           end
           [sid, session]
         end
