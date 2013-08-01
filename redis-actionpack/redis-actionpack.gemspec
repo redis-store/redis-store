@@ -28,5 +28,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'purdytest',     '~> 1.0.0'
   s.add_development_dependency 'tzinfo'
   s.add_development_dependency 'mini_specunit'
-  s.add_development_dependency 'mini_backtrace'
 end
