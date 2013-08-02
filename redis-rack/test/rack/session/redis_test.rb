@@ -22,6 +22,10 @@ describe Rack::Session::Redis do
     env['rack.session.options'][:defer] = true
     incrementor.call(env)
   end
+  skip_session = proc do |env|
+    env['rack.session.options'][:skip] = true
+    incrementor.call(env)
+  end
 
   # # test Redis connection
   # Rack::Session::Redis.new(incrementor)
@@ -181,6 +185,18 @@ describe Rack::Session::Redis do
     res0 = dreq.get("/")
     res0["Set-Cookie"].must_be_nil
     res0.body.must_equal('{"counter"=>1}')
+  end
+
+  it "does not hit with :skip option" do
+    pool = Rack::Session::Redis.new(incrementor)
+    skip = Rack::Utils::Context.new(pool, skip_session)
+    sreq = Rack::MockRequest.new(skip)
+
+    pool.instance_variable_set('@pool', MiniTest::Mock.new)
+
+    res0 = sreq.get("/")
+    res0.body.must_equal('{"counter"=>1}')
+    assert pool.pool.verify
   end
 
   it "updates deep hashes correctly" do
