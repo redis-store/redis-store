@@ -40,6 +40,19 @@ describe "Redis::Store::Namespace" do
     empty_store.keys.must_be_empty
   end
 
+  it "namespaces setex and ttl" do
+    @store.flushdb
+    other_store = Redis::Store.new :namespace => 'other'
+    other_store.flushdb
+
+    @store.setex('foo', 30, 'bar')
+    @store.ttl('foo').must_be_close_to(30)
+    @store.get('foo').must_equal('bar')
+
+    other_store.ttl('foo').must_equal(-2)
+    other_store.get('foo').must_be_nil
+  end
+
   describe 'method calls' do
     let(:store){Redis::Store.new :namespace => @namespace, :marshalling => false}
     let(:client){store.instance_variable_get(:@client)}

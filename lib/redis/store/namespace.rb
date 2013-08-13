@@ -5,8 +5,16 @@ class Redis
         namespace(key) { |key| super(key, val, options) }
       end
 
+      def setex(key, ttl, val, options = nil)
+        namespace(key) { |key| super(key, ttl, val, options) }
+      end
+
       def setnx(key, val, options = nil)
         namespace(key) { |key| super(key, val, options) }
+      end
+
+      def ttl(key, options = nil)
+        namespace(key) { |key| super(key) }
       end
 
       def get(key, options = nil)
