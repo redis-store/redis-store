@@ -1,3 +1,4 @@
+require 'bundler/setup'
 require 'minitest/autorun'
 require 'active_support/core_ext/numeric/time'
 
