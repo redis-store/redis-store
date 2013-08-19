@@ -5,9 +5,9 @@ require "redis-rack-cache/version"
 Gem::Specification.new do |s|
   s.name        = "redis-rack-cache"
   s.version     = Redis::Rack::Cache::VERSION
-  s.authors     = ["Luca Guidi", "Matt Horan"]
+  s.authors     = ["Luca Guidi"]
   s.email       = ["me@lucaguidi.com"]
-  s.homepage    = "http://jodosha.github.com/redis-store"
+  s.homepage    = "http://redis-store.org/redis-rack-cache"
   s.summary     = %q{Redis for Rack::Cache}
   s.description = %q{Redis for Rack::Cache}
 
@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rack-cache',  '~> 1.2'
 
   s.add_development_dependency 'rake',     '~> 10'
-  s.add_development_dependency 'bundler',  '~> 1.2'
-  s.add_development_dependency 'mocha',    '~> 0.13.0'
-  s.add_development_dependency 'minitest', '~> 4.3.1'
+  s.add_development_dependency 'bundler',  '~> 1.3'
+  s.add_development_dependency 'mocha',    '~> 0.14.0'
+  s.add_development_dependency 'minitest', '~> 5'
 end

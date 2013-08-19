@@ -1,4 +1,4 @@
-source "http://rubygems.org"
+source 'https://rubygems.org'
 gemspec
 
-gem 'redis-store', '~> 1.1.0', :path => File.expand_path('../../redis-store', __FILE__)
+gem 'redis-store', '~> 1.1.0', path: '../redis-store'
