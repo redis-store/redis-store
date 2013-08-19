@@ -20,7 +20,7 @@ class Redis
         if @addresses.empty?
           @addresses << {}
         end
-        
+
         if @addresses.size > 1
           ::Redis::DistributedStore.new @addresses, @options
         else
@@ -41,7 +41,7 @@ class Redis
         if host_options?(options)
           options
         else
-          nil 
+          nil
         end
       end
 
@@ -61,16 +61,20 @@ class Redis
 
       def self.extract_host_options_from_uri(uri)
         uri = URI.parse(uri)
+        _, driver        = if uri.scheme
+                             uri.scheme.split(/\+/)
+                           end
         _, db, namespace = if uri.path
                              uri.path.split(/\//)
                            end
 
         options = {
           :host     => uri.host,
-          :port     => uri.port || DEFAULT_PORT, 
+          :port     => uri.port || DEFAULT_PORT,
           :password => uri.password
         }
 
+        options[:driver]    = driver    if driver
         options[:db]        = db.to_i   if db
         options[:namespace] = namespace if namespace
 
@@ -80,7 +84,7 @@ class Redis
       private
 
       def extract_addresses_and_options(*options)
-        options.flatten.compact.each do |token| 
+        options.flatten.compact.each do |token|
           resolved = self.class.resolve(token)
           if resolved
             @addresses << resolved
