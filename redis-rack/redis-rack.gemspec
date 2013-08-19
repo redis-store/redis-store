@@ -5,9 +5,9 @@ require 'redis/rack/version'
 Gem::Specification.new do |s|
   s.name        = 'redis-rack'
   s.version     = Redis::Rack::VERSION
-  s.authors     = ['Luca Guidi', 'Matt Horan']
+  s.authors     = ['Luca Guidi']
   s.email       = ['me@lucaguidi.com']
-  s.homepage    = "http://jodosha.github.com/redis-store"
+  s.homepage    = "http://redis-store.org/redis-rack"
   s.summary     = %q{Redis Store for Rack}
   s.description = %q{Redis Store for Rack}
 
@@ -19,11 +19,11 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_runtime_dependency 'redis-store',   '~> 1.1.0'
-  s.add_runtime_dependency 'rack',          '~> 1.4'
+  s.add_runtime_dependency 'rack',          '~> 1.5'
 
   s.add_development_dependency 'rake',     '~> 10'
-  s.add_development_dependency 'bundler',  '~> 1.2'
-  s.add_development_dependency 'mocha',    '~> 0.13.0'
-  s.add_development_dependency 'minitest', '~> 4.3.1'
+  s.add_development_dependency 'bundler',  '~> 1.3'
+  s.add_development_dependency 'mocha',    '~> 0.14.0'
+  s.add_development_dependency 'minitest', '~> 5'
 end
 
