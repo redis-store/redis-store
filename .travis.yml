@@ -9,9 +9,6 @@ rvm:
   - jruby-19mode
   - jruby-head
 bundler_args: '--path vendor/bundle'
-env:
-  - "RAILS_VERSION=3.2"
-  - "RAILS_VERSION=4.0"
 
 matrix:
   allow_failures:

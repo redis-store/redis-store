@@ -1,6 +1,4 @@
-Bundler.setup
-gem 'minitest'
-require 'minitest/spec'
+require 'bundler/setup'
 require 'minitest/autorun'
 require 'mocha/setup'
 require 'redis'
