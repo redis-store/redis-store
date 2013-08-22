@@ -1,8 +1,4 @@
-require 'bundler'
-Bundler.setup
+require 'bundler/setup'
 require 'rake'
 require 'bundler/gem_tasks'
-
-load 'tasks/redis.tasks.rb'
-task :default => 'redis:test:suite'
-
+require 'redis-store/testing/tasks'
