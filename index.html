@@ -1,266 +1,86 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>redis-store by redis-store</title>
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Redis Store - A swiss knife for your Ruby frameworks.</title>
-<meta name="author" content="ThemeFuse" />
-<meta name="description" content="Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks." />
-<meta name="keywords" content="ruby,rails,ruby on rails,redis,cache,rack,session,i18n,namespace,web,development,open source,free software,jodosha,luca guidi" />
-<link href="styles.css" media="screen" rel="stylesheet" type="text/css" />
-<link href="styles/light.css" media="screen" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">redis-store</h1>
+        <p class="header">Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks</p>
 
-<!--[if IE 7]>
-<link rel="stylesheet" type="text/css" href="styles_ie.css" />
-<![endif]-->
-
-<!-- jquery + easing -->
-<script type="text/javascript" language="javascript" src="js/jquery-1.4.4.min.js"></script>
-<script type="text/javascript" language="javascript" src="js/jquery.easing.1.3.js"></script>
-
-<!-- freshfolio class -->
-<script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js"></script>
-<script type="text/javascript" language="javascript" src="js/fresh-folio-home.class.js"></script>
-<script language="javascript" type="text/javascript">
-$(document).ready(function() {
-
-    // load freshFolioEvents class
-    freshFolioEvents.init({
-        scroll_pane: $('.filter_scroll_pane'),
-        slider_panel  : $("#main-slider"),
-    click_slide   : true,
-        size : {
-           mainslider : $("#main-slider > li").size(),
-           step       : 610 // from: sidebar_slider .slider_main li { margin-right: 50px; width: 320px; }
-        }
-    });
-});
-</script>
-<!--/ freshfolio -->
-</head>
-
-<body>
-<div class="bodywrap">
-<div class="container">
-
-    <div class="header">
-
-        <div class="logo">
-          <a href="index.html"><img src="images/logo.png" width="150px" height="150px" alt="Redis Store 1.0.0" /></a>
-        </div>
-
-        <div class="menu-header">
-          <ul class="topmenu">
-            <li class="first menu-item-home current-menu-item"><a href="index.html"><span>Home</span></a></li>
-            <li class="parent"><a href="documentation.html"><span>Documentation</span></a>
-          <ul>
-            <li class="first"><a href="installation.html"><span>Installation</span></a></li>
-            <li><a href="configuration.html"><span>Configuration</span></a></li>
-
-            <li class="parent"><a href="cache-store.html"><span>Cache store</span></a>
-              <ul>
-                <li class="first"><a href="cache-store.html#rails3"><span>Rails 3.x</span></a></li>
-                <li><a href="cache-store.html#rails2-bundler"><span>Rails 2.x (Bundler)</span></a></li>
-                <li><a href="cache-store.html#rails2"><span>Rails 2.x</span></a></li>
-                <li><a href="cache-store.html#merb"><span>Merb</span></a></li>
-                <li class="last"><a href="cache-store.html#sinatra"><span>Sinatra</span></a></li>
-              </ul>
-            </li>
-            <li class="parent"><a href="rack-session.html"><span>Rack::Session</span></a>
-              <ul>
-                <li class="first"><a href="rack-session.html#rack"><span>Rack</span></a></li>
-                <li><a href="rack-session.html#rails3"><span>Rails 3.x</span></a></li>
-                <li><a href="rack-session.html#rails2-bundler"><span>Rails 2.x (Bundler)</span></a></li>
-                <li><a href="rack-session.html#rails2"><span>Rails 2.x</span></a></li>
-                <li><a href="rack-session.html#merb"><span>Merb</span></a></li>
-                <li class="last"><a href="rack-session.html#sinatra"><span>Sinatra</span></a></li>
-              </ul>
-            </li>
-            <li><a href="rack-cache.html"><span>Rack::Cache</span></a></li>
-            <li class="last"><a href="i18n.html"><span>i18n</span></a></li>
-          </ul>
-        </li>
-        <li><a href="license.html"><span>License</span></a></li>
-        <li class="last"><a href="about.html"><span>About</span></a></li>
-      </ul>
-        </div>
-
-        <a href="https://github.com/jodosha/redis-store"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/71eeaab9d563c2b3c590319b398dd35683265e85/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub"></a>
-
-        <div class="header-content">
-            <h1>Namespaced <span>Rack::Session</span>, <span>Rack::Cache</span>, <br /> <span>i18n</span> and <span>cache</span> Redis stores for <br/> Ruby web frameworks.</h1>
-        </div>
-
-        <div class="clear"></div>
-    </div>
-    <!--/ header -->
-
-
-    <!-- content -->
-    <div class="content">
-
-    <!-- scroll content -->
-        <div class="content-scroll home_slider">
-
-        <ul id="main-slider" class="slider_main" style="width:20512px;">
-
-          <li class="active on">
-            <div class="slide_image">
-              <div class="border_image"><img src="images/installation.png" alt="" width="600" height="180" border="0" /></div>
-            </div>
-            <div class="slide_content">
-              <div class="slide_title"><h2><a href="blog-details.html"><span>Installation</span></a></h2></div>
-              <div class="slide_meta">Install Redis</div>
-              <div class="slide_text">
-                <p>Download and build from scratch:</p>
-                <pre class="brush: bash; gutter: false; toolbar: false;">
-$ wget http://redis.googlecode.com/files/redis-2.2.12.tar.gz
-$ tar xzf redis-2.2.12.tar.gz
-$ cd redis-2.2.12
-$ make
-                </pre>
-             </div>
-              <div class="slide_meta">Install the gem</div>
-              <div class="slide_text">
-                <p>On *NIX you may need to <code>sudo</code>:</p>
-                <pre class="brush: bash; gutter: false; toolbar: false;">
-$ gem install redis-store
-                </pre>
-             </div>
-             <div class="slide_more"><a href="installation.html" class="button_link"><span>Read more</span></a></div>
-           </div>
-           <div class="scroll_navi"><a href="#" class="scroll_prev">Prev</a> <a href="#" class="scroll_next">Next</a></div>
-          </li>
-          <li>
-            <div class="slide_image">
-              <div class="border_image"><img src="images/configuration.png" alt="" width="600" height="180" border="0" /></div>
-            </div>
-            <div class="slide_content">
-              <div class="slide_title"><h2><a href="blog-details.html"><span>Configuration</span></a></h2></div>
-              <p>You can specify the Redis configuration details using a URI or a hash. By default the gem will attempt to connect to <code>localhost</code> port <code>6379</code> and the db <code>0</code>.</p>
-              <div class="slide_meta">URI usage</div>
-              <div class="slide_text">
-                <p>For example</p>
-                <pre class="brush: ruby; gutter: false; toolbar: false;">
-"redis://:secret@192.168.1.100:23682/13/theplaylist"
-                </pre>
-                <p>Made up of the following:</p>
-                <pre class="brush: ruby; gutter: false; toolbar: false;">
-host: 192.168.1.100
-port: 23682
-db: 13
-namespace: theplaylist
-password: secret
-                </pre>
-             </div>
-             <div class="slide_more"><a href="configuration.html" class="button_link"><span>Read more</span></a></div>
-           </div>
-           <div class="scroll_navi"><a href="#" class="scroll_prev">Prev</a> <a href="#" class="scroll_next">Next</a></div>
-         </li>
-          <li>
-            <div class="slide_image">
-              <div class="border_image"><img src="images/cache-store.png" alt="" width="600" height="180" border="0" /></div>
-            </div>
-            <div class="slide_content">
-              <div class="slide_title"><h2><a href="blog-details.html"><span>Cache store</span></a></h2></div>
-              <p>Provides a cache store for your Ruby web framework of choice.</p>
-              <div class="slide_meta">Rails 3.x</div>
-              <div class="slide_text">
-                <pre class="brush: ruby; gutter: false; toolbar: false;">
-# Gemfile
-gem 'redis'
-gem 'redis-store', '1.0.0.rc1'
-
-# config/environments/production.rb
-config.cache_store = :redis_store, { ... optional configuration ... }
-                </pre>
-             </div>
-             <div class="slide_more"><a href="cache-store.html" class="button_link"><span>Read more</span></a></div>
-           </div>
-           <div class="scroll_navi"><a href="#" class="scroll_prev">Prev</a> <a href="#" class="scroll_next">Next</a></div>
-         </li>
-          <li>
-            <div class="slide_image">
-              <div class="border_image"><img src="images/rack-session.png" alt="" width="600" height="180" border="0" /></div>
-            </div>
-            <div class="slide_content">
-              <div class="slide_title"><h2><a href="blog-details.html"><span>Rack::Session</span></a></h2></div>
-              <p>Provides a Redis store for <a href="http://rack.rubyforge.org/doc/Rack/Session.html" target="_blank">Rack::Session</a>.</p>
-              <div class="slide_meta">Rack application</div>
-              <div class="slide_text">
-                <pre class="brush: ruby; gutter: false; toolbar: false;">
-require "rack"
-require "redis-store"
-require "application"
-use Rack::Session::Redis
-run Application.new
-                </pre>
-             </div>
-             <div class="slide_more"><a href="rack-session.html" class="button_link"><span>Read more</span></a></div>
-           </div>
-           <div class="scroll_navi"><a href="#" class="scroll_prev">Prev</a> <a href="#" class="scroll_next">Next</a></div>
-         </li>
-          <li>
-            <div class="slide_image">
-              <div class="border_image"><img src="images/rack-cache.png" alt="" width="600" height="180" border="0" /></div>
-            </div>
-            <div class="slide_content">
-              <div class="slide_title"><h2><a href="blog-details.html"><span>Rack::Cache</span></a></h2></div>
-              <p>Provides a Redis store for <a href="http://github.com/rtomayko/rack-cache" title="rtomayko's Rack::Cache" target="_blank">HTTP caching</a>.</p>
-              <div class="slide_meta">Rack application</div>
-              <div class="slide_text">
-                <pre class="brush: ruby; gutter: false; toolbar: false;">
-require "rack"
-require "rack/cache"
-require "redis-store"
-require "application"
-use Rack::Cache,
-  :metastore   => 'redis://localhost:6379/0/metastore',
-  :entitystore => 'redis://localhost:6380/0/entitystore'
-run Application.new
-                </pre>
-             </div>
-             <div class="slide_more"><a href="rack-cache.html" class="button_link"><span>Read more</span></a></div>
-           </div>
-           <div class="scroll_navi"><a href="#" class="scroll_prev">Prev</a> <a href="#" class="scroll_next">Next</a></div>
-         </li>
-          <li>
-            <div class="slide_image">
-              <div class="border_image"><img src="images/i18n.png" alt="" width="600" height="180" border="0" /></div>
-            </div>
-            <div class="slide_content">
-              <div class="slide_title"><h2><a href="blog-details.html"><span>i18n</span></a></h2></div>
-              <p>The backend accepts the uri string and hash options.</p>
-              <div class="slide_text">
-                <pre class="brush: ruby; gutter: false; toolbar: false;">
-require "i18n"
-require "redis-store"
-I18n.backend = I18n::Backend::Redis.new
-                </pre>
-             </div>
-             <div class="slide_more"><a href="i18n.html" class="button_link"><span>Read more</span></a></div>
-           </div>
-           <div class="scroll_navi"><a href="#" class="scroll_prev">Prev</a> <a href="#" class="scroll_next">Next</a></div>
-         </li>
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/redis-store/redis-store/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/redis-store/redis-store/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/redis-store/redis-store">View On GitHub</a></li>
         </ul>
-        <div class="clear"></div>
-        </div>
-    <!--/ scroll content -->
 
-        <div class="fallow_box">
-          <h2><span>Support us</span></h2>
-            <div class="slide_meta">Please, make an offer to support us.</div>
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/redis-store">redis-store</a></p>
 
-            <div class="box social_icons">
-              <a href='http://www.pledgie.com/campaigns/15918'><img alt='Click here to lend your support to: Redis Store and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/15918.png?skin_name=chrome' border='0' /></a>
-            </div>
 
-            <a href="about.html" class="button_link"><span>More about us</span></a>        </div>
+      </header>
+      <section>
+        <p><a href="http://travis-ci.org/redis-store/redis-store?branch=master"><img src="https://secure.travis-ci.org/redis-store/redis-store.png?branch=master" alt="Build Status"></a> <a href="https://codeclimate.com/github/redis-store/redis-store"><img src="https://codeclimate.com/github/redis-store/redis-store.png" alt="Code Climate"></a></p>
 
-    <div class="clear"></div>
+<h1>
+<a name="redis-stores-for-ruby-frameworks" class="anchor" href="#redis-stores-for-ruby-frameworks"><span class="octicon octicon-link"></span></a>Redis stores for Ruby frameworks</h1>
+
+<p><strong>Redis Store</strong> provides a full set of stores (*Cache*, <em>I18n</em>, <em>Session</em>, <em>HTTP Cache</em>) for modern Ruby frameworks like: <strong>Ruby on Rails</strong>, <strong>Sinatra</strong>, <strong>Rack</strong>, <strong>Rack::Cache</strong> and <strong>I18n</strong>. It supports object marshalling, timeouts, single or multiple nodes, and namespaces.</p>
+
+<p>Please check the <em>README</em> file of each gem for usage and installation guidelines.</p>
+
+<h2>
+<a name="redis-installation" class="anchor" href="#redis-installation"><span class="octicon octicon-link"></span></a>Redis Installation</h2>
+
+<h3>
+<a name="option-1-homebrew" class="anchor" href="#option-1-homebrew"><span class="octicon octicon-link"></span></a>Option 1: Homebrew</h3>
+
+<p>MacOS X users should use <a href="https://github.com/mxcl/homebrew">Homebrew</a> to install Redis:</p>
+
+<pre lang="shell"><code>brew install redis
+</code></pre>
+
+<h3>
+<a name="option-2-from-source" class="anchor" href="#option-2-from-source"><span class="octicon octicon-link"></span></a>Option 2: From Source</h3>
+
+<p>Download and install Redis from <a href="http://redis.io//download">the download page</a> and follow the instructions.</p>
+
+<h2>
+<a name="running-tests" class="anchor" href="#running-tests"><span class="octicon octicon-link"></span></a>Running tests</h2>
+
+<div class="highlight"><pre><span class="n">git</span> <span class="nb">clone</span> <span class="ss">git</span><span class="p">:</span><span class="sr">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">redis</span><span class="o">-</span><span class="n">store</span><span class="o">/</span><span class="n">redis</span><span class="o">-</span><span class="n">store</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">redis</span><span class="o">-</span><span class="n">store</span>
+<span class="n">gem</span> <span class="n">install</span> <span class="n">bundler</span>
+<span class="n">bundle</span> <span class="nb">exec</span> <span class="n">rake</span>
+</pre></div>
+
+<p>If you are on <strong>Snow Leopard</strong> you have to run <code>env ARCHFLAGS="-arch x86_64" ruby ci/run.rb</code></p>
+
+<h2>
+<a name="contributors" class="anchor" href="#contributors"><span class="octicon octicon-link"></span></a>Contributors</h2>
+
+<ul>
+<li>Matt Horan (<a href="https://github.com/mhoran">@mhoran</a>)</li>
+</ul><h2>
+<a name="copyright" class="anchor" href="#copyright"><span class="octicon octicon-link"></span></a>Copyright</h2>
+
+<p>(c) 2009 - 2013 Luca Guidi - <a href="http://lucaguidi.com">http://lucaguidi.com</a>, released under the MIT license</p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
     </div>
-    <!--/ content -->
-</div>
-</div>
-</body>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
 </html>
