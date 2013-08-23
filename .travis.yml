@@ -1,6 +1,6 @@
 language: ruby
 before_install: gem install bundler
-script: 'ci/run.rb'
+script: 'bundle exec rake'
 rvm:
   - 1.9.3
   - 2.0.0
