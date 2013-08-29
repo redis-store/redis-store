@@ -1,9 +1,5 @@
-*.rdb
-*.swp
 *.gem
-*-redis-store.gemspec
 tags
-Gemfile.lock
 bin/
 coverage/
 pkg/
@@ -12,3 +8,4 @@ tmp/
 .idea
 .bundle/
 Gemfile.lock
+tmp/

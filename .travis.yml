@@ -1,8 +1,16 @@
-before_install: gem install bundler --pre
-script: 'ci/run.rb'
+language: ruby
+before_install: gem install bundler
+script: 'bundle exec rake'
 rvm:
-  - 1.8.7
-  - 1.9.2
   - 1.9.3
-  - rbx
+  - 2.0.0
+  - ruby-head
+  - rbx-19mode
+  - jruby-19mode
+  - jruby-head
 bundler_args: '--path vendor/bundle'
+
+matrix:
+  allow_failures:
+    - rvm: jruby-head
+    - rvm: ruby-head
