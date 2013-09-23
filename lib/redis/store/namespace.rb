@@ -38,7 +38,7 @@ class Redis
       end
 
       def to_s
-        "#{super} with namespace #{@namespace}"
+        "#{super} with namespace #{namespace_str}"
       end
 
       def flushdb
@@ -50,16 +50,22 @@ class Redis
           yield interpolate(key)
         end
 
-        def interpolate(key)
-          key.match(namespace_regexp) ? key : "#{@namespace}:#{key}"
+        def namespace_str
+          @namespace.is_a?(Proc) ? @namespace.call : @namespace
         end
+
+        def interpolate(key)
+          key.match(namespace_regexp) ? key : "#{namespace_str}:#{key}"
+        end
+
 
         def strip_namespace(key)
           key.gsub namespace_regexp, ""
         end
 
         def namespace_regexp
-          @namespace_regexp ||= %r{^#{@namespace}\:}
+          @namespace_regexps ||= {}
+          @namespace_regexps[namespace_str] ||= %r{^#{namespace_str}\:}
         end
     end
   end
