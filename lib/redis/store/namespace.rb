@@ -40,6 +40,10 @@ class Redis
       def expire(key, ttl)
          namespace(key) { |key| super(key, ttl) }
       end
+      
+      def ttl(key)
+         namespace(key) { |key| super(key) }
+      end
 
       def to_s
         "#{super} with namespace #{@namespace}"
