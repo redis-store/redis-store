@@ -40,64 +40,68 @@ describe "Redis::Store::Namespace" do
     empty_store.keys.must_be_empty
   end
 
-  it "namespaces get"
-  it "namespaces set"
-  it "namespaces setnx"
-  it "namespaces del with single key"
-  it "namespaces del with multiple keys"
-  it "namespaces keys"
-  it "namespaces exists"
-  it "namespaces incrby"
-  it "namespaces decrby"
-  it "namespaces mget"
+  describe 'method calls' do
+    let(:store){Redis::Store.new :namespace => @namespace, :marshalling => false}
+    let(:client){store.instance_variable_get(:@client)}
 
-  # it "should namespace get" do
-  #   @client.expects(:call).with([:get, "#{@namespace}:rabbit"]).once
-  #   @store.get("rabbit")
-  # end
-  #
-  # it "should namespace set" do
-  #   @client.should_receive(:call).with([:set, "#{@namespace}:rabbit", @rabbit])
-  #   @store.set "rabbit", @rabbit
-  # end
-  #
-  # it "should namespace setnx" do
-  #   @client.should_receive(:call).with([:setnx, "#{@namespace}:rabbit", @rabbit])
-  #   @store.setnx "rabbit", @rabbit
-  # end
-  #
-  # it "should namespace del with single key" do
-  #   @client.should_receive(:call).with([:del, "#{@namespace}:rabbit"])
-  #   @store.del "rabbit"
-  # end
-  #
-  # it "should namespace del with multiple keys" do
-  #   @client.should_receive(:call).with([:del, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"])
-  #   @store.del "rabbit", "white_rabbit"
-  # end
-  #
-  # it "should namespace keys" do
-  #   @store.set "rabbit", @rabbit
-  #   @store.keys("rabb*").should == [ "rabbit" ]
-  # end
-  #
-  # it "should namespace exists" do
-  #   @client.should_receive(:call).with([:exists, "#{@namespace}:rabbit"])
-  #   @store.exists "rabbit"
-  # end
-  #
-  # it "should namespace incrby" do
-  #   @client.should_receive(:call).with([:incrby, "#{@namespace}:counter", 1])
-  #   @store.incrby "counter", 1
-  # end
-  #
-  # it "should namespace decrby" do
-  #   @client.should_receive(:call).with([:decrby, "#{@namespace}:counter", 1])
-  #   @store.decrby "counter", 1
-  # end
-  #
-  # it "should namespace mget" do
-  #   @client.should_receive(:call).with([:mget, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"])
-  #   @store.mget "rabbit", "white_rabbit"
-  # end
+    it "should namespace get" do
+       client.expects(:call).with([:get, "#{@namespace}:rabbit"]).once
+       store.get("rabbit")
+    end
+
+    it "should namespace set" do
+       client.expects(:call).with([:set, "#{@namespace}:rabbit", @rabbit])
+       store.set "rabbit", @rabbit
+    end
+
+    it "should namespace setnx" do
+       client.expects(:call).with([:setnx, "#{@namespace}:rabbit", @rabbit])
+       store.setnx "rabbit", @rabbit
+    end
+
+    it "should namespace del with single key" do
+       client.expects(:call).with([:del, "#{@namespace}:rabbit"])
+       store.del "rabbit"
+    end
+
+    it "should namespace del with multiple keys" do
+       client.expects(:call).with([:del, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"])
+       store.del "rabbit", "white_rabbit"
+    end
+
+    it "should namespace keys" do
+       store.set "rabbit", @rabbit
+       store.keys("rabb*").must_equal [ "rabbit" ]
+    end
+
+    it "should namespace exists" do
+       client.expects(:call).with([:exists, "#{@namespace}:rabbit"])
+       store.exists "rabbit"
+    end
+
+    it "should namespace incrby" do
+       client.expects(:call).with([:incrby, "#{@namespace}:counter", 1])
+       store.incrby "counter", 1
+    end
+
+    it "should namespace decrby" do
+       client.expects(:call).with([:decrby, "#{@namespace}:counter", 1])
+       store.decrby "counter", 1
+    end
+
+    it "should namespace mget" do
+       client.expects(:call).with([:mget, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"])
+       store.mget "rabbit", "white_rabbit"
+    end
+
+    it "should namespace expire" do
+       client.expects(:call).with([:expire, "#{@namespace}:rabbit", 60]).once
+       store.expire("rabbit",60)
+    end
+
+    it "should namespace ttl" do
+       client.expects(:call).with([:ttl, "#{@namespace}:rabbit"]).once
+       store.ttl("rabbit")
+    end
+  end
 end
