@@ -47,7 +47,9 @@ class Redis
 
       def self.normalize_key_names(options)
         options = options.dup
-        options[:namespace] ||= options.delete(:key_prefix) # RailsSessionStore
+        if options.key?(:key_prefix) && !options.key?(:namespace)
+          options[:namespace] = options.delete(:key_prefix) # RailsSessionStore
+        end
         options
       end
 
