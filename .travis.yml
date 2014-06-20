@@ -4,8 +4,9 @@ script: 'bundle exec rake'
 rvm:
   - 1.9.3
   - 2.0.0
+  - 2.1.2
   - ruby-head
-  - rbx-19mode
+  - rbx-2
   - jruby-19mode
   - jruby-head
 bundler_args: '--path vendor/bundle'
