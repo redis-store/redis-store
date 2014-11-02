@@ -20,7 +20,7 @@ class Redis
         if @addresses.empty?
           @addresses << {}
         end
-        
+
         if @addresses.size > 1
           ::Redis::DistributedStore.new @addresses, @options
         else
@@ -41,13 +41,14 @@ class Redis
         if host_options?(options)
           options
         else
-          nil 
+          nil
         end
       end
 
       def self.normalize_key_names(options)
         options = options.dup
         options[:namespace] ||= options.delete(:key_prefix) # RailsSessionStore
+        options[:raw] = !options[:marshalling]
         options
       end
 
@@ -67,7 +68,7 @@ class Redis
 
         options = {
           :host     => uri.host,
-          :port     => uri.port || DEFAULT_PORT, 
+          :port     => uri.port || DEFAULT_PORT,
           :password => uri.password
         }
 
@@ -80,7 +81,7 @@ class Redis
       private
 
       def extract_addresses_and_options(*options)
-        options.flatten.compact.each do |token| 
+        options.flatten.compact.each do |token|
           resolved = self.class.resolve(token)
           if resolved
             @addresses << resolved
