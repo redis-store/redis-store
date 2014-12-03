@@ -59,7 +59,11 @@ class Redis
         end
 
         def namespace_regexp
-          @namespace_regexp ||= %r{^#{@namespace}\:}
+          if @namespace.is_a?(Proc)
+            %r{^#{@namespace.call}\:}
+          else
+            @namespace_regexp ||= %r{^#{@namespace}\:}
+          end		
         end
     end
   end
