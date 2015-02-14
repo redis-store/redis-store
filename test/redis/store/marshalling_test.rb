@@ -10,6 +10,7 @@ describe "Redis::Marshalling" do
   end
 
   def teardown
+    @store.flushdb
     @store.quit
   end
 
