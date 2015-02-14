@@ -27,6 +27,28 @@ describe Redis::Store do
         @store.set(key, value, options)
       end
     end
+
+    describe 'with ex and nx' do
+      let(:key) { 'key' }
+      let(:value) { 'value' }
+      let(:options) { { nx: true, ex: 3600 } }
+
+      it 'must pass on options' do
+        Marshal.expects(:dump).times(4)
+
+        # without options no ex or nx will be set
+        @store.del(key)
+        @store.set(key, value, {}).must_equal 'OK'
+        @store.set(key, value, {}).must_equal 'OK'
+        @store.ttl(key).must_equal -1
+
+        # with ex and nx options, the key can only be set once and a ttl will be set
+        @store.del(key)
+        @store.set(key, value, options).must_equal true
+        @store.set(key, value, options).must_equal false
+        @store.ttl(key).must_equal 3600
+      end
+    end
   end
 
   describe '#setnx' do

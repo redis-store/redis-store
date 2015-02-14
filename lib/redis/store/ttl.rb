@@ -5,7 +5,7 @@ class Redis
         if ttl = expires_in(options)
           setex(key, ttl.to_i, value, :raw => true)
         else
-          super(key, value)
+          super(key, value, options)
         end
       end
 

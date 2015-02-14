@@ -6,7 +6,7 @@ class Redis
       end
 
       def set(key, value, options = nil)
-        super(key, value)
+        super(key, value, options || {})
       end
 
       def setnx(key, value, options = nil)
