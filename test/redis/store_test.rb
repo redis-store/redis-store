@@ -1,9 +1,14 @@
 require 'test_helper'
 
 describe Redis::Store do
-  before do
+  def setup
     @store  = Redis::Store.new
     @client = @store.instance_variable_get(:@client)
+  end
+
+  def teardown
+    @store.flushdb
+    @store.quit
   end
 
   it "returns useful informations about the server" do
