@@ -129,6 +129,11 @@ describe "Redis::Store::Factory" do
           "Redis Client connected to 127.0.0.1:6380 against DB 0 with namespace theplaylist",
         ])
       end
+
+      it 'instantiates Redis::Store and sets namespace from String' do
+        store = Redis::Store::Factory.create "redis://127.0.0.1:6379/0/theplaylist", { :expire_after => 5 }
+        store.to_s.must_equal("Redis Client connected to 127.0.0.1:6379 against DB 0 with namespace theplaylist")
+      end
     end
   end
 end
