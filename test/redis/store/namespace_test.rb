@@ -87,6 +87,11 @@ describe "Redis::Store::Namespace" do
        client.expects(:call).with([:del, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"])
        store.del "rabbit", "white_rabbit"
     end
+    
+    it "should namespace del with multiple keys and work with options" do
+       client.expects(:call).with([:del, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"])
+       store.del "rabbit", "white_rabbit", raw: true
+    end
 
     it "should namespace keys" do
        store.set "rabbit", @rabbit
@@ -111,6 +116,11 @@ describe "Redis::Store::Namespace" do
     it "should namespace mget" do
        client.expects(:call).with([:mget, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"])
        store.mget "rabbit", "white_rabbit"
+    end
+    
+    it "should namespace mget keys and work with options" do
+      client.expects(:call).with([:mget, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"])
+      store.mget "rabbit", "white_rabbit", raw: true
     end
 
     it "should namespace expire" do

@@ -38,10 +38,18 @@ class Redis
       end
 
       def del(*keys)
+        if keys.flatten.last.is_a?(Hash)
+          keys.flatten!
+          options = keys.pop
+        end
         super *keys.map {|key| interpolate(key) } if keys.any?
       end
 
       def mget(*keys)
+        if keys.flatten.last.is_a?(Hash)
+          keys.flatten!
+          options = keys.pop
+        end
         super *keys.map {|key| interpolate(key) } if keys.any?
       end
       
