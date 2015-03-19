@@ -18,7 +18,7 @@ class Redis
       end
 
       def mget(*keys)
-        options = keys.flatten.pop if keys.flatten.last.is_a?(Hash)
+        options = keys.pop if keys.last.is_a?(Hash)
         super(*keys).map do |result|
           _unmarshal result, options
         end
