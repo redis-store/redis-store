@@ -42,7 +42,15 @@ class Redis
       end
 
       def mget(*keys)
-        super *keys.map {|key| interpolate(key) } if keys.any?
+        options = keys.pop if keys.last.is_a? Hash
+        if keys.any?
+          # Marshalling gets extended before Namespace does, so we need to pass options further
+          if singleton_class.ancestors.include? Marshalling
+            super *keys.map {|key| interpolate(key) }, options
+          else
+            super *keys.map {|key| interpolate(key) }
+          end
+        end
       end
       
       def expire(key, ttl)
