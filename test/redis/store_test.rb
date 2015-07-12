@@ -22,28 +22,24 @@ describe Redis::Store do
 
   describe '#set' do
     describe 'with expiry' do
-      let(:key) { 'key' }
-      let(:value) { 'value' }
       let(:options) { { :expire_after => 3600 } }
 
       it 'must not double marshall' do
         Marshal.expects(:dump).once
 
-        @store.set(key, value, options)
+        @store.set('key', 'value', options)
       end
     end
   end
 
   describe '#setnx' do
     describe 'with expiry' do
-      let(:key) { 'key' }
-      let(:value) { 'value' }
       let(:options) { { :expire_after => 3600 } }
 
       it 'must not double marshall' do
         Marshal.expects(:dump).once
 
-        @store.setnx(key, value, options)
+        @store.setnx('key', 'value', options)
       end
     end
   end
