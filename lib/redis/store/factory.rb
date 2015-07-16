@@ -68,7 +68,7 @@ class Redis
                            end
 
         options = {
-          :host     => uri.host,
+          :host     => uri.hostname,
           :port     => uri.port || DEFAULT_PORT, 
           :password => uri.password
         }
