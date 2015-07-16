@@ -16,7 +16,8 @@ class Redis
     end
 
     def to_s
-      "Redis Client connected to #{@client.host}:#{@client.port} against DB #{@client.db}"
+      h = @client.host
+      "Redis Client connected to #{/:/ =~ h ? '['+h+']' : h}:#{@client.port} against DB #{@client.db}"
     end
 
     private
