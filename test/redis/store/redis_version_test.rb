@@ -11,15 +11,16 @@ describe "Redis::RedisVersion" do
 
   describe '#redis_version' do
     it 'returns redis version' do
-      @store.redis_version.to_s.must_match(/^\d{1}\.\d{1}\.\d{1}$/)
+      @store.redis_version.to_s.must_match(/^\d{1}\.\d{1,}\.\d{1,}$/)
     end
   end
 
   describe '#supports_redis_version?' do
     it 'returns true if redis version is greater or equal to required version' do
-      @store.stubs(:redis_version).returns('2.8.9')
-      @store.supports_redis_version?('2.8.0').must_equal(true)
-      @store.supports_redis_version?('2.8.9').must_equal(true)
+      @store.stubs(:redis_version).returns('2.8.19')
+      @store.supports_redis_version?('2.6.0').must_equal(true)
+      @store.supports_redis_version?('2.8.19').must_equal(true)
+      @store.supports_redis_version?('2.8.20').must_equal(false)
       @store.supports_redis_version?('2.9.0').must_equal(false)
       @store.supports_redis_version?('3.0.0').must_equal(false)
     end
