@@ -39,6 +39,20 @@ describe "Redis::DistributedStore" do
     @dmr.get("rabbit").must_equal(@rabbit)
   end
 
+  describe '#redis_version' do
+    it 'returns redis version' do
+      @dmr.nodes.first.expects(:redis_version)
+      @dmr.redis_version
+    end
+  end
+
+  describe '#supports_redis_version?' do
+    it 'returns redis version' do
+      @dmr.nodes.first.expects(:supports_redis_version?).with('2.8.0')
+      @dmr.supports_redis_version?('2.8.0')
+    end
+  end
+
   describe "namespace" do
     it "uses namespaced key" do
       @dmr = Redis::DistributedStore.new [

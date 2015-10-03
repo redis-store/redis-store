@@ -1,9 +1,10 @@
 require 'redis/store/ttl'
 require 'redis/store/interface'
+require 'redis/store/redis_version'
 
 class Redis
   class Store < self
-    include Ttl, Interface
+    include Ttl, Interface, RedisVersion
 
     def initialize(options = { })
       super
