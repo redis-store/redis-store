@@ -46,6 +46,10 @@ class Redis
       end
     end
 
+    def setex(key, expiry, value, options = nil)
+      node_for(key).setex(key, expiry, value, options)
+    end
+
     private
       def _extend_namespace(options)
         @namespace = options[:namespace]
