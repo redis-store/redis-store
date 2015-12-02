@@ -1,6 +1,8 @@
 class Redis
   class Store < self
     module Namespace
+      FLUSHDB_BATCH_SIZE = 1000
+
       def set(key, val, options = nil)
         namespace(key) { |key| super(key, val, options) }
       end
@@ -66,7 +68,7 @@ class Redis
       end
 
       def flushdb
-        del *keys
+        keys.each_slice(FLUSHDB_BATCH_SIZE) { |key_slice| del(*key_slice) }
       end
 
       private
