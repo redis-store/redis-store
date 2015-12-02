@@ -80,8 +80,8 @@ describe MockTtlStore do
     describe 'with nx and ex option' do
       it 'must call super with key and value and options' do
         set_options = {nx: true, ex: 3600}
-        redis.set(key, value, set_options)
-        redis.has_set?(key, value, set_options).must_equal true
+        redis.set(key, mock_value, set_options)
+        redis.has_set?(key, mock_value, set_options).must_equal true
       end
     end
   end
