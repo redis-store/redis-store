@@ -33,7 +33,7 @@ describe Redis::Store do
 
     describe 'with ex and nx' do
       let(:key) { 'key' }
-      let(:value) { 'value' }
+      let(:mock_value) { 'value' }
       let(:options) { { nx: true, ex: 3600 } }
 
       it 'must pass on options' do
@@ -41,14 +41,14 @@ describe Redis::Store do
 
         # without options no ex or nx will be set
         @store.del(key)
-        @store.set(key, value, {}).must_equal 'OK'
-        @store.set(key, value, {}).must_equal 'OK'
+        @store.set(key, mock_value, {}).must_equal 'OK'
+        @store.set(key, mock_value, {}).must_equal 'OK'
         @store.ttl(key).must_equal -1
 
         # with ex and nx options, the key can only be set once and a ttl will be set
         @store.del(key)
-        @store.set(key, value, options).must_equal true
-        @store.set(key, value, options).must_equal false
+        @store.set(key, mock_value, options).must_equal true
+        @store.set(key, mock_value, options).must_equal false
         @store.ttl(key).must_equal 3600
       end
     end
