@@ -1,9 +1,14 @@
 require 'test_helper'
 
 describe Redis::Store do
-  before do
+  def setup
     @store  = Redis::Store.new
     @client = @store.instance_variable_get(:@client)
+  end
+
+  def teardown
+    @store.flushdb
+    @store.quit
   end
 
   it "returns useful informations about the server" do
@@ -17,14 +22,12 @@ describe Redis::Store do
 
   describe '#set' do
     describe 'with expiry' do
-      let(:key) { 'key' }
-      let(:value) { 'value' }
       let(:options) { { :expire_after => 3600 } }
 
       it 'must not double marshall' do
         Marshal.expects(:dump).once
 
-        @store.set(key, value, options)
+        @store.set('key', 'value', options)
       end
     end
 
@@ -53,14 +56,12 @@ describe Redis::Store do
 
   describe '#setnx' do
     describe 'with expiry' do
-      let(:key) { 'key' }
-      let(:value) { 'value' }
       let(:options) { { :expire_after => 3600 } }
 
       it 'must not double marshall' do
         Marshal.expects(:dump).once
 
-        @store.setnx(key, value, options)
+        @store.setnx('key', 'value', options)
       end
     end
   end

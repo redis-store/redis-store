@@ -1,5 +1,9 @@
 # Redis stores for Ruby frameworks
 
+## New maintainer required
+
+**I am currently looking for a new maintainer for this gem. I am no longer doing any more work on this myself. Please contact me@ryanbigg.com if you'd like to take over this project.**
+
 __Redis Store__ provides a full set of stores (*Cache*, *I18n*, *Session*, *HTTP Cache*) for modern Ruby frameworks like: __Ruby on Rails__, __Sinatra__, __Rack__, __Rack::Cache__ and __I18n__. It supports object marshalling, timeouts, single or multiple nodes, and namespaces.
 
 Please check the *README* file of each gem for usage and installation guidelines.

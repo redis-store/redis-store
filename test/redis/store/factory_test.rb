@@ -85,6 +85,12 @@ describe "Redis::Store::Factory" do
         store.instance_variable_get(:@client).password.must_equal("secret")
       end
 
+      it "correctly uses specified ipv6 host" do
+        store = Redis::Store::Factory.create "redis://[::1]:6380"
+        store.to_s.must_equal("Redis Client connected to [::1]:6380 against DB 0")
+        store.client.host.must_equal("::1")
+      end
+
       it "instantiates Redis::DistributedStore" do
         store = Redis::Store::Factory.create "redis://127.0.0.1:6379", "redis://127.0.0.1:6380"
         store.must_be_kind_of(Redis::DistributedStore)
@@ -128,6 +134,11 @@ describe "Redis::Store::Factory" do
           "Redis Client connected to 127.0.0.1:6379 against DB 0 with namespace theplaylist",
           "Redis Client connected to 127.0.0.1:6380 against DB 0 with namespace theplaylist",
         ])
+      end
+
+      it 'instantiates Redis::Store and sets namespace from String' do
+        store = Redis::Store::Factory.create "redis://127.0.0.1:6379/0/theplaylist", { :expire_after => 5 }
+        store.to_s.must_equal("Redis Client connected to 127.0.0.1:6379 against DB 0 with namespace theplaylist")
       end
     end
   end

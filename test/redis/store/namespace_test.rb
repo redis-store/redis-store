@@ -6,10 +6,19 @@ describe "Redis::Store::Namespace" do
     @store  = Redis::Store.new :namespace => @namespace, :marshalling => false # TODO remove mashalling option
     @client = @store.instance_variable_get(:@client)
     @rabbit = "bunny"
+    @default_store = Redis::Store.new
+    @other_store = Redis::Store.new :namespace => 'other'
   end
 
   def teardown
+    @store.flushdb
     @store.quit
+
+    @default_store.flushdb
+    @default_store.quit
+
+    @other_store.flushdb
+    @other_store.quit
   end
 
   it "only decorates instances that need to be namespaced" do
@@ -24,14 +33,12 @@ describe "Redis::Store::Namespace" do
   end
 
   it "should only delete namespaced keys" do
-    other_store = Redis::Store.new
-
-    other_store.set 'abc', 'cba'
+    @default_store.set 'abc', 'cba'
     @store.set 'def', 'fed'
 
     @store.flushdb
     @store.get('def').must_equal(nil)
-    other_store.get('abc').must_equal('cba')
+    @default_store.get('abc').must_equal('cba')
   end
 
   it "should not try to delete missing namespaced keys" do
@@ -40,17 +47,33 @@ describe "Redis::Store::Namespace" do
     empty_store.keys.must_be_empty
   end
 
+  it "should work with dynamic namespace" do
+    $ns = "ns1"
+    dyn_store = Redis::Store.new :namespace => -> { $ns }
+    dyn_store.set 'key', 'x'
+    $ns = "ns2"
+    dyn_store.set 'key', 'y'
+    $ns = "ns3"
+    dyn_store.set 'key', 'z'
+    dyn_store.flushdb
+    r3 = dyn_store.get 'key'
+    $ns = "ns2"
+    r2 = dyn_store.get 'key'
+    $ns = "ns1"
+    r1 = dyn_store.get 'key'
+    r1.must_equal('x') && r2.must_equal('y') && r3.must_equal(nil)
+  end
+
   it "namespaces setex and ttl" do
     @store.flushdb
-    other_store = Redis::Store.new :namespace => 'other'
-    other_store.flushdb
+    @other_store.flushdb
 
     @store.setex('foo', 30, 'bar')
     @store.ttl('foo').must_be_close_to(30)
     @store.get('foo').must_equal('bar')
 
-    other_store.ttl('foo').must_equal(-2)
-    other_store.get('foo').must_be_nil
+    @other_store.ttl('foo').must_equal(-2)
+    @other_store.get('foo').must_be_nil
   end
 
   describe 'method calls' do
