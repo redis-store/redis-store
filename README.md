@@ -25,7 +25,7 @@ Download and install Redis from [the download page](http://redis.io//download) a
 ## Running tests
 
 ```ruby
-git clone git://github.com/jodosha/redis-store.git
+git clone git://github.com/redis-store/redis-store.git
 cd redis-store
 gem install bundler
 bundle exec rake
