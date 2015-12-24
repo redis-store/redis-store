@@ -47,6 +47,23 @@ describe "Redis::Store::Namespace" do
     empty_store.keys.must_be_empty
   end
 
+  it "should work with dynamic namespace" do
+    $ns = "ns1"
+    dyn_store = Redis::Store.new :namespace => -> { $ns }
+    dyn_store.set 'key', 'x'
+    $ns = "ns2"
+    dyn_store.set 'key', 'y'
+    $ns = "ns3"
+    dyn_store.set 'key', 'z'
+    dyn_store.flushdb
+    r3 = dyn_store.get 'key'
+    $ns = "ns2"
+    r2 = dyn_store.get 'key'
+    $ns = "ns1"
+    r1 = dyn_store.get 'key'
+    r1.must_equal('x') && r2.must_equal('y') && r3.must_equal(nil)
+  end
+
   it "namespaces setex and ttl" do
     @store.flushdb
     @other_store.flushdb

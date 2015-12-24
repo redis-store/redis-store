@@ -1,6 +1,8 @@
 class Redis
   class Store < self
     module Namespace
+      FLUSHDB_BATCH_SIZE = 1000
+
       def set(key, val, options = nil)
         namespace(key) { |key| super(key, val, options) }
       end
@@ -42,7 +44,15 @@ class Redis
       end
 
       def mget(*keys)
-        super *keys.map {|key| interpolate(key) } if keys.any?
+        options = keys.pop if keys.last.is_a? Hash
+        if keys.any?
+          # Marshalling gets extended before Namespace does, so we need to pass options further
+          if singleton_class.ancestors.include? Marshalling
+            super *keys.map {|key| interpolate(key) }, options
+          else
+            super *keys.map {|key| interpolate(key) }
+          end
+        end
       end
       
       def expire(key, ttl)
@@ -54,11 +64,11 @@ class Redis
       end
 
       def to_s
-        "#{super} with namespace #{@namespace}"
+        "#{super} with namespace #{namespace_str}"
       end
 
       def flushdb
-        del *keys
+        keys.each_slice(FLUSHDB_BATCH_SIZE) { |key_slice| del(*key_slice) }
       end
 
       private
@@ -66,8 +76,12 @@ class Redis
           yield interpolate(key)
         end
 
+        def namespace_str
+          @namespace.is_a?(Proc) ? @namespace.call : @namespace
+        end
+
         def interpolate(key)
-          key.match(namespace_regexp) ? key : "#{@namespace}:#{key}"
+          key.match(namespace_regexp) ? key : "#{namespace_str}:#{key}"
         end
 
         def strip_namespace(key)
@@ -75,7 +89,8 @@ class Redis
         end
 
         def namespace_regexp
-          @namespace_regexp ||= %r{^#{@namespace}\:}
+          @namespace_regexps ||= {}
+          @namespace_regexps[namespace_str] ||= %r{^#{namespace_str}\:}
         end
     end
   end

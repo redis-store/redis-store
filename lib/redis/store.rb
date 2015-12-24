@@ -1,9 +1,10 @@
 require 'redis/store/ttl'
 require 'redis/store/interface'
+require 'redis/store/redis_version'
 
 class Redis
   class Store < self
-    include Ttl, Interface
+    include Ttl, Interface, RedisVersion
 
     def initialize(options = { })
       super
@@ -16,7 +17,8 @@ class Redis
     end
 
     def to_s
-      "Redis Client connected to #{@client.host}:#{@client.port} against DB #{@client.db}"
+      h = @client.host
+      "Redis Client connected to #{/:/ =~ h ? '['+h+']' : h}:#{@client.port} against DB #{@client.db}"
     end
 
     private
