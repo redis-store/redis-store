@@ -4,39 +4,39 @@ class Redis
       FLUSHDB_BATCH_SIZE = 1000
 
       def set(key, val, options = nil)
-        namespace(key) { |key| super(key, val, options) }
+        namespace(key) { |k| super(k, val, options) }
       end
 
       def setex(key, ttl, val, options = nil)
-        namespace(key) { |key| super(key, ttl, val, options) }
+        namespace(key) { |k| super(k, ttl, val, options) }
       end
 
       def setnx(key, val, options = nil)
-        namespace(key) { |key| super(key, val, options) }
+        namespace(key) { |k| super(k, val, options) }
       end
 
       def ttl(key, options = nil)
-        namespace(key) { |key| super(key) }
+        namespace(key) { |k| super(k) }
       end
 
       def get(key, options = nil)
-        namespace(key) { |key| super(key, options) }
+        namespace(key) { |k| super(k, options) }
       end
 
       def exists(key)
-        namespace(key) { |key| super(key) }
+        namespace(key) { |k| super(k) }
       end
 
       def incrby(key, increment)
-        namespace(key) { |key| super(key, increment) }
+        namespace(key) { |k| super(k, increment) }
       end
 
       def decrby(key, increment)
-        namespace(key) { |key| super(key, increment) }
+        namespace(key) { |k| super(k, increment) }
       end
 
       def keys(pattern = "*")
-        namespace(pattern) { |pattern| super(pattern).map{|key| strip_namespace(key) } }
+        namespace(pattern) { |p| super(p).map{|key| strip_namespace(key) } }
       end
 
       def del(*keys)
@@ -56,11 +56,11 @@ class Redis
       end
       
       def expire(key, ttl)
-         namespace(key) { |key| super(key, ttl) }
+         namespace(key) { |k| super(k, ttl) }
       end
       
       def ttl(key)
-         namespace(key) { |key| super(key) }
+         namespace(key) { |k| super(k) }
       end
 
       def to_s
