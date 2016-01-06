@@ -40,7 +40,7 @@ class Redis
       end
 
       def del(*keys)
-        super *keys.map {|key| interpolate(key) } if keys.any?
+        super(*keys.map {|key| interpolate(key) }) if keys.any?
       end
 
       def mget(*keys)
@@ -48,9 +48,9 @@ class Redis
         if keys.any?
           # Marshalling gets extended before Namespace does, so we need to pass options further
           if singleton_class.ancestors.include? Marshalling
-            super *keys.map {|key| interpolate(key) }, options
+            super(*keys.map {|key| interpolate(key) }, options)
           else
-            super *keys.map {|key| interpolate(key) }
+            super(*keys.map {|key| interpolate(key) })
           end
         end
       end
