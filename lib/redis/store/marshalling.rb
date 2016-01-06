@@ -2,15 +2,15 @@ class Redis
   class Store < self
     module Marshalling
       def set(key, value, options = nil)
-        _marshal(value, options) { |value| super encode(key), encode(value), options }
+        _marshal(value, options) { |v| super encode(key), encode(v), options }
       end
 
       def setnx(key, value, options = nil)
-        _marshal(value, options) { |value| super encode(key), encode(value), options }
+        _marshal(value, options) { |v| super encode(key), encode(v), options }
       end
 
       def setex(key, expiry, value, options = nil)
-        _marshal(value, options) { |value| super encode(key), expiry, encode(value), options }
+        _marshal(value, options) { |v| super encode(key), expiry, encode(v), options }
       end
 
       def get(key, options = nil)
