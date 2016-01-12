@@ -54,13 +54,9 @@ class Redis
           end
         end
       end
-      
+
       def expire(key, ttl)
          namespace(key) { |k| super(k, ttl) }
-      end
-      
-      def ttl(key)
-         namespace(key) { |k| super(k) }
       end
 
       def to_s
