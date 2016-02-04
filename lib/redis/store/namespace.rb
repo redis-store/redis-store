@@ -60,11 +60,23 @@ class Redis
       end
 
       def to_s
-        "#{super} with namespace #{namespace_str}"
+        if namespace_str
+          "#{super} with namespace #{namespace_str}"
+        else
+          super
+        end
       end
 
       def flushdb
         keys.each_slice(FLUSHDB_BATCH_SIZE) { |key_slice| del(*key_slice) }
+      end
+
+      def with_namespace(ns)
+        old_ns = @namespace
+        @namespace = ns
+        yield self
+      ensure
+        @namespace = old_ns
       end
 
       private
@@ -77,10 +89,12 @@ class Redis
         end
 
         def interpolate(key)
+          return key unless namespace_str
           key.match(namespace_regexp) ? key : "#{namespace_str}:#{key}"
         end
 
         def strip_namespace(key)
+          return key unless namespace_str
           key.gsub namespace_regexp, ""
         end
 

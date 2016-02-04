@@ -7,7 +7,8 @@ describe "Redis::Store::Namespace" do
     @client = @store.instance_variable_get(:@client)
     @rabbit = "bunny"
     @default_store = Redis::Store.new
-    @other_store = Redis::Store.new :namespace => 'other'
+    @other_namespace = 'other'
+    @other_store = Redis::Store.new :namespace => @other_namespace
   end
 
   def teardown
@@ -39,6 +40,18 @@ describe "Redis::Store::Namespace" do
     @store.flushdb
     @store.get('def').must_equal(nil)
     @default_store.get('abc').must_equal('cba')
+  end
+
+  it 'should allow to change namespace on the fly' do
+    @default_store.set 'abc', 'cba'
+    @other_store.set 'foo', 'bar'
+
+    @default_store.keys.sort.must_equal ['abc', 'other:foo']
+
+    @default_store.with_namespace(@other_namespace) do
+      @default_store.keys.must_equal ['foo']
+      @default_store.get('foo').must_equal('bar')
+    end
   end
 
   it "should not try to delete missing namespaced keys" do

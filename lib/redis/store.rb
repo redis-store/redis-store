@@ -29,7 +29,7 @@ class Redis
 
       def _extend_namespace(options)
         @namespace = options[:namespace]
-        extend Namespace if @namespace
+        extend Namespace
       end
   end
 end
