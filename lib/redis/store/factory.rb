@@ -50,6 +50,7 @@ class Redis
         if options.key?(:key_prefix) && !options.key?(:namespace)
           options[:namespace] = options.delete(:key_prefix) # RailsSessionStore
         end
+        options[:raw] = !options[:marshalling]
         options
       end
 
