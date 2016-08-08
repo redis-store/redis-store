@@ -41,6 +41,26 @@ If you are on **Snow Leopard** you have to run `env ARCHFLAGS="-arch x86_64" rub
 [![Build Status](https://secure.travis-ci.org/redis-store/redis-store.png?branch=master)](http://travis-ci.org/redis-store/redis-store?branch=master)
 [![Code Climate](https://codeclimate.com/github/redis-store/redis-store.png)](https://codeclimate.com/github/redis-store/redis-store)
 
+## Rails 3.x usage
+
+Add `redis-store` to your gemfile and run `bundle install`.
+
+``` ruby
+gem "redis-store"
+```
+
+Add the following to your `config/environments/production.rb` file.
+
+``` ruby
+config.cache_store = :redis_store
+```
+
+You can also pass an option hash as a second argument.
+
+``` ruby
+config.cache_store = :redis_store, { :host => 192.168.1.100, :port => 23682, :db => 13, :namespace => "theplaylist", :password => "secret" }
+```
+
 ## Copyright
 
 2009 - 2013 Luca Guidi - [http://lucaguidi.com](http://lucaguidi.com), released under the MIT license
