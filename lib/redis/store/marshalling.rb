@@ -26,7 +26,9 @@ class Redis
 
       private
         def _marshal(val, options)
-          yield marshal?(options) ? Marshal.dump(val) : val
+          yield marshal?(options) ? Marshal.dump(val) :
+            defined?(ActiveSupport::Cache::Entry) &&
+            val.is_a?(ActiveSupport::Cache::Entry) && val.value.to_s || val
         end
 
         def _unmarshal(val, options)
