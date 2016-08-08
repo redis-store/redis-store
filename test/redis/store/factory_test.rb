@@ -44,6 +44,7 @@ describe "Redis::Store::Factory" do
       it "allows/disable marshalling" do
         store = Redis::Store::Factory.create :marshalling => false
         store.instance_variable_get(:@marshalling).must_equal(false)
+        store.instance_variable_get(:@options)[:raw].must_equal(true)
       end
 
       it "should instantiate a Redis::DistributedStore store" do
