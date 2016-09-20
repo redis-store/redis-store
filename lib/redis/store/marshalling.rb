@@ -24,6 +24,16 @@ class Redis
         end
       end
 
+      def mset(*args)
+        options = args.pop if args.length.odd?
+        updates = []
+        args.each_slice(2) do |(key, value)|
+          updates << encode(key)
+          _marshal(value, options) { |v| updates << encode(v) }
+        end
+        super(*updates)
+      end
+
       private
         def _marshal(val, options)
           yield marshal?(options) ? Marshal.dump(val) : val
