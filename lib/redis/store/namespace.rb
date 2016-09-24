@@ -44,7 +44,7 @@ class Redis
       end
 
       def mget(*keys)
-        options = keys.pop if keys.last.is_a? Hash
+        options = (keys.pop if keys.last.is_a? Hash) || {}
         if keys.any?
           # Marshalling gets extended before Namespace does, so we need to pass options further
           if singleton_class.ancestors.include? Marshalling

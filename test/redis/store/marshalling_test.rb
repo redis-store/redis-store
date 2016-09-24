@@ -99,7 +99,9 @@ describe "Redis::Marshalling" do
 
   it "doesn't unmarshal on multi get" do
     @store.set "rabbit2", @white_rabbit
-    rabbit, rabbit2 = @store.mget "rabbit", "rabbit2"
+    rabbits = @store.mget "rabbit", "rabbit2"
+    rabbit, rabbit2 = rabbits
+    rabbits.length.must_equal(2)
     rabbit.must_equal(@rabbit)
     rabbit2.must_equal(@white_rabbit)
   end
