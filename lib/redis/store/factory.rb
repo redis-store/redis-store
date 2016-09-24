@@ -3,7 +3,6 @@ require 'uri'
 class Redis
   class Store < self
     class Factory
-
       DEFAULT_PORT = 6379
 
       def self.create(*options)
@@ -17,10 +16,8 @@ class Redis
       end
 
       def create
-        if @addresses.empty?
-          @addresses << {}
-        end
-        
+        @addresses << {} if @addresses.empty?
+
         if @addresses.size > 1
           ::Redis::DistributedStore.new @addresses, @options
         else
@@ -38,11 +35,7 @@ class Redis
 
       def self.extract_host_options_from_hash(options)
         options = normalize_key_names(options)
-        if host_options?(options)
-          options
-        else
-          nil 
-        end
+        options if host_options?(options)
       end
 
       def self.normalize_key_names(options)
@@ -55,23 +48,17 @@ class Redis
       end
 
       def self.host_options?(options)
-        if options.keys.any? {|n| [:host, :db, :port].include?(n) }
-          options
-        else
-          nil # just to be clear
-        end
+        options if options.keys.any? { |n| [:host, :db, :port].include?(n) }
       end
 
       def self.extract_host_options_from_uri(uri)
         uri = URI.parse(uri)
-        _, db, namespace = if uri.path
-                             uri.path.split(/\//)
-                           end
+        _, db, namespace = (uri.path.split(%r{\/}) if uri.path)
 
         options = {
-          :host     => uri.hostname,
-          :port     => uri.port || DEFAULT_PORT, 
-          :password => uri.password
+          host: uri.hostname,
+          port: uri.port || DEFAULT_PORT,
+          password: uri.password
         }
 
         options[:db]        = db.to_i   if db
@@ -83,7 +70,7 @@ class Redis
       private
 
       def extract_addresses_and_options(*options)
-        options.flatten.compact.each do |token| 
+        options.flatten.compact.each do |token|
           resolved = self.class.resolve(token)
           if resolved
             @addresses << resolved
@@ -92,7 +79,6 @@ class Redis
           end
         end
       end
-
     end
   end
 end

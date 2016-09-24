@@ -1,7 +1,7 @@
 class Redis
   class Store < self
     module Interface
-      def get(key, options = nil)
+      def get(key, _options = nil)
         super(key)
       end
 
@@ -9,11 +9,11 @@ class Redis
         super(key, value, options || {})
       end
 
-      def setnx(key, value, options = nil)
+      def setnx(key, value, _options = nil)
         super(key, value)
       end
 
-      def setex(key, expiry, value, options = nil)
+      def setex(key, expiry, value, _options = nil)
         super(key, expiry, value)
       end
     end

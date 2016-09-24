@@ -6,9 +6,8 @@ class Redis
       end
 
       def supports_redis_version?(version)
-        (redis_version.split(".").map(&:to_i) <=> version.split(".").map(&:to_i)) >= 0
+        (redis_version.split('.').map(&:to_i) <=> version.split('.').map(&:to_i)) >= 0
       end
     end
   end
 end
-
