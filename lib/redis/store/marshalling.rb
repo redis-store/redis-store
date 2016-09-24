@@ -35,32 +35,33 @@ class Redis
       end
 
       private
-        def _marshal(val, options)
-          yield marshal?(options) ? Marshal.dump(val) : val
-        end
 
-        def _unmarshal(val, options)
-          unmarshal?(val, options) ? Marshal.load(val) : val
-        end
+      def _marshal(val, options)
+        yield marshal?(options) ? Marshal.dump(val) : val
+      end
 
-        def marshal?(options)
-          !(options && options[:raw])
-        end
+      def _unmarshal(val, options)
+        unmarshal?(val, options) ? Marshal.load(val) : val
+      end
 
-        def unmarshal?(result, options)
-          result && result.size > 0 && marshal?(options)
-        end
+      def marshal?(options)
+        !(options && options[:raw])
+      end
 
-        if defined?(Encoding)
-          def encode(string)
-            key = string.to_s.dup
-            key.force_encoding(Encoding::BINARY)
-          end
-        else
-          def encode(string)
-            string
-          end
+      def unmarshal?(result, options)
+        result && !result.empty? && marshal?(options)
+      end
+
+      if defined?(Encoding)
+        def encode(string)
+          key = string.to_s.dup
+          key.force_encoding(Encoding::BINARY)
         end
+      else
+        def encode(string)
+          string
+        end
+      end
     end
   end
 end

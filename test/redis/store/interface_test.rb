@@ -9,19 +9,19 @@ describe Redis::Store::Interface do
     @r = InterfacedRedis.new
   end
 
-  it "should get an element" do
-    lambda { @r.get("key", :option => true) } #.wont_raise ArgumentError
+  it 'should get an element' do
+    -> { @r.get('key', option: true) } # .wont_raise ArgumentError
   end
 
-  it "should set an element" do
-    lambda { @r.set("key", "value", :option => true) } #.wont_raise ArgumentError
+  it 'should set an element' do
+    -> { @r.set('key', 'value', option: true) } # .wont_raise ArgumentError
   end
 
-  it "should setnx an element" do
-    lambda { @r.setnx("key", "value", :option => true) } #.wont_raise ArgumentError
+  it 'should setnx an element' do
+    -> { @r.setnx('key', 'value', option: true) } # .wont_raise ArgumentError
   end
 
-  it "should setex an element" do
-    lambda { @r.setex("key", 1, "value", :option => true) } #.wont_raise ArgumentError
+  it 'should setex an element' do
+    -> { @r.setex('key', 1, 'value', option: true) } # .wont_raise ArgumentError
   end
 end

@@ -1,3 +1,5 @@
 Gemfile.lock
 *.gem
 tmp/
+.bundle
+stdout

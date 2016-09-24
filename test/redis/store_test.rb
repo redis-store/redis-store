@@ -11,18 +11,18 @@ describe Redis::Store do
     @store.quit
   end
 
-  it "returns useful informations about the server" do
+  it 'returns useful informations about the server' do
     @store.to_s.must_equal("Redis Client connected to #{@client.host}:#{@client.port} against DB #{@client.db}")
   end
 
-  it "must force reconnection" do
+  it 'must force reconnection' do
     @client.expects(:reconnect)
     @store.reconnect
   end
 
   describe '#set' do
     describe 'with expiry' do
-      let(:options) { { :expire_after => 3600 } }
+      let(:options) { { expire_after: 3600 } }
 
       it 'must not double marshall' do
         Marshal.expects(:dump).once
@@ -43,7 +43,7 @@ describe Redis::Store do
         @store.del(key)
         @store.set(key, mock_value, {}).must_equal 'OK'
         @store.set(key, mock_value, {}).must_equal 'OK'
-        @store.ttl(key).must_equal -1
+        @store.ttl(key).must_equal(-1)
 
         # with ex and nx options, the key can only be set once and a ttl will be set
         @store.del(key)
@@ -56,7 +56,7 @@ describe Redis::Store do
 
   describe '#setnx' do
     describe 'with expiry' do
-      let(:options) { { :expire_after => 3600 } }
+      let(:options) { { expire_after: 3600 } }
 
       it 'must not double marshall' do
         Marshal.expects(:dump).once

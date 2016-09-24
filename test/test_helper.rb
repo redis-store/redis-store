@@ -4,7 +4,7 @@ require 'mocha/setup'
 require 'redis'
 require 'redis-store'
 
-$DEBUG = ENV["DEBUG"] === "true"
+$DEBUG = ENV['DEBUG'] == 'true'
 
 Redis::DistributedStore.send(:class_variable_set, :@@timeout, 30)
 
@@ -15,6 +15,6 @@ module Kernel
     $VERBOSE = nil
     result = yield
     $VERBOSE = original_verbosity
-    return result
+    result
   end
 end
