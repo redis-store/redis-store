@@ -23,6 +23,12 @@ describe "Redis::Marshalling" do
     @store.get("rabbit").must_equal(@white_rabbit)
   end
 
+  it "marshals on multi set" do
+    @store.mset("rabbit", @white_rabbit, "rabbit2", @rabbit)
+    @store.get("rabbit").must_equal(@white_rabbit)
+    @store.get("rabbit2").must_equal(@rabbit)
+  end
+
   if RUBY_VERSION.match /1\.9/
     it "doesn't unmarshal on get if raw option is true" do
       @store.get("rabbit", :raw => true).must_equal("\x04\bU:\x0FOpenStruct{\x06:\tnameI\"\nbunny\x06:\x06EF")
@@ -36,6 +42,12 @@ describe "Redis::Marshalling" do
   it "doesn't marshal set if raw option is true" do
     @store.set "rabbit", @white_rabbit, :raw => true
     @store.get("rabbit", :raw => true).must_equal(%(#<OpenStruct color="white">))
+  end
+
+  it "doesn't marshal multi set if raw option is true" do
+    @store.mset("rabbit", @white_rabbit, "rabbit2", @rabbit, :raw => true)
+    @store.get("rabbit", :raw => true).must_equal(%(#<OpenStruct color="white">))
+    @store.get("rabbit2", :raw => true).must_equal(%(#<OpenStruct name="bunny">))
   end
 
   it "doesn't unmarshal if get returns an empty string" do
