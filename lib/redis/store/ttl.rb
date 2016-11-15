@@ -11,17 +11,17 @@ class Redis
 
       def setnx(key, value, options = nil)
         if ttl = expires_in(options)
-          setnx_with_expire(key, value, ttl.to_i)
+          setnx_with_expire(key, value, ttl.to_i, options)
         else
           super(key, value)
         end
       end
 
       protected
-        def setnx_with_expire(key, value, ttl)
+        def setnx_with_expire(key, value, ttl, options = {})
           multi do
-            setnx(key, value, :raw => true)
-            expire(key, ttl)
+            was_set = setnx(key, value, :raw => true)
+            expire(key, ttl) unless options[:unless_exist] && !was_set
           end
         end
 

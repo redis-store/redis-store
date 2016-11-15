@@ -10,7 +10,7 @@ rvm:
   - 2.2
   - 2.3.0
   - ruby-head
-  - rbx-2
+  - rbx
   - jruby-19mode
   - jruby-head
 bundler_args: '--path vendor/bundle'

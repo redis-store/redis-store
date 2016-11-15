@@ -110,6 +110,21 @@ describe MockTtlStore do
         redis.setnx(key, mock_value, options)
         redis.has_expire?(key, options[:expire_after]).must_equal true
       end
+
+      describe 'with :unless_exist option truthy' do
+        let(:options) { { :expire_after => 3600, :unless_exist => true } }
+
+        it 'must call expire for a successful setnx' do
+          redis.setnx(key, mock_value, options)
+          redis.has_expire?(key, options[:expire_after]).must_equal true
+        end
+
+        it 'must not call expire for an unsuccessful setnx' do
+          def redis.setnx(*a) false end
+          redis.setnx(key, mock_value, options)
+          redis.has_expire?(key, options[:expire_after]).must_equal false
+        end
+      end
     end
   end
 end
