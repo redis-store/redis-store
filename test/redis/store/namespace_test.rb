@@ -38,7 +38,7 @@ describe "Redis::Store::Namespace" do
     @store.set 'def', 'fed'
 
     @store.flushdb
-    @store.get('def').must_equal(nil)
+    @store.get('def').must_be_nil
     @default_store.get('abc').must_equal('cba')
   end
 
@@ -74,7 +74,7 @@ describe "Redis::Store::Namespace" do
     r2 = dyn_store.get 'key'
     $ns = "ns1"
     r1 = dyn_store.get 'key'
-    r1.must_equal('x') && r2.must_equal('y') && r3.must_equal(nil)
+    r1.must_equal('x') && r2.must_equal('y') && r3.must_be_nil
   end
 
   it "namespaces setex and ttl" do
