@@ -39,6 +39,32 @@ describe "Redis::DistributedStore" do
     @dmr.get("rabbit").must_equal(@rabbit)
   end
 
+  it "mget" do
+    @dmr.set "rabbit2", @white_rabbit
+    begin
+      @dmr.mget "rabbit", "rabbit2" do |rabbits|
+        rabbit, rabbit2 = rabbits
+        rabbits.length.must_equal(2)
+        rabbit.must_equal(@rabbit)
+        rabbit2.must_equal(@white_rabbit)
+      end
+    rescue Redis::Distributed::CannotDistribute
+      # Not supported on redis-rb < 4, and hence Ruby < 2.2.
+    end
+  end
+
+  it "mapped_mget" do
+    @dmr.set "rabbit2", @white_rabbit
+    begin
+      result = @dmr.mapped_mget("rabbit", "rabbit2")
+      result.keys.must_equal %w[ rabbit rabbit2 ]
+      result["rabbit"].must_equal @rabbit
+      result["rabbit2"].must_equal @white_rabbit
+    rescue Redis::Distributed::CannotDistribute
+      # Not supported on redis-rb < 4, and hence Ruby < 2.2.
+    end
+  end
+
   describe '#redis_version' do
     it 'returns redis version' do
       @dmr.nodes.first.expects(:redis_version)

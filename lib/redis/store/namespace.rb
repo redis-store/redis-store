@@ -47,14 +47,14 @@ class Redis
         super(*keys.map {|key| interpolate(key) }) if keys.any?
       end
 
-      def mget(*keys)
+      def mget(*keys, &blk)
         options = (keys.pop if keys.last.is_a? Hash) || {}
         if keys.any?
           # Serialization gets extended before Namespace does, so we need to pass options further
           if singleton_class.ancestors.include? Serialization
-            super(*keys.map {|key| interpolate(key) }, options)
+            super(*keys.map {|key| interpolate(key) }, options, &blk)
           else
-            super(*keys.map {|key| interpolate(key) })
+            super(*keys.map {|key| interpolate(key) }, &blk)
           end
         end
       end
