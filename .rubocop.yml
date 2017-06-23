@@ -1,0 +1,52 @@
+# Configuration parameters: AllowSafeAssignment.
+Lint/AssignmentInCondition:
+  Exclude:
+    - 'lib/redis/store/ttl.rb'
+
+# Configuration parameters: AllowHeredoc, AllowURI, URISchemes.
+# URISchemes: http, https
+Metrics/LineLength:
+  Max: 128
+
+Style/ClassVars:
+  Exclude:
+    - 'lib/redis/distributed_store.rb'
+
+Style/BlockLength:
+  Exclude:
+    - 'test/**/*'
+
+# TODO: Write documentation in a different branch.
+Style/Documentation:
+  Enabled: false
+
+# Configuration parameters: ExpectMatchingDefinition, Regex, IgnoreExecutableScripts.
+Style/FileName:
+  Exclude:
+    - 'lib/redis-store.rb'
+
+# Configuration parameters: AllowedVariables.
+Style/GlobalVars:
+  Exclude:
+    - 'test/redis/store/namespace_test.rb'
+
+# Configuration parameters: NamePrefix, NamePrefixBlacklist, NameWhitelist.
+# NamePrefix: is_, has_, have_
+# NamePrefixBlacklist: is_, has_, have_
+# NameWhitelist: is_a?
+Style/PredicateName:
+  Exclude:
+    - 'test/redis/store/ttl_test.rb'
+
+Style/GuardClause:
+  Exclude:
+    - 'lib/redis/store/namespace.rb'
+    - 'lib/redis/store/ttl.rb'
+
+Security/MarshalLoad:
+  Exclude:
+     - 'lib/redis/store/marshalling.rb'
+
+Style/InverseMethods:
+  Exclude:
+     - 'lib/redis/store/marshalling.rb'

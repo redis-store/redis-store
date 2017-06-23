@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path('../lib', __FILE__)
+
+$LOAD_PATH.push File.expand_path('../lib', __FILE__)
 require 'redis/store/version'
 
 Gem::Specification.new do |s|
@@ -8,15 +9,15 @@ Gem::Specification.new do |s|
   s.authors     = ['Luca Guidi']
   s.email       = ['me@lucaguidi.com']
   s.homepage    = 'http://redis-store.org/redis-store'
-  s.summary     = %q{Redis stores for Ruby frameworks}
-  s.description = %q{Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks.}
+  s.summary     = 'Redis stores for Ruby frameworks'
+  s.description = 'Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks.'
 
   s.rubyforge_project = 'redis-store'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.require_paths = ["lib"]
+  s.executables   = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
+  s.require_paths = ['lib']
   s.license       = 'MIT'
 
   s.add_dependency 'redis', '>= 2.2', '< 4'
@@ -27,5 +28,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'minitest', '~> 5'
   s.add_development_dependency 'git',      '~> 1.2'
   s.add_development_dependency 'redis-store-testing'
+  s.add_development_dependency 'rubocop'
 end
-

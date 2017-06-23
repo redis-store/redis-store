@@ -15,7 +15,7 @@ class Redis
         namespace(key) { |k| super(k, val, options) }
       end
 
-      def ttl(key, options = nil)
+      def ttl(key, _options = nil)
         namespace(key) { |k| super(k) }
       end
 
@@ -35,12 +35,12 @@ class Redis
         namespace(key) { |k| super(k, increment) }
       end
 
-      def keys(pattern = "*")
-        namespace(pattern) { |p| super(p).map{|key| strip_namespace(key) } }
+      def keys(pattern = '*')
+        namespace(pattern) { |p| super(p).map { |key| strip_namespace(key) } }
       end
 
       def del(*keys)
-        super(*keys.map {|key| interpolate(key) }) if keys.any?
+        super(*keys.map { |key| interpolate(key) }) if keys.any?
       end
 
       def mget(*keys)
@@ -48,15 +48,15 @@ class Redis
         if keys.any?
           # Marshalling gets extended before Namespace does, so we need to pass options further
           if singleton_class.ancestors.include? Marshalling
-            super(*keys.map {|key| interpolate(key) }, options)
+            super(*keys.map { |key| interpolate(key) }, options)
           else
-            super(*keys.map {|key| interpolate(key) })
+            super(*keys.map { |key| interpolate(key) })
           end
         end
       end
 
       def expire(key, ttl)
-         namespace(key) { |k| super(k, ttl) }
+        namespace(key) { |k| super(k, ttl) }
       end
 
       def to_s
@@ -80,28 +80,29 @@ class Redis
       end
 
       private
-        def namespace(key)
-          yield interpolate(key)
-        end
 
-        def namespace_str
-          @namespace.is_a?(Proc) ? @namespace.call : @namespace
-        end
+      def namespace(key)
+        yield interpolate(key)
+      end
 
-        def interpolate(key)
-          return key unless namespace_str
-          key.match(namespace_regexp) ? key : "#{namespace_str}:#{key}"
-        end
+      def namespace_str
+        @namespace.is_a?(Proc) ? @namespace.call : @namespace
+      end
 
-        def strip_namespace(key)
-          return key unless namespace_str
-          key.gsub namespace_regexp, ""
-        end
+      def interpolate(key)
+        return key unless namespace_str
+        key.match(namespace_regexp) ? key : "#{namespace_str}:#{key}"
+      end
 
-        def namespace_regexp
-          @namespace_regexps ||= {}
-          @namespace_regexps[namespace_str] ||= %r{^#{namespace_str}\:}
-        end
+      def strip_namespace(key)
+        return key unless namespace_str
+        key.gsub namespace_regexp, ''
+      end
+
+      def namespace_regexp
+        @namespace_regexps ||= {}
+        @namespace_regexps[namespace_str] ||= /^#{namespace_str}\:/
+      end
     end
   end
 end

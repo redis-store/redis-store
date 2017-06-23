@@ -5,7 +5,7 @@ class Redis
     @@timeout = 5
     attr_reader :ring
 
-    def initialize(addresses, options = { })
+    def initialize(addresses, options = {})
       nodes = addresses.map do |address|
         ::Redis::Store.new _merge_options(address, options)
       end
@@ -19,7 +19,7 @@ class Redis
     end
 
     def reconnect
-      nodes.each {|node| node.reconnect }
+      nodes.each(&:reconnect)
     end
 
     def set(key, value, options = nil)
@@ -51,16 +51,15 @@ class Redis
     end
 
     private
-      def _extend_namespace(options)
-        @namespace = options[:namespace]
-        extend ::Redis::Store::Namespace if @namespace
-      end
 
-      def _merge_options(address, options)
-        address.merge({
-          :timeout => options[:timeout] || @@timeout, 
-          :namespace => options[:namespace]
-        })
-      end
+    def _extend_namespace(options)
+      @namespace = options[:namespace]
+      extend ::Redis::Store::Namespace if @namespace
+    end
+
+    def _merge_options(address, options)
+      address.merge(timeout: options[:timeout] || @@timeout,
+                    namespace: options[:namespace])
+    end
   end
 end
