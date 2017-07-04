@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe "Redis::RedisVersion" do
+describe 'Redis::RedisVersion' do
   def setup
     @store  = Redis::Store.new
   end
