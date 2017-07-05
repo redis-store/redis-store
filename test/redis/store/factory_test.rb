@@ -41,6 +41,16 @@ describe "Redis::Store::Factory" do
         store.instance_variable_get(:@client).password.must_equal("secret")
       end
 
+      it 'uses empty password' do
+        store = Redis::Store::Factory.create :password => ''
+        store.instance_variable_get(:@client).password.must_equal('')
+      end
+
+      it 'uses nil password' do
+        store = Redis::Store::Factory.create :password => nil
+        assert_nil(store.instance_variable_get(:@client).password)
+      end
+
       it "allows/disable marshalling" do
         store = Redis::Store::Factory.create :marshalling => false
         store.instance_variable_get(:@marshalling).must_equal(false)
@@ -84,6 +94,21 @@ describe "Redis::Store::Factory" do
       it "uses specified password" do
         store = Redis::Store::Factory.create "redis://:secret@127.0.0.1:6379/0/theplaylist"
         store.instance_variable_get(:@client).password.must_equal("secret")
+      end
+
+      it 'uses specified password with special characters' do
+        store = Redis::Store::Factory.create 'redis://:pwd%40123@127.0.0.1:6379/0/theplaylist'
+        store.instance_variable_get(:@client).password.must_equal('pwd@123')
+      end
+
+      it 'uses empty password' do
+        store = Redis::Store::Factory.create 'redis://:@127.0.0.1:6379/0/theplaylist'
+        store.instance_variable_get(:@client).password.must_equal('')
+      end
+
+      it 'uses nil password' do
+        store = Redis::Store::Factory.create 'redis://127.0.0.1:6379/0/theplaylist'
+        assert_nil(store.instance_variable_get(:@client).password)
       end
 
       it "correctly uses specified ipv6 host" do
