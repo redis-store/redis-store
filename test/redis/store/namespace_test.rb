@@ -152,5 +152,12 @@ describe "Redis::Store::Namespace" do
        client.expects(:call).with([:ttl, "#{@namespace}:rabbit"]).once
        store.ttl("rabbit")
     end
+
+    it "should namespace watch" do
+      client.expects(:call).with([:watch,"#{@namespace}:rabbit"]).once
+      store.watch("rabbit") do
+
+      end
+    end
   end
 end
