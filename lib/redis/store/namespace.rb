@@ -46,8 +46,8 @@ class Redis
       def mget(*keys)
         options = (keys.pop if keys.last.is_a? Hash) || {}
         if keys.any?
-          # Marshalling gets extended before Namespace does, so we need to pass options further
-          if singleton_class.ancestors.include? Marshalling
+          # Serialization gets extended before Namespace does, so we need to pass options further
+          if singleton_class.ancestors.include? Serialization
             super(*keys.map {|key| interpolate(key) }, options)
           else
             super(*keys.map {|key| interpolate(key) })

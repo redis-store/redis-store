@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'json'
 
 describe "Redis::Store::Factory" do
   describe ".create" do
@@ -51,10 +52,43 @@ describe "Redis::Store::Factory" do
         assert_nil(store.instance_variable_get(:@client).password)
       end
 
-      it "allows/disable marshalling" do
-        store = Redis::Store::Factory.create :marshalling => false
-        store.instance_variable_get(:@marshalling).must_equal(false)
+      it "disables serialization" do
+        store = Redis::Store::Factory.create :serializer => nil
+        store.instance_variable_get(:@serializer).must_be_nil
         store.instance_variable_get(:@options)[:raw].must_equal(true)
+      end
+
+      it "configures pluggable serialization backend" do
+        store = Redis::Store::Factory.create :serializer => JSON
+        store.instance_variable_get(:@serializer).must_equal(JSON)
+        store.instance_variable_get(:@options)[:raw].must_equal(false)
+      end
+
+      describe 'with stdout disabled' do
+        before do
+          @original_stderr = $stderr
+          @original_stdout = $stdout
+
+          $stderr = Tempfile.new('stderr')
+          $stdout = Tempfile.new('stdout')
+        end
+
+        it "disables marshalling and provides deprecation warning" do
+          store = Redis::Store::Factory.create :marshalling => false
+          store.instance_variable_get(:@serializer).must_be_nil
+          store.instance_variable_get(:@options)[:raw].must_equal(true)
+        end
+
+        it "enables marshalling but provides warning to use :serializer instead" do
+          store = Redis::Store::Factory.create :marshalling => true
+          store.instance_variable_get(:@serializer).must_equal(Marshal)
+          store.instance_variable_get(:@options)[:raw].must_equal(false)
+        end
+
+        after do
+          $stderr = @original_stderr
+          $stdout = @original_stdout
+        end
       end
 
       it "should instantiate a Redis::DistributedStore store" do
