@@ -50,7 +50,14 @@ class Redis
         if options.key?(:key_prefix) && !options.key?(:namespace)
           options[:namespace] = options.delete(:key_prefix) # RailsSessionStore
         end
-        options[:raw] = !options[:marshalling]
+        options[:raw] = case
+                        when options.key?(:serializer)
+                          options[:serializer].nil?
+                        when options.key?(:marshalling)
+                          !options[:marshalling]
+                        else
+                          false
+                        end
         options
       end
 

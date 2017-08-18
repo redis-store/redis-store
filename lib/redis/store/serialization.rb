@@ -1,6 +1,6 @@
 class Redis
   class Store < self
-    module Marshalling
+    module Serialization
       def set(key, value, options = nil)
         _marshal(value, options) { |v| super encode(key), encode(v), options }
       end
@@ -36,11 +36,11 @@ class Redis
 
       private
         def _marshal(val, options)
-          yield marshal?(options) ? Marshal.dump(val) : val
+          yield marshal?(options) ? @serializer.dump(val) : val
         end
 
         def _unmarshal(val, options)
-          unmarshal?(val, options) ? Marshal.load(val) : val
+          unmarshal?(val, options) ? @serializer.load(val) : val
         end
 
         def marshal?(options)

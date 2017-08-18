@@ -1,8 +1,8 @@
 require 'test_helper'
 
-describe "Redis::Marshalling" do
+describe "Redis::Serialization" do
   def setup
-    @store = Redis::Store.new :marshalling => true
+    @store = Redis::Store.new serializer: Marshal
     @rabbit = OpenStruct.new :name => "bunny"
     @white_rabbit = OpenStruct.new :color => "white"
     @store.set "rabbit", @rabbit
