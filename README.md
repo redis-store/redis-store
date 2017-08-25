@@ -1,7 +1,5 @@
 # Redis stores for Ruby frameworks
 
-[![Build Status](https://travis-ci.org/redis-store/redis-store.svg?branch=master)](https://travis-ci.org/redis-store/redis-store)
-
 __Redis Store__ provides a full set of stores (*Cache*, *I18n*, *Session*, *HTTP Cache*) for modern Ruby frameworks like: __Ruby on Rails__, __Sinatra__, __Rack__, __Rack::Cache__ and __I18n__. It supports object marshalling, timeouts, single or multiple nodes, and namespaces.
 
 Please check the *README* file of each gem for usage and installation guidelines.
@@ -33,7 +31,17 @@ If you are on **Snow Leopard** you have to run `env ARCHFLAGS="-arch x86_64" rub
 
 ## Contributors
 
-  * Matt Horan ([@mhoran](https://github.com/mhoran))
+https://github.com/redis-store/redis-store/graphs/contributors
+
+## Versioning
+
+The **redis-store** family of gems uses [Semantic Versioning](http://semver.org), meaning gems depending on **redis-store**
+can be reliably inclusive of any version between the current and the next major. We recommend the following dependency
+in your library's gemspec:
+
+```ruby
+s.add_dependency 'redis-store', '>= 1.4', '< 2'
+```
 
 ## Status
 
@@ -43,4 +51,4 @@ If you are on **Snow Leopard** you have to run `env ARCHFLAGS="-arch x86_64" rub
 
 ## Copyright
 
-2009 - 2013 Luca Guidi - [http://lucaguidi.com](http://lucaguidi.com), released under the MIT license
+2009 - 2013 Luca Guidi - [http://lucaguidi.com](http://lucaguidi.com), released under the MIT license.
