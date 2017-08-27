@@ -155,9 +155,7 @@ describe "Redis::Store::Namespace" do
 
     it "should namespace watch" do
       client.expects(:call).with([:watch,"#{@namespace}:rabbit"]).once
-      store.watch("rabbit") do
-
-      end
+      store.watch("rabbit")
     end
   end
 end
