@@ -43,7 +43,7 @@ class Redis
         super(*keys.map {|key| interpolate(key) }) if keys.any?
       end
 
-      def watch *keys
+      def watch(*keys)
         super(*keys.map {|key| interpolate(key) }) if keys.any?
       end
 
