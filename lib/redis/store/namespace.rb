@@ -43,6 +43,10 @@ class Redis
         super(*keys.map {|key| interpolate(key) }) if keys.any?
       end
 
+      def watch(*keys)
+        super(*keys.map {|key| interpolate(key) }) if keys.any?
+      end
+
       def mget(*keys)
         options = (keys.pop if keys.last.is_a? Hash) || {}
         if keys.any?
