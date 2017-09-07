@@ -20,7 +20,7 @@ class Redis
         if @addresses.empty?
           @addresses << {}
         end
-        
+
         if @addresses.size > 1
           ::Redis::DistributedStore.new @addresses, @options
         else
@@ -99,7 +99,6 @@ class Redis
           end
         end
       end
-
     end
   end
 end
