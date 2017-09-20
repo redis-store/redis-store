@@ -11,15 +11,26 @@ class Redis
 
       def setnx(key, value, options = nil)
         if ttl = expires_in(options)
-          setnx_with_expire(key, value, ttl.to_i)
+          if options[:avoid_multi_commands]
+            pipelined_setnx_with_expire(key, value, ttl.to_i)
+          else
+            multi_setnx_with_expire(key, value, ttl.to_i)
+          end
         else
           super(key, value)
         end
       end
 
       protected
-        def setnx_with_expire(key, value, ttl)
+        def multi_setnx_with_expire(key, value, ttl)
           multi do
+            setnx(key, value, :raw => true)
+            expire(key, ttl)
+          end
+        end
+
+        def pipelined_setnx_with_expire(key, value, ttl)
+          pipelined do
             setnx(key, value, :raw => true)
             expire(key, ttl)
           end
