@@ -41,6 +41,7 @@ class MockRedis
       block.call
     end
   end
+  alias_method :pipelined, :multi
 
   def expire(*a)
     @expires << a
@@ -94,13 +95,17 @@ describe MockTtlStore do
       end
 
       it 'must not call expire' do
-        MockTtlStore.any_instance.expects(:expire).never
-
+        redis.expects(:expire).never
         redis.setnx(key, mock_value)
       end
     end
 
     describe 'with expiry' do
+      it 'uses the mutli command to chain commands' do
+        redis.expects(:multi)
+        redis.setnx(key, mock_value, options)
+      end
+
       it 'must call setnx with key and value and set raw to true' do
         redis.setnx(key, mock_value, options)
         redis.has_setnx?(key, mock_value, :raw => true).must_equal true
@@ -109,6 +114,25 @@ describe MockTtlStore do
       it 'must call expire' do
         redis.setnx(key, mock_value, options)
         redis.has_expire?(key, options[:expire_after]).must_equal true
+      end
+
+      describe 'avoiding multi commands' do
+        let(:options) { { :expire_after => 3600, :avoid_multi_commands => true } }
+
+        it 'uses the redis pipelined feature to chain commands' do
+          redis.expects(:pipelined)
+          redis.setnx(key, mock_value, options)
+        end
+
+        it 'must call setnx with key and value and set raw to true' do
+          redis.setnx(key, mock_value, options)
+          redis.has_setnx?(key, mock_value, :raw => true).must_equal true
+        end
+
+        it 'must call expire' do
+          redis.setnx(key, mock_value, options)
+          redis.has_expire?(key, options[:expire_after]).must_equal true
+        end
       end
     end
   end
