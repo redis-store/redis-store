@@ -95,8 +95,7 @@ describe MockTtlStore do
       end
 
       it 'must not call expire' do
-        MockTtlStore.any_instance.expects(:expire).never
-
+        redis.expects(:expire).never
         redis.setnx(key, mock_value)
       end
     end
