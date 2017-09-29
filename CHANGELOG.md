@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.4.0
+
+Breaking Changes
+
+* None
+
+Added
+
+* Pluggable backend for serializing data in/out of Redis, eventually replacing `:marshalling` in v2.
+
+Fixed
+
+* Conventional `Marshal.dump` usage allowing potential security vulnerability (CVE-2017-1000248) 
+
 ## 1.3.0
 
 Breaking Changes
