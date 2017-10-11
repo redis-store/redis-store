@@ -148,7 +148,7 @@ describe "Redis::Store::Factory" do
       it "correctly uses specified ipv6 host" do
         store = Redis::Store::Factory.create "redis://[::1]:6380"
         store.to_s.must_equal("Redis Client connected to [::1]:6380 against DB 0")
-        store.client.host.must_equal("::1")
+        store.instance_variable_get('@options')[:host].must_equal("::1")
       end
 
       it "instantiates Redis::DistributedStore" do
