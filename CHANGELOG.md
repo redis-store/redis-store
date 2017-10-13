@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.4.1
+
+Breaking Changes
+
+* None
+
+Added
+
+* [Support for Redis client library v4](https://github.com/redis-store/redis-store/issues/277)
+
+Fixed
+
+* None
+
 ## 1.4.0
 
 Breaking Changes
