@@ -72,6 +72,7 @@ class Redis
       end
 
       def flushdb
+        return super unless namespace_str
         keys.each_slice(FLUSHDB_BATCH_SIZE) { |key_slice| del(*key_slice) }
       end
 
