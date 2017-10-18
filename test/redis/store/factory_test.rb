@@ -22,6 +22,11 @@ describe "Redis::Store::Factory" do
         store.to_s.must_equal("Redis Client connected to localhost:6380 against DB 0")
       end
 
+      it "uses specified path" do
+        store = Redis::Store::Factory.create :path => "/var/run/redis.sock"
+        store.to_s.must_equal("Redis Client connected to /var/run/redis.sock against DB 0")
+      end
+
       it "uses specified db" do
         store = Redis::Store::Factory.create :host => "localhost", :port => 6380, :db => 13
         store.to_s.must_equal("Redis Client connected to localhost:6380 against DB 13")
@@ -115,6 +120,11 @@ describe "Redis::Store::Factory" do
         store.to_s.must_equal("Redis Client connected to 127.0.0.1:6380 against DB 0")
       end
 
+      it "uses specified path" do
+        store = Redis::Store::Factory.create "unix:///var/run/redis.sock"
+        store.to_s.must_equal("Redis Client connected to /var/run/redis.sock against DB 0")
+      end
+
       it "uses specified db" do
         store = Redis::Store::Factory.create "redis://127.0.0.1:6380/13"
         store.to_s.must_equal("Redis Client connected to 127.0.0.1:6380 against DB 13")
@@ -123,6 +133,16 @@ describe "Redis::Store::Factory" do
       it "uses specified namespace" do
         store = Redis::Store::Factory.create "redis://127.0.0.1:6379/0/theplaylist"
         store.to_s.must_equal("Redis Client connected to 127.0.0.1:6379 against DB 0 with namespace theplaylist")
+      end
+
+      it "uses specified via query namespace" do
+        store = Redis::Store::Factory.create "redis://127.0.0.1:6379/0?namespace=theplaylist"
+        store.to_s.must_equal("Redis Client connected to 127.0.0.1:6379 against DB 0 with namespace theplaylist")
+      end
+
+      it "uses specified namespace with path" do
+        store = Redis::Store::Factory.create "unix:///var/run/redis.sock?db=2&namespace=theplaylist"
+        store.to_s.must_equal("Redis Client connected to /var/run/redis.sock against DB 2 with namespace theplaylist")
       end
 
       it "uses specified password" do
