@@ -1,17 +1,19 @@
 language: ruby
 sudo: false
 cache: bundler
+
+# 1.9.3 has Bundler 1.7.6 with the "undefined method `spec' for nil" bug
 before_install: gem install bundler
-script: 'bundle exec rake'
+
 rvm:
   - 1.9.3
-  - 2.0.0
+  - 2.0
   - 2.1
   - 2.2
-  - 2.3.0
+  - 2.3
+  - 2.4
   - ruby-head
   - jruby-head
-bundler_args: '--path vendor/bundle'
 
 matrix:
   allow_failures:
