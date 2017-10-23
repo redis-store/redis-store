@@ -15,7 +15,18 @@ rvm:
   - ruby-head
   - jruby-head
 
+gemfile:
+  - gemfiles/redis_3_x.gemfile
+  - gemfiles/redis_4_x.gemfile
+
 matrix:
   allow_failures:
     - rvm: jruby-head
     - rvm: ruby-head
+  exclude:
+    - rvm: 1.9.3
+      gemfile: gemfiles/redis_4_x.gemfile
+    - rvm: 2.0
+      gemfile: gemfiles/redis_4_x.gemfile
+    - rvm: 2.1
+      gemfile: gemfiles/redis_4_x.gemfile
