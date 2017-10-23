@@ -17,10 +17,11 @@ class Redis
         _unmarshal super(key), options
       end
 
-      def mget(*keys)
+      def mget(*keys, &blk)
         options = keys.pop if keys.last.is_a?(Hash)
-        super(*keys).map do |result|
-          _unmarshal result, options
+        super(*keys) do |reply|
+          reply.map! { |value| _unmarshal value, options }
+          blk ? blk.call(reply) : reply
         end
       end
 

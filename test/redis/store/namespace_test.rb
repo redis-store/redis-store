@@ -139,8 +139,18 @@ describe "Redis::Store::Namespace" do
     end
 
     it "should namespace mget" do
-       client.expects(:call).with([:mget, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"])
-       store.mget "rabbit", "white_rabbit"
+      client.expects(:call).with([:mget, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"]).returns(%w[ foo bar ])
+      store.mget "rabbit", "white_rabbit" do |result|
+        result.must_equal(%w[ foo bar ])
+      end
+    end
+
+    it "should namespace mapped_mget" do
+      client.expects(:process).with([[:mget, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"]]).returns(%w[ foo bar ])
+      result = store.mapped_mget "rabbit", "white_rabbit"
+      result.keys.must_equal %w[ rabbit white_rabbit ]
+      result["rabbit"].must_equal "foo"
+      result["white_rabbit"].must_equal "bar"
     end
 
     it "should namespace expire" do

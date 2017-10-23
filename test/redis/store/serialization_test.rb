@@ -97,28 +97,39 @@ describe "Redis::Serialization" do
     @store.get("rabbit", :raw => true).must_equal(%(#<OpenStruct color="white">))
   end
 
-  it "doesn't unmarshal on multi get" do
+  it "unmarshals on multi get" do
     @store.set "rabbit2", @white_rabbit
-    rabbits = @store.mget "rabbit", "rabbit2"
-    rabbit, rabbit2 = rabbits
-    rabbits.length.must_equal(2)
-    rabbit.must_equal(@rabbit)
-    rabbit2.must_equal(@white_rabbit)
+    @store.mget "rabbit", "rabbit2" do |rabbits|
+      rabbit, rabbit2 = rabbits
+      rabbits.length.must_equal(2)
+      rabbit.must_equal(@rabbit)
+      rabbit2.must_equal(@white_rabbit)
+    end
+  end
+
+  it "unmarshals on mapped_mget" do
+    @store.set "rabbit2", @white_rabbit
+    result = @store.mapped_mget("rabbit", "rabbit2")
+    result.keys.must_equal %w[ rabbit rabbit2 ]
+    result["rabbit"].must_equal @rabbit
+    result["rabbit2"].must_equal @white_rabbit
   end
 
   if RUBY_VERSION.match /1\.9/
     it "doesn't unmarshal on multi get if raw option is true" do
       @store.set "rabbit2", @white_rabbit
-      rabbit, rabbit2 = @store.mget "rabbit", "rabbit2", :raw => true
-      rabbit.must_equal("\x04\bU:\x0FOpenStruct{\x06:\tnameI\"\nbunny\x06:\x06EF")
-      rabbit2.must_equal("\x04\bU:\x0FOpenStruct{\x06:\ncolorI\"\nwhite\x06:\x06EF")
+      @store.mget "rabbit", "rabbit2", :raw => true do |rabbit, rabbit2|
+        rabbit.must_equal("\x04\bU:\x0FOpenStruct{\x06:\tnameI\"\nbunny\x06:\x06EF")
+        rabbit2.must_equal("\x04\bU:\x0FOpenStruct{\x06:\ncolorI\"\nwhite\x06:\x06EF")
+      end
     end
   else
     it "doesn't unmarshal on multi get if raw option is true" do
       @store.set "rabbit2", @white_rabbit
-      rabbit, rabbit2 = @store.mget "rabbit", "rabbit2", :raw => true
-      rabbit.must_include("\x04\bU:\x0FOpenStruct{\x06:\tname")
-      rabbit2.must_include("\x04\bU:\x0FOpenStruct{\x06:\ncolor")
+      @store.mget "rabbit", "rabbit2", :raw => true do |rabbit, rabbit2|
+        rabbit.must_include("\x04\bU:\x0FOpenStruct{\x06:\tname")
+        rabbit2.must_include("\x04\bU:\x0FOpenStruct{\x06:\ncolor")
+      end
     end
   end
 
