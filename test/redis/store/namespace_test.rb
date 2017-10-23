@@ -157,5 +157,20 @@ describe "Redis::Store::Namespace" do
       client.expects(:call).with([:watch,"#{@namespace}:rabbit"]).once
       store.watch("rabbit")
     end
+
+    it "wraps flushdb with appropriate KEYS * calls" do
+      client.expects(:call).with([:flushdb]).never
+      client.expects(:call).with([:keys,"#{@namespace}:*"]).once.returns(["rabbit"])
+      client.expects(:call).with([:del,"#{@namespace}:rabbit"]).once
+      store.flushdb
+    end
+
+    it "skips flushdb wrapping if the namespace is nil" do
+      client.expects(:call).with([:flushdb])
+      client.expects(:call).with([:keys]).never
+      store.with_namespace(nil) do
+        store.flushdb
+      end
+    end
   end
 end
