@@ -42,8 +42,17 @@ class Redis
     end
 
     def to_s
-      h = @client.host
-      "Redis Client connected to #{/:/ =~ h ? '['+h+']' : h}:#{@client.port} against DB #{@client.db}"
+      "Redis Client connected to #{location} against DB #{@client.db}"
+    end
+
+    def location
+      if @client.path
+        @client.path
+      else
+        h = @client.host
+        h = "[#{h}]" if h.include?(":")
+        "#{h}:#{@client.port}"
+      end
     end
 
     private
