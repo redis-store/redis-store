@@ -7,11 +7,12 @@ require 'redis/store/version'
 require 'redis/store/redis_version'
 require 'redis/store/ttl'
 require 'redis/store/interface'
+require 'redis/store/cas'
 require 'redis/store/redis_version'
 
 class Redis
   class Store < self
-    include Ttl, Interface, RedisVersion
+    include Ttl, Interface, RedisVersion, Cas
 
     def initialize(options = { })
       super
