@@ -13,6 +13,13 @@ class Redis
   class Store < self
     include Ttl, Interface, RedisVersion
 
+    RESCUE_ERRORS = [
+      Errno::ECONNREFUSED,
+      Errno::EHOSTUNREACH,
+      CannotConnectError,
+      ConnectionError
+    ].freeze
+
     def initialize(options = { })
       super
 
@@ -45,6 +52,13 @@ class Redis
       "Redis Client connected to #{location} against DB #{@client.db}"
     end
 
+    def with(default = nil)
+      yield self if block_given?
+    rescue *RESCUABLE_ERRORS
+      raise if raise_errors?
+      default
+    end
+
     def location
       if @client.path
         @client.path
@@ -53,6 +67,10 @@ class Redis
         h = "[#{h}]" if h.include?(":")
         "#{h}:#{@client.port}"
       end
+    end
+
+    def raise_errors?
+      options[:raise_errors]
     end
 
     private
