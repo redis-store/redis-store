@@ -65,6 +65,24 @@ describe "Redis::DistributedStore" do
     end
   end
 
+  it "passes through ring replica options" do
+    dmr = Redis::DistributedStore.new [
+                                    {:host => "localhost", :port => "6380", :db => 0},
+                                    {:host => "localhost", :port => "6381", :db => 0}
+                                ], replicas: 1024
+    dmr.ring.replicas.must_equal 1024
+  end
+
+  it "uses a custom ring object" do
+    my_ring = Redis::HashRing.new
+    dmr = Redis::DistributedStore.new [
+                                          {:host => "localhost", :port => "6380", :db => 0},
+                                          {:host => "localhost", :port => "6381", :db => 0}
+                                      ], ring: my_ring
+    dmr.ring.must_equal my_ring
+    dmr.ring.nodes.length.must_equal 2
+  end
+
   describe '#redis_version' do
     it 'returns redis version' do
       @dmr.nodes.first.expects(:redis_version)

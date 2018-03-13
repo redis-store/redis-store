@@ -6,12 +6,12 @@ class Redis
     attr_reader :ring
 
     def initialize(addresses, options = { })
-      nodes = addresses.map do |address|
-        ::Redis::Store.new _merge_options(address, options)
-      end
-
       _extend_namespace options
-      @ring = Redis::HashRing.new nodes
+      @ring = options[:ring] || Redis::HashRing.new([], options[:replicas] || Redis::HashRing::POINTS_PER_SERVER)
+
+      addresses.each do |address|
+        @ring.add_node(::Redis::Store.new _merge_options(address, options))
+      end
     end
 
     def nodes
