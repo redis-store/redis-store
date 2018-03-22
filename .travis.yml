@@ -1,6 +1,9 @@
 language: ruby
 sudo: false
 cache: bundler
+notifications:
+  webhooks: https://www.travisbuddy.com
+  on_success: never
 
 # 1.9.3 has Bundler 1.7.6 with the "undefined method `spec' for nil" bug
 before_install: gem install bundler
