@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.5.0
+
+Breaking Changes
+
+* None
+
+Added
+
+* [Support for Redis v4 and above](https://github.com/redis-store/redis-store/pull/292)
+* [Support for distributed mget/read_multi in Redis v4](https://github.com/redis-store/redis-store/pull/282)
+* [Tests for Namespace#flushdb](https://github.com/redis-store/redis-store/pull/299)
+* [Support for UNIX Socket path connections](https://github.com/redis-store/redis-store/pull/298)
+* [HashRing configuration for DistributedStore](https://github.com/redis-store/redis-store/pull/304)
+
+Fixed
+
+* [Inefficient use of KEYS when calling FLUSHDB without a namespace](https://github.com/redis-store/redis-store/pull/297)
+
 ## 1.4.1
 
 Breaking Changes
