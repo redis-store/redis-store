@@ -75,6 +75,7 @@ class Redis
                              end
 
           options = {
+            :scheme   => uri.scheme,
             :host     => uri.hostname,
             :port     => uri.port || DEFAULT_PORT,
             :password => uri.password.nil? ? nil : CGI::unescape(uri.password.to_s)

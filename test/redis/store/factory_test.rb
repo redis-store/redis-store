@@ -208,6 +208,11 @@ describe "Redis::Store::Factory" do
         store.to_s.must_equal("Redis Client connected to 127.0.0.1:6379 against DB 0 with namespace theplaylist")
       end
 
+      it 'honors scheme (rediss:// vs. redis://)' do
+        store = Redis::Store::Factory.create "rediss://127.0.0.1:6380"
+        store.instance_variable_get(:@client).scheme.must_equal('rediss')
+      end
+
       it 'instantiates Redis::DistributedStore and merges options' do 
         store = Redis::Store::Factory.create "redis://127.0.0.1:6379", "redis://127.0.0.1:6380", { :namespace => 'theplaylist' }
         store.nodes.map {|node| node.to_s }.must_equal([
