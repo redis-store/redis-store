@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.authors     = ['Luca Guidi']
   s.email       = ['me@lucaguidi.com']
   s.homepage    = 'http://redis-store.org/redis-store'
-  s.summary     = %q{Redis stores for Ruby frameworks}
-  s.description = %q{Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks.}
+  s.summary     = 'Redis stores for Ruby frameworks'
+  s.description = 'Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks.'
 
   s.rubyforge_project = 'redis-store'
 
@@ -30,4 +30,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'pry',      '~> 0.10.4'
   s.add_development_dependency 'redis-store-testing'
   s.add_development_dependency 'appraisal', '~> 2.0'
+  s.add_development_dependency 'rubocop', '~> 0.54'
 end
