@@ -3,8 +3,8 @@ require 'test_helper'
 describe "Redis::DistributedStore" do
   def setup
     @dmr = Redis::DistributedStore.new [
-      {:host => "localhost", :port => "6380", :db => 0},
-      {:host => "localhost", :port => "6381", :db => 0}
+      { :host => "localhost", :port => "6380", :db => 0 },
+      { :host => "localhost", :port => "6381", :db => 0 }
     ]
     @rabbit = OpenStruct.new :name => "bunny"
     @white_rabbit = OpenStruct.new :color => "white"
@@ -67,8 +67,8 @@ describe "Redis::DistributedStore" do
 
   it "passes through ring replica options" do
     dmr = Redis::DistributedStore.new [
-                                    {:host => "localhost", :port => "6380", :db => 0},
-                                    {:host => "localhost", :port => "6381", :db => 0}
+                                    { :host => "localhost", :port => "6380", :db => 0 },
+                                    { :host => "localhost", :port => "6381", :db => 0 }
                                 ], replicas: 1024
     dmr.ring.replicas.must_equal 1024
   end
@@ -76,8 +76,8 @@ describe "Redis::DistributedStore" do
   it "uses a custom ring object" do
     my_ring = Redis::HashRing.new
     dmr = Redis::DistributedStore.new [
-                                          {:host => "localhost", :port => "6380", :db => 0},
-                                          {:host => "localhost", :port => "6381", :db => 0}
+                                          { :host => "localhost", :port => "6380", :db => 0 },
+                                          { :host => "localhost", :port => "6381", :db => 0 }
                                       ], ring: my_ring
     dmr.ring.must_equal my_ring
     dmr.ring.nodes.length.must_equal 2
@@ -100,8 +100,8 @@ describe "Redis::DistributedStore" do
   describe "namespace" do
     it "uses namespaced key" do
       @dmr = Redis::DistributedStore.new [
-        {:host => "localhost", :port => "6380", :db => 0},
-        {:host => "localhost", :port => "6381", :db => 0}
+        { :host => "localhost", :port => "6380", :db => 0 },
+        { :host => "localhost", :port => "6381", :db => 0 }
       ], :namespace => "theplaylist"
 
       @dmr.expects(:node_for).with("theplaylist:rabbit").returns(@dmr.nodes.first)

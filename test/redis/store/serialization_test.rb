@@ -81,8 +81,8 @@ describe "Redis::Serialization" do
 
   it "marshals setex (over a distributed store)" do
     @store = Redis::DistributedStore.new [
-      {:host => "localhost", :port => "6380", :db => 0},
-      {:host => "localhost", :port => "6381", :db => 0}
+      { :host => "localhost", :port => "6380", :db => 0 },
+      { :host => "localhost", :port => "6381", :db => 0 }
     ]
     @store.setex "rabbit", 50, @white_rabbit
     @store.get("rabbit").must_equal(@white_rabbit)
@@ -90,8 +90,8 @@ describe "Redis::Serialization" do
 
   it "doesn't marshal setex if raw option is true (over a distributed store)" do
     @store = Redis::DistributedStore.new [
-      {:host => "localhost", :port => "6380", :db => 0},
-      {:host => "localhost", :port => "6381", :db => 0}
+      { :host => "localhost", :port => "6380", :db => 0 },
+      { :host => "localhost", :port => "6381", :db => 0 }
     ]
     @store.setex "rabbit", 50, @white_rabbit, :raw => true
     @store.get("rabbit", :raw => true).must_equal(%(#<OpenStruct color="white">))

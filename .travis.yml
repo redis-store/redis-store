@@ -37,9 +37,5 @@ matrix:
     - rvm: jruby-head
     - rvm: ruby-head
   exclude:
-    - rvm: 1.9.3
-      gemfile: gemfiles/redis_4_x.gemfile
-    - rvm: 2.0
-      gemfile: gemfiles/redis_4_x.gemfile
     - rvm: 2.1
       gemfile: gemfiles/redis_4_x.gemfile

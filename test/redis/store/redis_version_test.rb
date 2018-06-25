@@ -2,7 +2,7 @@ require 'test_helper'
 
 describe "Redis::RedisVersion" do
   def setup
-    @store  = Redis::Store.new
+    @store = Redis::Store.new
   end
 
   def teardown
@@ -26,4 +26,3 @@ describe "Redis::RedisVersion" do
     end
   end
 end
-

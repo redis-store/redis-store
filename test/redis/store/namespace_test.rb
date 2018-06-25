@@ -90,52 +90,52 @@ describe "Redis::Store::Namespace" do
   end
 
   describe 'method calls' do
-    let(:store){Redis::Store.new :namespace => @namespace, :serializer => nil}
-    let(:client){store.instance_variable_get(:@client)}
+    let(:store) { Redis::Store.new :namespace => @namespace, :serializer => nil }
+    let(:client) { store.instance_variable_get(:@client) }
 
     it "should namespace get" do
-       client.expects(:call).with([:get, "#{@namespace}:rabbit"]).once
-       store.get("rabbit")
+      client.expects(:call).with([:get, "#{@namespace}:rabbit"]).once
+      store.get("rabbit")
     end
 
     it "should namespace set" do
-       client.expects(:call).with([:set, "#{@namespace}:rabbit", @rabbit])
-       store.set "rabbit", @rabbit
+      client.expects(:call).with([:set, "#{@namespace}:rabbit", @rabbit])
+      store.set "rabbit", @rabbit
     end
 
     it "should namespace setnx" do
-       client.expects(:call).with([:setnx, "#{@namespace}:rabbit", @rabbit])
-       store.setnx "rabbit", @rabbit
+      client.expects(:call).with([:setnx, "#{@namespace}:rabbit", @rabbit])
+      store.setnx "rabbit", @rabbit
     end
 
     it "should namespace del with single key" do
-       client.expects(:call).with([:del, "#{@namespace}:rabbit"])
-       store.del "rabbit"
+      client.expects(:call).with([:del, "#{@namespace}:rabbit"])
+      store.del "rabbit"
     end
 
     it "should namespace del with multiple keys" do
-       client.expects(:call).with([:del, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"])
-       store.del "rabbit", "white_rabbit"
+      client.expects(:call).with([:del, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"])
+      store.del "rabbit", "white_rabbit"
     end
 
     it "should namespace keys" do
-       store.set "rabbit", @rabbit
-       store.keys("rabb*").must_equal [ "rabbit" ]
+      store.set "rabbit", @rabbit
+      store.keys("rabb*").must_equal [ "rabbit" ]
     end
 
     it "should namespace exists" do
-       client.expects(:call).with([:exists, "#{@namespace}:rabbit"])
-       store.exists "rabbit"
+      client.expects(:call).with([:exists, "#{@namespace}:rabbit"])
+      store.exists "rabbit"
     end
 
     it "should namespace incrby" do
-       client.expects(:call).with([:incrby, "#{@namespace}:counter", 1])
-       store.incrby "counter", 1
+      client.expects(:call).with([:incrby, "#{@namespace}:counter", 1])
+      store.incrby "counter", 1
     end
 
     it "should namespace decrby" do
-       client.expects(:call).with([:decrby, "#{@namespace}:counter", 1])
-       store.decrby "counter", 1
+      client.expects(:call).with([:decrby, "#{@namespace}:counter", 1])
+      store.decrby "counter", 1
     end
 
     it "should namespace mget" do
@@ -154,24 +154,24 @@ describe "Redis::Store::Namespace" do
     end
 
     it "should namespace expire" do
-       client.expects(:call).with([:expire, "#{@namespace}:rabbit", 60]).once
-       store.expire("rabbit",60)
+      client.expects(:call).with([:expire, "#{@namespace}:rabbit", 60]).once
+      store.expire("rabbit", 60)
     end
 
     it "should namespace ttl" do
-       client.expects(:call).with([:ttl, "#{@namespace}:rabbit"]).once
-       store.ttl("rabbit")
+      client.expects(:call).with([:ttl, "#{@namespace}:rabbit"]).once
+      store.ttl("rabbit")
     end
 
     it "should namespace watch" do
-      client.expects(:call).with([:watch,"#{@namespace}:rabbit"]).once
+      client.expects(:call).with([:watch, "#{@namespace}:rabbit"]).once
       store.watch("rabbit")
     end
 
     it "wraps flushdb with appropriate KEYS * calls" do
       client.expects(:call).with([:flushdb]).never
-      client.expects(:call).with([:keys,"#{@namespace}:*"]).once.returns(["rabbit"])
-      client.expects(:call).with([:del,"#{@namespace}:rabbit"]).once
+      client.expects(:call).with([:keys, "#{@namespace}:*"]).once.returns(["rabbit"])
+      client.expects(:call).with([:del, "#{@namespace}:rabbit"]).once
       store.flushdb
     end
 

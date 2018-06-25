@@ -50,7 +50,6 @@ class MockRedis
   def has_expire?(*a)
     @expires.include?(a)
   end
-
 end
 
 class MockTtlStore < MockRedis
@@ -80,7 +79,7 @@ describe MockTtlStore do
 
     describe 'with nx and ex option' do
       it 'must call super with key and value and options' do
-        set_options = {nx: true, ex: 3600}
+        set_options = { nx: true, ex: 3600 }
         redis.set(key, mock_value, set_options)
         redis.has_set?(key, mock_value, set_options).must_equal true
       end

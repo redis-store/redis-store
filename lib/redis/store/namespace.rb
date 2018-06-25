@@ -36,15 +36,15 @@ class Redis
       end
 
       def keys(pattern = "*")
-        namespace(pattern) { |p| super(p).map{|key| strip_namespace(key) } }
+        namespace(pattern) { |p| super(p).map { |key| strip_namespace(key) } }
       end
 
       def del(*keys)
-        super(*keys.map {|key| interpolate(key) }) if keys.any?
+        super(*keys.map { |key| interpolate(key) }) if keys.any?
       end
 
       def watch(*keys)
-        super(*keys.map {|key| interpolate(key) }) if keys.any?
+        super(*keys.map { |key| interpolate(key) }) if keys.any?
       end
 
       def mget(*keys, &blk)
@@ -52,15 +52,15 @@ class Redis
         if keys.any?
           # Serialization gets extended before Namespace does, so we need to pass options further
           if singleton_class.ancestors.include? Serialization
-            super(*keys.map {|key| interpolate(key) }, options, &blk)
+            super(*keys.map { |key| interpolate(key) }, options, &blk)
           else
-            super(*keys.map {|key| interpolate(key) }, &blk)
+            super(*keys.map { |key| interpolate(key) }, &blk)
           end
         end
       end
 
       def expire(key, ttl)
-         namespace(key) { |k| super(k, ttl) }
+        namespace(key) { |k| super(k, ttl) }
       end
 
       def to_s
