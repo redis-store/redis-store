@@ -6,8 +6,6 @@ notifications:
   on_success: never
 
 before_install:
-  # Install node version from .nvmrc
-  - nvm install
   # Install Code Climate test reporter
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
@@ -28,8 +26,11 @@ gemfile:
   - gemfiles/redis_3_x.gemfile
   - gemfiles/redis_4_x.gemfile
 
+before_script: ./cc-test-reporter before-build
+
 # Pipe the coverage data to Code Climate if tests pass
 after_script:
+  - ./cc-test-reporter after-build --exit-code $EXIT_CODE
   - ./cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json
   - if [[ "$TRAVIS_TEST_RESULT" == 0 ]]; then ./cc-test-reporter upload-coverage; fi  # Upload coverage/codeclimate.json
 
