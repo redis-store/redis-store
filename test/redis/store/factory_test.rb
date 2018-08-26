@@ -120,11 +120,11 @@ describe "Redis::Store::Factory" do
 
       it "should instantiate a Redis::DistributedStore store" do
         store = Redis::Store::Factory.create(
-          {:host => "localhost", :port => 6379},
-          {:host => "localhost", :port => 6380}
+          { :host => "localhost", :port => 6379 },
+          { :host => "localhost", :port => 6380 }
         )
         store.must_be_kind_of(Redis::DistributedStore)
-        store.nodes.map {|node| node.to_s }.must_equal([
+        store.nodes.map { |node| node.to_s }.must_equal([
           "Redis Client connected to localhost:6379 against DB 0",
           "Redis Client connected to localhost:6380 against DB 0",
         ])
@@ -206,50 +206,50 @@ describe "Redis::Store::Factory" do
       it "instantiates Redis::DistributedStore" do
         store = Redis::Store::Factory.create "redis://127.0.0.1:6379", "redis://127.0.0.1:6380"
         store.must_be_kind_of(Redis::DistributedStore)
-        store.nodes.map {|node| node.to_s }.must_equal([
+        store.nodes.map { |node| node.to_s }.must_equal([
           "Redis Client connected to 127.0.0.1:6379 against DB 0",
           "Redis Client connected to 127.0.0.1:6380 against DB 0",
         ])
       end
     end
 
-    describe 'when given host Hash and options Hash' do 
+    describe 'when given host Hash and options Hash' do
       it 'instantiates Redis::Store and merges options' do
         store = Redis::Store::Factory.create(
-          { :host => '127.0.0.1', :port => '6379' }, 
+          { :host => '127.0.0.1', :port => '6379' },
           { :namespace => 'theplaylist' }
         )
       end
 
-      it 'instantiates Redis::DistributedStore and merges options' do 
+      it 'instantiates Redis::DistributedStore and merges options' do
         store = Redis::Store::Factory.create(
-          { :host => '127.0.0.1', :port => '6379' }, 
-          { :host => '127.0.0.1', :port => '6380' }, 
+          { :host => '127.0.0.1', :port => '6379' },
+          { :host => '127.0.0.1', :port => '6380' },
           { :namespace => 'theplaylist' }
         )
-        store.nodes.map {|node| node.to_s }.must_equal([
+        store.nodes.map { |node| node.to_s }.must_equal([
           "Redis Client connected to 127.0.0.1:6379 against DB 0 with namespace theplaylist",
           "Redis Client connected to 127.0.0.1:6380 against DB 0 with namespace theplaylist"
         ])
       end
     end
 
-    describe 'when given host String and options Hash' do 
-      it 'instantiates Redis::Store and merges options' do 
-        store = Redis::Store::Factory.create "redis://127.0.0.1", { :namespace => 'theplaylist' }
+    describe 'when given host String and options Hash' do
+      it 'instantiates Redis::Store and merges options' do
+        store = Redis::Store::Factory.create "redis://127.0.0.1", :namespace => 'theplaylist'
         store.to_s.must_equal("Redis Client connected to 127.0.0.1:6379 against DB 0 with namespace theplaylist")
       end
 
-      it 'instantiates Redis::DistributedStore and merges options' do 
-        store = Redis::Store::Factory.create "redis://127.0.0.1:6379", "redis://127.0.0.1:6380", { :namespace => 'theplaylist' }
-        store.nodes.map {|node| node.to_s }.must_equal([
+      it 'instantiates Redis::DistributedStore and merges options' do
+        store = Redis::Store::Factory.create "redis://127.0.0.1:6379", "redis://127.0.0.1:6380", :namespace => 'theplaylist'
+        store.nodes.map { |node| node.to_s }.must_equal([
           "Redis Client connected to 127.0.0.1:6379 against DB 0 with namespace theplaylist",
           "Redis Client connected to 127.0.0.1:6380 against DB 0 with namespace theplaylist",
         ])
       end
 
       it 'instantiates Redis::Store and sets namespace from String' do
-        store = Redis::Store::Factory.create "redis://127.0.0.1:6379/0/theplaylist", { :expire_after => 5 }
+        store = Redis::Store::Factory.create "redis://127.0.0.1:6379/0/theplaylist", :expire_after => 5
         store.to_s.must_equal("Redis Client connected to 127.0.0.1:6379 against DB 0 with namespace theplaylist")
       end
     end

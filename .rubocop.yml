@@ -5,9 +5,7 @@ AllCops:
   # to ignore them, so only the ones explicitly set in this file are enabled.
   DisabledByDefault: true
   Exclude:
-    - '**/templates/**/*'
     - '**/vendor/**/*'
-    - 'actionpack/lib/action_dispatch/journey/parser.rb'
 
 # Prefer &&/|| over and/or.
 Style/AndOr:
@@ -18,9 +16,6 @@ Style/AndOr:
 Style/BracesAroundHashParameters:
   Enabled: true
   EnforcedStyle: context_dependent
-  Exclude:
-    - 'lib/redis/distributed_store.rb'
-    - 'test/redis/store/factory_test.rb'
 
 # Align comments with method definitions.
 Layout/CommentIndentation:
@@ -31,15 +26,10 @@ Layout/ElseAlignment:
 
 Layout/EmptyLineAfterMagicComment:
   Enabled: true
-  Exclude:
-    - 'redis-store.gemspec'
 
 # In a regular class definition, no empty lines around the body.
 Layout/EmptyLinesAroundClassBody:
   Enabled: true
-  Exclude:
-    - 'lib/redis/store/factory.rb'
-    - 'test/redis/store/ttl_test.rb'
 
 # In a regular method definition, no empty lines around the body.
 Layout/EmptyLinesAroundMethodBody:
@@ -61,10 +51,6 @@ Layout/IndentationConsistency:
 # Two spaces, no tabs (for indentation).
 Layout/IndentationWidth:
   Enabled: true
-  Exclude:
-    - 'lib/redis/store/factory.rb'
-    - 'lib/redis/store/namespace.rb'
-    - 'test/redis/store/namespace_test.rb'
 
 Layout/LeadingCommentSpace:
   Enabled: true
@@ -74,8 +60,6 @@ Layout/SpaceAfterColon:
 
 Layout/SpaceAfterComma:
   Enabled: true
-  Exclude:
-    - 'test/redis/store/namespace_test.rb'
 
 Layout/SpaceAroundEqualsInParameterDefault:
   Enabled: true
@@ -85,8 +69,6 @@ Layout/SpaceAroundKeyword:
 
 Layout/SpaceAroundOperators:
   Enabled: true
-  Exclude:
-    - 'test/redis/store/redis_version_test.rb'
 
 Layout/SpaceBeforeComma:
   Enabled: true
@@ -104,31 +86,14 @@ Style/MethodDefParentheses:
 # Use `foo {}` not `foo{}`.
 Layout/SpaceBeforeBlockBraces:
   Enabled: true
-  Exclude:
-    - 'lib/redis/store/namespace.rb'
-    - 'redis-store.gemspec'
-    - 'test/redis/store/namespace_test.rb'
 
 # Use `foo { bar }` not `foo {bar}`.
 Layout/SpaceInsideBlockBraces:
   Enabled: true
-  Exclude:
-    - 'lib/redis/distributed_store.rb'
-    - 'lib/redis/store/factory.rb'
-    - 'lib/redis/store/namespace.rb'
-    - 'test/redis/store/factory_test.rb'
-    - 'test/redis/store/namespace_test.rb'
 
 # Use `{ a: 1 }` not `{a:1}`.
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
-  Exclude:
-    - 'lib/redis/distributed_store.rb'
-    - 'lib/redis/store.rb'
-    - 'test/redis/distributed_store_test.rb'
-    - 'test/redis/store/factory_test.rb'
-    - 'test/redis/store/serialization_test.rb'
-    - 'test/redis/store/ttl_test.rb'
 
 Layout/SpaceInsideParens:
   Enabled: true
@@ -140,18 +105,10 @@ Layout/Tab:
 # Blank lines should not have any spaces.
 Layout/TrailingBlankLines:
   Enabled: true
-  Exclude:
-    - 'lib/redis/store.rb'
-    - 'lib/redis/store/redis_version.rb'
-    - 'test/redis/store/redis_version_test.rb'
 
 # No trailing whitespace.
 Layout/TrailingWhitespace:
   Enabled: true
-  Exclude:
-    - 'lib/redis/distributed_store.rb'
-    - 'lib/redis/store/factory.rb'
-    - 'test/redis/store/factory_test.rb'
 
 # Use quotes for string literals when they are enough.
 Style/UnneededPercentQ:
@@ -163,8 +120,6 @@ Layout/EndAlignment:
   Enabled: true
   EnforcedStyleAlignWith: variable
   AutoCorrect: true
-  Exclude:
-    - 'lib/redis/store/factory.rb'
 
 # Use my_method(my_arg) not my_method( my_arg ) or my_method my_arg.
 Lint/RequireParentheses:
@@ -173,8 +128,6 @@ Lint/RequireParentheses:
 Style/RedundantReturn:
   Enabled: true
   AllowMultipleReturnValues: true
-  Exclude:
-    - 'test/test_helper.rb'
 
 Style/Semicolon:
   Enabled: true
@@ -183,5 +136,3 @@ Style/Semicolon:
 # Prefer Foo.method over Foo::method
 Style/ColonMethodCall:
   Enabled: true
-  Exclude:
-    - 'lib/redis/store/factory.rb'

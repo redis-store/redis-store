@@ -5,7 +5,7 @@ class Redis
     @@timeout = 5
     attr_reader :ring
 
-    def initialize(addresses, options = { })
+    def initialize(addresses, options = {})
       _extend_namespace options
       @ring = options[:ring] || Redis::HashRing.new([], options[:replicas] || Redis::HashRing::POINTS_PER_SERVER)
 
@@ -19,7 +19,7 @@ class Redis
     end
 
     def reconnect
-      nodes.each {|node| node.reconnect }
+      nodes.each { |node| node.reconnect }
     end
 
     def set(key, value, options = nil)
@@ -57,10 +57,10 @@ class Redis
       end
 
       def _merge_options(address, options)
-        address.merge({
-          :timeout => options[:timeout] || @@timeout, 
+        address.merge(
+          :timeout => options[:timeout] || @@timeout,
           :namespace => options[:namespace]
-        })
+        )
       end
   end
 end

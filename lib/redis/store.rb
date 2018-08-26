@@ -13,7 +13,7 @@ class Redis
   class Store < self
     include Ttl, Interface, RedisVersion
 
-    def initialize(options = { })
+    def initialize(options = {})
       super
 
       unless options[:marshalling].nil?
@@ -66,4 +66,3 @@ class Redis
       end
   end
 end
-
