@@ -22,6 +22,11 @@ describe "Redis::Store::Factory" do
         store.to_s.must_equal("Redis Client connected to localhost:6380 against DB 0")
       end
 
+      it "uses specified scheme" do
+        store = Redis::Store::Factory.create :scheme => "rediss"
+        store.instance_variable_get(:@client).scheme.must_equal('rediss')
+      end
+
       it "uses specified path" do
         store = Redis::Store::Factory.create :path => "/var/run/redis.sock"
         store.to_s.must_equal("Redis Client connected to /var/run/redis.sock against DB 0")
@@ -67,6 +72,23 @@ describe "Redis::Store::Factory" do
         store = Redis::Store::Factory.create :serializer => JSON
         store.instance_variable_get(:@serializer).must_equal(JSON)
         store.instance_variable_get(:@options)[:raw].must_equal(false)
+      end
+
+      describe "defaults" do
+        it "defaults to localhost if no host specified" do
+          store = Redis::Store::Factory.create
+          store.instance_variable_get(:@client).host.must_equal('127.0.0.1')
+        end
+
+        it "defaults to 6379 if no port specified" do
+          store = Redis::Store::Factory.create
+          store.instance_variable_get(:@client).port.must_equal(6379)
+        end
+
+        it "defaults to redis:// if no scheme specified" do
+          store = Redis::Store::Factory.create
+          store.instance_variable_get(:@client).scheme.must_equal('redis')
+        end
       end
 
       describe 'with stdout disabled' do
@@ -118,6 +140,16 @@ describe "Redis::Store::Factory" do
       it "uses specified port" do
         store = Redis::Store::Factory.create "redis://127.0.0.1:6380"
         store.to_s.must_equal("Redis Client connected to 127.0.0.1:6380 against DB 0")
+      end
+
+      it "uses specified scheme" do
+        store = Redis::Store::Factory.create "rediss://127.0.0.1:6380"
+        store.instance_variable_get(:@client).scheme.must_equal('rediss')
+      end
+
+      it "correctly defaults to redis:// when relative scheme specified" do
+        store = Redis::Store::Factory.create "//127.0.0.1:6379"
+        store.instance_variable_get(:@client).scheme.must_equal('redis')
       end
 
       it "uses specified path" do
