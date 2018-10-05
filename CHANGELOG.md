@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.6.0
+
+Breaking Changes
+
+* None
+
+Added
+
+* [SSL/TLS Support with the rediss:// URI scheme](https://github.com/redis-store/redis-store/pull/306)
+* [Use Code Style Guide For New Contributions](https://github.com/redis-store/redis-store/pull/309)
+
+Fixed
+
+* None
+
 ## 1.5.0
 
 Breaking Changes
