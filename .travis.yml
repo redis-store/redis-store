@@ -10,7 +10,7 @@ before_install:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   # 1.9.3 has Bundler 1.7.6 with the "undefined method `spec' for nil" bug
-  - gem install bundler
+  - gem install bundler -v 1.16.1
 
 rvm:
   - 2.1
