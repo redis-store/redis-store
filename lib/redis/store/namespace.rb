@@ -39,6 +39,17 @@ class Redis
         namespace(pattern) { |p| super(p).map { |key| strip_namespace(key) } }
       end
 
+      def scan(cursor, options = {})
+        if options[:match]
+          namespace(options[:match]) do |p|
+            cursor, keys = super(cursor, options.merge(match: p))
+            [ cursor, keys.map{|key| strip_namespace(key) } ]
+          end
+        else
+          super(cursor, options)
+        end
+      end
+
       def del(*keys)
         super(*keys.map { |key| interpolate(key) }) if keys.any?
       end

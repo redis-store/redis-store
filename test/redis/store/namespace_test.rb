@@ -123,6 +123,17 @@ describe "Redis::Store::Namespace" do
       store.keys("rabb*").must_equal [ "rabbit" ]
     end
 
+    it "should namespace scan when a pattern is given" do
+      store.set "rabbit", @rabbit
+      cursor = "0"
+      keys = []
+      begin
+        cursor, matched_keys = store.scan(cursor, match: "rabb*")
+        keys = keys.concat(matched_keys) unless matched_keys.empty?
+      end until cursor == "0"
+      keys.must_equal [ "rabbit" ]
+    end
+
     it "should namespace exists" do
       client.expects(:call).with([:exists, "#{@namespace}:rabbit"])
       store.exists "rabbit"
