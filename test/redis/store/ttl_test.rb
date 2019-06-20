@@ -133,6 +133,25 @@ describe MockTtlStore do
           redis.has_expire?(key, options[:expire_after]).must_equal true
         end
       end
+
+      describe 'using a redis cluster' do
+        let(:options) { { :expire_after => 3600, :cluster => %w[redis://127.0.0.1:6379/0] } }
+
+        it 'uses the redis pipelined feature to chain commands' do
+          redis.expects(:pipelined)
+          redis.setnx(key, mock_value, options)
+        end
+
+        it 'must call setnx with key and value and set raw to true' do
+          redis.setnx(key, mock_value, options)
+          redis.has_setnx?(key, mock_value, :raw => true).must_equal true
+        end
+
+        it 'must call expire' do
+          redis.setnx(key, mock_value, options)
+          redis.has_expire?(key, options[:expire_after]).must_equal true
+        end
+      end
     end
   end
 end
