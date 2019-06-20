@@ -182,5 +182,20 @@ describe "Redis::Store::Namespace" do
         store.flushdb
       end
     end
+
+    it "should namespace hgetall" do
+      client.expects(:call).with([:hgetall, "#{@namespace}:rabbit"]).once
+      store.hgetall("rabbit")
+    end
+
+    it "should namespace hsetnx" do
+      client.expects(:call).with([:hsetnx, "#{@namespace}:rabbit", "key", @rabbit])
+      store.hsetnx("rabbit", "key", @rabbit)
+    end
+
+    it "should namespace hset" do
+      client.expects(:call).with([:hset, "#{@namespace}:rabbit", "key", @rabbit])
+      store.hset("rabbit", "key", @rabbit)
+    end
   end
 end

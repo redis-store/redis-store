@@ -63,6 +63,18 @@ class Redis
         end
       end
 
+      def hgetall(key)
+        namespace(key) { |k| super(k) }
+      end
+
+      def hsetnx(key, field, val)
+        namespace(key) { |k| super(k, field, val) }
+      end
+
+      def hset(key, field, val)
+        namespace(key) { |k| super(k, field, val) }
+      end
+
       def expire(key, ttl)
         namespace(key) { |k| super(k, ttl) }
       end
