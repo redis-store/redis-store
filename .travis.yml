@@ -9,12 +9,14 @@ before_install:
   > ./cc-test-reporter
 - chmod +x ./cc-test-reporter
 rvm:
-- 2.1
-- 2.2
-- 2.3
-- 2.4
-- ruby-head
-- jruby-head
+  - 2.1
+  - 2.2
+  - 2.3
+  - 2.4
+  - 2.5
+  - 2.6
+  - ruby-head
+  - jruby-head
 gemfile:
 - gemfiles/redis_4_x.gemfile
 before_script: "./cc-test-reporter before-build"
