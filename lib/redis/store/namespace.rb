@@ -41,8 +41,8 @@ class Redis
 
       def scan(cursor, options = {})
         if options[:match]
-          namespace(options[:match]) do |p|
-            cursor, keys = super(cursor, options.merge(match: p))
+          namespace(options[:match]) do |pattern|
+            cursor, keys = super(cursor, options.merge(match: pattern))
             [ cursor, keys.map{|key| strip_namespace(key) } ]
           end
         else
