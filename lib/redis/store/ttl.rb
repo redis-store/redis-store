@@ -34,7 +34,7 @@ class Redis
         end
 
         def with_multi_or_pipelined(options, &block)
-          return pipelined(&block) if options[:avoid_multi_commands]
+          return pipelined(&block) if options.key?(:cluster) || options[:avoid_multi_commands]
           multi(&block)
         end
     end

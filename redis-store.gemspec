@@ -20,10 +20,10 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.license       = 'MIT'
 
-  s.add_dependency 'redis', '>= 3.0.6', '< 5'
+  s.add_dependency 'redis', '>= 4', '< 5'
 
   s.add_development_dependency 'rake',     '~> 10'
-  s.add_development_dependency 'bundler',  '~> 1.3'
+  s.add_development_dependency 'bundler'
   s.add_development_dependency 'mocha',    '~> 0.14.0'
   s.add_development_dependency 'minitest', '~> 5'
   s.add_development_dependency 'git',      '~> 1.2'

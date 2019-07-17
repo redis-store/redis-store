@@ -4,38 +4,40 @@ cache: bundler
 notifications:
   webhooks: https://www.travisbuddy.com
   on_success: never
-
 before_install:
-  # Install Code Climate test reporter
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  # 1.9.3 has Bundler 1.7.6 with the "undefined method `spec' for nil" bug
-  - gem install bundler
-
+- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+  > ./cc-test-reporter
+- chmod +x ./cc-test-reporter
 rvm:
   - 2.1
   - 2.2
   - 2.3
   - 2.4
+  - 2.5
+  - 2.6
   - ruby-head
   - jruby-head
-
 gemfile:
-  - gemfiles/redis_3_x.gemfile
-  - gemfiles/redis_4_x.gemfile
-
-before_script: ./cc-test-reporter before-build
-
-# Pipe the coverage data to Code Climate if tests pass
+- gemfiles/redis_4_x.gemfile
+before_script: "./cc-test-reporter before-build"
 after_script:
-  - ./cc-test-reporter after-build --exit-code $EXIT_CODE
-  - ./cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json
-  - if [[ "$TRAVIS_TEST_RESULT" == 0 ]]; then ./cc-test-reporter upload-coverage; fi  # Upload coverage/codeclimate.json
-
+- "./cc-test-reporter after-build --exit-code $EXIT_CODE"
+- "./cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json"
+- if [[ "$TRAVIS_TEST_RESULT" == 0 ]]; then ./cc-test-reporter upload-coverage; fi
 matrix:
   allow_failures:
-    - rvm: jruby-head
-    - rvm: ruby-head
+  - rvm: jruby-head
+  - rvm: ruby-head
   exclude:
-    - rvm: 2.1
-      gemfile: gemfiles/redis_4_x.gemfile
+  - rvm: 2.1
+    gemfile: gemfiles/redis_4_x.gemfile
+  - rvm: 2.2
+    gemfile: gemfiles/redis_4_x.gemfile
+deploy:
+  provider: rubygems
+  api_key:
+    secure: vhwP2VNfVYgppPNis7asqMnWuIcURr2e99uhYeHS4Sc+hIozu2QzAAekDrVpEDpeaEubtmTi19UcV4dZbDrQ0M+buE8LJEpItz73yK++J75Rzyh/bsGnWTy2FIvedLrH+jBNf28I9p8XNWkQxVaTc/r/v6BX3mmyV/jVoTBz9es=
+  gem: redis-store
+  on:
+    tags: true
+    repo: redis-store/redis-store
