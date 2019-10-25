@@ -90,6 +90,18 @@ class Redis
         namespace(key) { |k| super(k, ttl) }
       end
 
+      def hscan(key, cursor, options = {})
+        namespace(key) { |k| super(k, cursor, options) }
+      end
+
+      def hdel(key, *fields)
+        namespace(key) { |k| super(k, fields) }
+      end
+
+      def hlen(key)
+        namespace(key) { |k| super(k) }
+      end
+
       def to_s
         if namespace_str
           "#{super} with namespace #{namespace_str}"
