@@ -1,5 +1,33 @@
 # Changelog
 
+## 1.8.1
+
+Breaking Changes
+
+* None
+
+Added
+
+* None
+
+Fixed
+
+* [Add namespace to remaining hash methods](https://github.com/redis-store/redis-store/pull/321)
+
+## 1.8.0
+
+Breaking Changes
+
+* None
+
+Added
+
+* [Redis Cluster Support](https://github.com/redis-store/redis-store/pull/318)
+
+Fixed
+
+* None
+
 ## 1.6.0
 
 Breaking Changes
@@ -59,7 +87,7 @@ Added
 
 Fixed
 
-* Conventional `Marshal.dump` usage allowing potential security vulnerability (CVE-2017-1000248) 
+* Conventional `Marshal.dump` usage allowing potential security vulnerability (CVE-2017-1000248)
 
 ## 1.3.0
 
