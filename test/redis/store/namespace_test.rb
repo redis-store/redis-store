@@ -208,5 +208,20 @@ describe "Redis::Store::Namespace" do
       client.expects(:call).with([:hset, "#{@namespace}:rabbit", "key", @rabbit])
       store.hset("rabbit", "key", @rabbit)
     end
+
+    it "should namespace hscan" do
+      client.expects(:call).with([:hscan, "#{@namespace}:rabbit", 0])
+      store.hscan("rabbit", 0)
+    end
+
+    it "should namespace hdel" do
+      client.expects(:call).with([:hdel, "#{@namespace}:rabbit", %w(field)])
+      store.hdel("rabbit", "field")
+    end
+
+    it "should namespace hlen" do
+      client.expects(:call).with([:hlen, "#{@namespace}:rabbit"])
+      store.hlen("rabbit")
+    end
   end
 end
