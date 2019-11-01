@@ -1,4 +1,6 @@
 require 'redis'
+require 'zlib'
+
 require 'redis/store/factory'
 require 'redis/distributed_store'
 require 'redis/store/namespace'
@@ -8,6 +10,9 @@ require 'redis/store/redis_version'
 require 'redis/store/ttl'
 require 'redis/store/interface'
 require 'redis/store/redis_version'
+require 'redis/store/compression'
+require 'redis/store/compression/deflate'
+require 'redis/store/compression/gzip'
 
 class Redis
   class Store < self
@@ -33,6 +38,7 @@ class Redis
         @serializer = options[:marshalling] ? Marshal : nil
       end
 
+      _extend_compression options
       _extend_marshalling options
       _extend_namespace   options
     end
@@ -63,6 +69,11 @@ class Redis
       def _extend_namespace(options)
         @namespace = options[:namespace]
         extend Namespace
+      end
+
+      def _extend_compression(options)
+        @compressor = options[:compress]
+        extend Compression unless @compressor.nil?
       end
   end
 end
