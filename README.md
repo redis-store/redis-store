@@ -45,9 +45,9 @@ s.add_dependency 'redis-store', '>= 1.4', '< 2'
 
 ## Status
 
-[![Gem Version](https://badge.fury.io/rb/redis-store.png)](http://badge.fury.io/rb/redis-store)
-[![Build Status](https://secure.travis-ci.org/redis-store/redis-store.png?branch=master)](http://travis-ci.org/redis-store/redis-store?branch=master)
-[![Code Climate](https://codeclimate.com/github/redis-store/redis-store.png)](https://codeclimate.com/github/redis-store/redis-store)
+[![Gem Version](https://badge.fury.io/rb/redis-store.svg)](http://badge.fury.io/rb/redis-store)
+[![Build Status](https://secure.travis-ci.org/redis-store/redis-store.svg?branch=master)](http://travis-ci.org/redis-store/redis-store?branch=master)
+[![Code Climate](https://codeclimate.com/github/redis-store/redis-store.svg)](https://codeclimate.com/github/redis-store/redis-store)
 
 ## Copyright
 
