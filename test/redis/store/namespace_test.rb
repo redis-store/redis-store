@@ -223,5 +223,15 @@ describe "Redis::Store::Namespace" do
       client.expects(:call).with([:hlen, "#{@namespace}:rabbit"])
       store.hlen("rabbit")
     end
+
+    it "should namespace zincrby" do 
+      client.expects(:call).with([:zincrby, "#{@namespace}:rabbit", 1.0, "member"])
+      store.zincrby("rabbit", 1.0, "member")
+    end
+
+    it "should namespace zscore" do 
+      client.expects(:call).with([:zscore, "#{@namespace}:rabbit", "member"])
+      store.zscore("rabbit", "member")
+    end
   end
 end
