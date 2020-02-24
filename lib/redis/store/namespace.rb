@@ -110,6 +110,14 @@ class Redis
         namespace(key) { |k| super(k, member) }
       end
 
+      def zadd(key, increment, member)
+        namespace(key) { |k| super(k, increment, member) }
+      end
+
+      def zrem(key, member)
+        namespace(key) { |k| super(k, member) }
+      end
+
       def to_s
         if namespace_str
           "#{super} with namespace #{namespace_str}"
