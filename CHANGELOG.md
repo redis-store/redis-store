@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.8.2
+
+Breaking Changes
+
+* None
+
+Added
+
+* [Add namespace to zincrby and zscore](https://github.com/redis-store/redis-store/pull/323)
+* [Add namespace to zadd and zrem](https://github.com/redis-store/redis-store/pull/326)
+
+Fixed
+
+* None
+
 ## 1.8.1
 
 Breaking Changes
