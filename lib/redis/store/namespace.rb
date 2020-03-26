@@ -102,6 +102,10 @@ class Redis
         namespace(key) { |k| super(k) }
       end
 
+      def hkeys(key)
+        namespace(key) { |k| super(k) }
+      end
+
       def zincrby(key, increment, member)
         namespace(key) { |k| super(k, increment, member) }
       end
