@@ -74,6 +74,14 @@ class Redis
         end
       end
 
+      def expire(key, ttl)
+        namespace(key) { |k| super(k, ttl) }
+      end
+
+      def hdel(key, *fields)
+        namespace(key) { |k| super(k, *fields) }
+      end
+
       def hget(key, field)
         namespace(key) { |k| super(k, field) }
       end
@@ -82,16 +90,44 @@ class Redis
         namespace(key) { |k| super(k) }
       end
 
-      def hsetnx(key, field, val)
-        namespace(key) { |k| super(k, field, val) }
+      def hexists(key, field)
+        namespace(key) { |k| super(k, field) }
+      end
+
+      def hincrby(key, field, increment)
+        namespace(key) { |k| super(k, field, increment) }
+      end
+
+      def hincrbyfloat(key, field, increment)
+        namespace(key) { |k| super(k, field, increment) }
+      end
+
+      def hkeys(key)
+        namespace(key) { |k| super(k) }
+      end
+
+      def hlen(key)
+        namespace(key) { |k| super(k) }
+      end
+
+      def hmget(key, *fields, &blk)
+        namespace(key) { |k| super(k, *fields, &blk) }
+      end
+
+      def hmset(key, *attrs)
+        namespace(key) { |k| super(k, *attrs) }
       end
 
       def hset(key, field, val)
         namespace(key) { |k| super(k, field, val) }
       end
 
-      def expire(key, ttl)
-        namespace(key) { |k| super(k, ttl) }
+      def hsetnx(key, field, val)
+        namespace(key) { |k| super(k, field, val) }
+      end
+
+      def hvals(key)
+        namespace(key) { |k| super(k) }
       end
 
       def hscan(key, cursor, options = {})
@@ -100,18 +136,6 @@ class Redis
 
       def hscan_each(key, options={}, &block)
         namespace(key) { |k| super(k, options, &block) }
-      end
-
-      def hdel(key, *fields)
-        namespace(key) { |k| super(k, fields) }
-      end
-
-      def hlen(key)
-        namespace(key) { |k| super(k) }
-      end
-
-      def hkeys(key)
-        namespace(key) { |k| super(k) }
       end
 
       def zincrby(key, increment, member)
