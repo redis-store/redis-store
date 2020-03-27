@@ -224,7 +224,7 @@ describe "Redis::Store::Namespace" do
       client.expects(:call).with([:hscan, "#{@namespace}:rabbit", 0]).returns(["0", ["key1"]])
       results = []
       store.hscan_each("rabbit") do |key|
-        results.append(key)
+        results << key
       end
       results.must_equal(["key1"])
     end
