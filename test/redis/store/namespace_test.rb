@@ -194,6 +194,11 @@ describe "Redis::Store::Namespace" do
       end
     end
 
+    it "should namespace hget" do
+      client.expects(:call).with([:hget, "#{@namespace}:rabbit", "key"]).once
+      store.hget("rabbit", "key")
+    end
+
     it "should namespace hgetall" do
       client.expects(:call).with([:hgetall, "#{@namespace}:rabbit"]).once
       store.hgetall("rabbit")
@@ -212,6 +217,23 @@ describe "Redis::Store::Namespace" do
     it "should namespace hscan" do
       client.expects(:call).with([:hscan, "#{@namespace}:rabbit", 0])
       store.hscan("rabbit", 0)
+    end
+
+    it "should namespace hscan_each with block" do
+      client.call([:hset, "#{@namespace}:rabbit", "key1", @rabbit])
+      client.expects(:call).with([:hscan, "#{@namespace}:rabbit", 0]).returns(["0", ["key1"]])
+      results = []
+      store.hscan_each("rabbit") do |key|
+        results.append(key)
+      end
+      results.must_equal(["key1"])
+    end
+
+    it "should namespace hscan_each without block" do
+      client.call([:hset, "#{@namespace}:rabbit", "key1", @rabbit])
+      client.expects(:call).with([:hscan, "#{@namespace}:rabbit", 0]).returns(["0", ["key1"]])
+      results = store.hscan_each("rabbit").to_a
+      results.must_equal(["key1"])
     end
 
     it "should namespace hdel" do

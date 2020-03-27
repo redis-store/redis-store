@@ -74,6 +74,10 @@ class Redis
         end
       end
 
+      def hget(key, field)
+        namespace(key) { |k| super(k, field) }
+      end
+
       def hgetall(key)
         namespace(key) { |k| super(k) }
       end
@@ -92,6 +96,10 @@ class Redis
 
       def hscan(key, cursor, options = {})
         namespace(key) { |k| super(k, cursor, options) }
+      end
+
+      def hscan_each(key, options={}, &block)
+        namespace(key) { |k| super(k, options, &block) }
       end
 
       def hdel(key, *fields)
