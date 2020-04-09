@@ -194,29 +194,39 @@ describe "Redis::Store::Namespace" do
       end
     end
 
+    it "should namespace hdel" do
+      client.expects(:call).with([:hdel, "#{@namespace}:rabbit", "key1", "key2"]).once
+      store.hdel("rabbit", "key1", "key2")
+    end
+
+    it "should namespace hget" do
+      client.expects(:call).with([:hget, "#{@namespace}:rabbit", "key"]).once
+      store.hget("rabbit", "key")
+    end
+
     it "should namespace hgetall" do
       client.expects(:call).with([:hgetall, "#{@namespace}:rabbit"]).once
       store.hgetall("rabbit")
     end
 
-    it "should namespace hsetnx" do
-      client.expects(:call).with([:hsetnx, "#{@namespace}:rabbit", "key", @rabbit])
-      store.hsetnx("rabbit", "key", @rabbit)
+    it "should namespace hexists" do
+      client.expects(:call).with([:hexists, "#{@namespace}:rabbit", "key"]).once
+      results = store.hexists("rabbit", "key")
     end
 
-    it "should namespace hset" do
-      client.expects(:call).with([:hset, "#{@namespace}:rabbit", "key", @rabbit])
-      store.hset("rabbit", "key", @rabbit)
+    it "should namespace hincrby" do
+      client.expects(:call).with([:hincrby, "#{@namespace}:rabbit", "key", 1]).once
+      store.hincrby("rabbit", "key", 1)
     end
 
-    it "should namespace hscan" do
-      client.expects(:call).with([:hscan, "#{@namespace}:rabbit", 0])
-      store.hscan("rabbit", 0)
+    it "should namespace hincrbyfloat" do
+      client.expects(:call).with([:hincrby, "#{@namespace}:rabbit", "key", 1.5]).once
+      store.hincrby("rabbit", "key", 1.5)
     end
 
-    it "should namespace hdel" do
-      client.expects(:call).with([:hdel, "#{@namespace}:rabbit", %w(field)])
-      store.hdel("rabbit", "field")
+    it "should namespace hkeys" do
+      client.expects(:call).with([:hkeys, "#{@namespace}:rabbit"])
+      store.hkeys("rabbit")
     end
 
     it "should namespace hlen" do
@@ -224,12 +234,59 @@ describe "Redis::Store::Namespace" do
       store.hlen("rabbit")
     end
 
-    it "should namespace zincrby" do 
+    it "should namespace hmget" do
+      client.expects(:call).with([:hmget, "#{@namespace}:rabbit", "key1", "key2"])
+      store.hmget("rabbit", "key1", "key2")
+    end
+
+    it "should namespace hmset" do
+      client.expects(:call).with([:hmset, "#{@namespace}:rabbit", "key", @rabbit])
+      store.hmset("rabbit", "key", @rabbit)
+    end
+
+    it "should namespace hset" do
+      client.expects(:call).with([:hset, "#{@namespace}:rabbit", "key", @rabbit])
+      store.hset("rabbit", "key", @rabbit)
+    end
+
+    it "should namespace hsetnx" do
+      client.expects(:call).with([:hsetnx, "#{@namespace}:rabbit", "key", @rabbit])
+      store.hsetnx("rabbit", "key", @rabbit)
+    end
+
+    it "should namespace hvals" do
+      client.expects(:call).with([:hvals, "#{@namespace}:rabbit"])
+      store.hvals("rabbit")
+    end
+
+    it "should namespace hscan" do
+      client.expects(:call).with([:hscan, "#{@namespace}:rabbit", 0])
+      store.hscan("rabbit", 0)
+    end
+
+    it "should namespace hscan_each with block" do
+      client.call([:hset, "#{@namespace}:rabbit", "key1", @rabbit])
+      client.expects(:call).with([:hscan, "#{@namespace}:rabbit", 0]).returns(["0", ["key1"]])
+      results = []
+      store.hscan_each("rabbit") do |key|
+        results << key
+      end
+      results.must_equal(["key1"])
+    end
+
+    it "should namespace hscan_each without block" do
+      client.call([:hset, "#{@namespace}:rabbit", "key1", @rabbit])
+      client.expects(:call).with([:hscan, "#{@namespace}:rabbit", 0]).returns(["0", ["key1"]])
+      results = store.hscan_each("rabbit").to_a
+      results.must_equal(["key1"])
+    end
+
+    it "should namespace zincrby" do
       client.expects(:call).with([:zincrby, "#{@namespace}:rabbit", 1.0, "member"])
       store.zincrby("rabbit", 1.0, "member")
     end
 
-    it "should namespace zscore" do 
+    it "should namespace zscore" do
       client.expects(:call).with([:zscore, "#{@namespace}:rabbit", "member"])
       store.zscore("rabbit", "member")
     end
