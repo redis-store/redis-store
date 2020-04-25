@@ -14,7 +14,13 @@ class Redis
       end
 
       def get(key, options = nil)
-        _unmarshal super(key), options
+        if @client.is_a?(Pipeline)
+          super(key) do |reply|
+            _unmarshal reply, options
+          end
+        else
+          _unmarshal super(key), options
+        end
       end
 
       def mget(*keys, &blk)

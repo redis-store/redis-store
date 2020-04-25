@@ -1,8 +1,10 @@
 class Redis
   class Store < self
     module Interface
-      def get(key, options = nil)
-        super(key)
+      def get(key, options = nil, &blk)
+        synchronize do |client|
+          client.call([:get, key], &blk)
+        end
       end
 
       def set(key, value, options = nil)

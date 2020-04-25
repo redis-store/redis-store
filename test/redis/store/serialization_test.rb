@@ -18,6 +18,16 @@ describe "Redis::Serialization" do
     @store.get("rabbit").must_equal(@rabbit)
   end
 
+  it "unmarshals on get in pipeline" do
+    rabbit = nil
+
+    @store.pipelined do
+      rabbit = @store.get("rabbit")
+    end
+
+    rabbit.value.must_equal(@rabbit)
+  end
+
   it "marshals on set" do
     @store.set "rabbit", @white_rabbit
     @store.get("rabbit").must_equal(@white_rabbit)
@@ -105,6 +115,17 @@ describe "Redis::Serialization" do
       rabbit.must_equal(@rabbit)
       rabbit2.must_equal(@white_rabbit)
     end
+  end
+
+  it "unmarshals on multi get in pipeline" do
+    rabbits = nil
+    @store.set "rabbit2", @white_rabbit
+
+    @store.pipelined do
+      rabbits = @store.mget("rabbit", "rabbit2")
+    end
+
+    rabbits.value.must_equal([@rabbit, @white_rabbit])
   end
 
   it "unmarshals on mapped_mget" do
