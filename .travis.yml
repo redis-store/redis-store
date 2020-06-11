@@ -9,15 +9,16 @@ before_install:
   > ./cc-test-reporter
 - chmod +x ./cc-test-reporter
 rvm:
-  - 2.1
-  - 2.2
   - 2.3
   - 2.4
   - 2.5
   - 2.6
+  - 2.7
   - ruby-head
   - jruby-head
 gemfile:
+- gemfiles/redis_4_0_x.gemfile
+- gemfiles/redis_4_1_x.gemfile
 - gemfiles/redis_4_x.gemfile
 before_script: "./cc-test-reporter before-build"
 after_script:
@@ -28,11 +29,6 @@ matrix:
   allow_failures:
   - rvm: jruby-head
   - rvm: ruby-head
-  exclude:
-  - rvm: 2.1
-    gemfile: gemfiles/redis_4_x.gemfile
-  - rvm: 2.2
-    gemfile: gemfiles/redis_4_x.gemfile
 deploy:
   provider: rubygems
   api_key:
