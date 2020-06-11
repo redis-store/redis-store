@@ -23,8 +23,12 @@ class Redis
         namespace(key) { |k| super(k, options) }
       end
 
-      def exists(key)
-        namespace(key) { |k| super(k) }
+      def exists(*keys)
+        super(*keys.map { |key| interpolate(key) })
+      end
+
+      def exists?(*keys)
+        super(*keys.map { |key| interpolate(key) })
       end
 
       def incrby(key, increment)
@@ -118,8 +122,8 @@ class Redis
         namespace(key) { |k| super(k, *attrs) }
       end
 
-      def hset(key, field, val)
-        namespace(key) { |k| super(k, field, val) }
+      def hset(key, *args)
+        namespace(key) { |k| super(k, *args) }
       end
 
       def hsetnx(key, field, val)
