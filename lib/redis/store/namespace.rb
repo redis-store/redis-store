@@ -150,8 +150,8 @@ class Redis
         namespace(key) { |k| super(k, member) }
       end
 
-      def zadd(key, increment, member)
-        namespace(key) { |k| super(k, increment, member) }
+      def zadd(key, *args)
+        namespace(key) { |k| super(k, *args) }
       end
 
       def zrem(key, member)
