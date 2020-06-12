@@ -3,24 +3,24 @@ class Redis
     module Namespace
       FLUSHDB_BATCH_SIZE = 1000
 
-      def set(key, val, options = nil)
-        namespace(key) { |k| super(k, val, options) }
+      def set(key, *args)
+        namespace(key) { |k| super(k, *args) }
       end
 
-      def setex(key, ttl, val, options = nil)
-        namespace(key) { |k| super(k, ttl, val, options) }
+      def setex(key, *args)
+        namespace(key) { |k| super(k, *args) }
       end
 
-      def setnx(key, val, options = nil)
-        namespace(key) { |k| super(k, val, options) }
+      def setnx(key, *args)
+        namespace(key) { |k| super(k, *args) }
       end
 
       def ttl(key, options = nil)
         namespace(key) { |k| super(k) }
       end
 
-      def get(key, options = nil)
-        namespace(key) { |k| super(k, options) }
+      def get(key, *args)
+        namespace(key) { |k| super(k, *args) }
       end
 
       def exists(*keys)
@@ -43,14 +43,14 @@ class Redis
         namespace(pattern) { |p| super(p).map { |key| strip_namespace(key) } }
       end
 
-      def scan(cursor, options = {})
-        if options[:match]
-          namespace(options[:match]) do |pattern|
-            cursor, keys = super(cursor, options.merge(match: pattern))
-            [ cursor, keys.map{|key| strip_namespace(key) } ]
+      def scan(cursor, match: nil, **kwargs)
+        if match
+          namespace(match) do |pattern|
+            cursor, keys = super(cursor, match: pattern, **kwargs)
+            [ cursor, keys.map{ |key| strip_namespace(key) } ]
           end
         else
-          super(cursor, options)
+          super(cursor, **kwargs)
         end
       end
 
@@ -134,12 +134,12 @@ class Redis
         namespace(key) { |k| super(k) }
       end
 
-      def hscan(key, cursor, options = {})
-        namespace(key) { |k| super(k, cursor, options) }
+      def hscan(key, *args)
+        namespace(key) { |k| super(k, *args) }
       end
 
-      def hscan_each(key, options={}, &block)
-        namespace(key) { |k| super(k, options, &block) }
+      def hscan_each(key, *args)
+        namespace(key) { |k| super(k, *args) }
       end
 
       def zincrby(key, increment, member)
@@ -156,6 +156,10 @@ class Redis
 
       def zrem(key, member)
         namespace(key) { |k| super(k, member) }
+      end
+
+      if respond_to?(:ruby2_keywords, true)
+        ruby2_keywords :set, :setex, :setnx, :hscan, :hscan_each
       end
 
       def to_s
