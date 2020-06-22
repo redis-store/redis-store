@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.9.0
+
+Breaking Changes
+
+* As a factor of updates for Redis v4.2.x, support for Ruby 2.1 and 2.2
+  has been dropped. These Ruby versions are end-of-life anyway.
+
+Fixed
+
+* [Compatibility with Redis client v4.2.x](https://github.com/redis-store/redis-store/pull/333)
+
+Added
+
+* [Support for edge Ruby's keyword arguments](https://github.com/redis-store/redis-store/pull/334)
+
 ## 1.8.2
 
 Breaking Changes
