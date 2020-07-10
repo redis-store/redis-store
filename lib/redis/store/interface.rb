@@ -10,7 +10,10 @@ class Redis
 
       def set(key, value, options = nil)
         if options && REDIS_SET_OPTIONS.any? { |k| options.key?(k) }
-          kwargs = REDIS_SET_OPTIONS.each_with_object({}) { |key, h| h[key] = options[key] if options.key?(key) }
+          kwargs = REDIS_SET_OPTIONS.each_with_object({}) do |key, hash|
+            hash[key] = options[key] if _option_key?(options, key)
+          end
+
           super(key, value, **kwargs)
         else
           super(key, value)
@@ -24,6 +27,16 @@ class Redis
       def setex(key, expiry, value, options = nil)
         super(key, expiry, value)
       end
+
+      private
+
+        def _option_key?(options, name)
+          if options.respond_to? :key?
+            options.key? name
+          else
+            !options[name].nil?
+          end
+        end
     end
   end
 end
