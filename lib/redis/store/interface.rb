@@ -9,7 +9,7 @@ class Redis
       private_constant :REDIS_SET_OPTIONS
 
       def set(key, value, options = nil)
-        if options && REDIS_SET_OPTIONS.any? { |k| options.key?(k) }
+        if options && REDIS_SET_OPTIONS.any? { |k| _option_key?(k) }
           kwargs = REDIS_SET_OPTIONS.each_with_object({}) do |key, hash|
             hash[key] = options[key] if _option_key?(options, key)
           end
