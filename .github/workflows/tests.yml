@@ -13,13 +13,18 @@ jobs:
           - ruby-head
           - jruby-head
         gemfile:
-          - gemfiles/redis_4_0_x.gemfile
-          - gemfiles/redis_4_1_x.gemfile
-          - gemfiles/redis_4_x.gemfile
+          - redis_4_0_x
+          - redis_4_1_x
+          - redis_4_x
+    services:
+      redis:
+        image: redis
+    env:
+      REDIS_URL: redis://redis:6379
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
-      - run: bundle --gemfile ${{ matrix.gemfile }}
+      - run: bundle --gemfile gemfiles/${{ matrix.gemfile }}.gemfile
       - run: rake
