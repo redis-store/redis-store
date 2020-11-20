@@ -23,8 +23,14 @@ jobs:
           - 6379:6379
       redis2:
         image: redis
+        options: --port 6380
         ports:
           - 6380:6380
+      redis3:
+        image: redis
+        options: --port 6381
+        ports:
+          - 6381:6381
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-ruby@v1
