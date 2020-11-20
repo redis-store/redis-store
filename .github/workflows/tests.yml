@@ -2,20 +2,20 @@ name: Tests
 on: [push]
 jobs:
   test:
-    strategy: matrix
-    matrix:
-      ruby:
-        - 2.3
-        - 2.4
-        - 2.5
-        - 2.6
-        - 2.7
-        - ruby-head
-        - jruby-head
-      gemfile:
-        - gemfiles/redis_4_0_x.gemfile
-        - gemfiles/redis_4_1_x.gemfile
-        - gemfiles/redis_4_x.gemfile
+    strategy:
+      matrix:
+        ruby:
+          - 2.3
+          - 2.4
+          - 2.5
+          - 2.6
+          - 2.7
+          - ruby-head
+          - jruby-head
+        gemfile:
+          - gemfiles/redis_4_0_x.gemfile
+          - gemfiles/redis_4_1_x.gemfile
+          - gemfiles/redis_4_x.gemfile
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-ruby@v1
