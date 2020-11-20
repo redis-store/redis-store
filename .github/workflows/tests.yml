@@ -17,8 +17,14 @@ jobs:
           - redis_4_1_x
           - redis_4_x
     services:
-      redis:
+      redis1:
         image: redis
+        ports:
+          - 6379:6379
+      redis2:
+        image: redis
+        ports:
+          - 6380:6380
     env:
       REDIS_URL: redis://redis:6379
     steps:
