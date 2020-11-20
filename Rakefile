@@ -7,7 +7,7 @@ require 'rubocop/rake_task'
 
 RuboCop::RakeTask.new :lint
 
-if !ENV["APPRAISAL_INITIALIZED"] && !ENV["TRAVIS"]
+if !ENV["APPRAISAL_INITIALIZED"] && !ENV["GITHUB_ACTIONS"]
   task :default do
     sh "appraisal install && rake appraisal default"
   end
