@@ -78,6 +78,16 @@ class Redis
         end
       end
 
+      def mset(*args)
+        options = (args.pop if args.last.is_a? Hash) || {}
+
+        updates = args.each_slice(2).map do |key, value|
+          [interpolate(key), value]
+        end.flatten
+
+        super(*updates, **options)
+      end
+
       def expire(key, ttl)
         namespace(key) { |k| super(k, ttl) }
       end

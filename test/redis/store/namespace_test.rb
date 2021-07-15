@@ -156,6 +156,11 @@ describe "Redis::Store::Namespace" do
       end
     end
 
+    it "should namespace mset" do
+      client.expects(:call).with([:mset, "#{@namespace}:rabbit", 1, "#{@namespace}:white_rabbit", 2, {}])
+      store.mset "rabbit", 1, "white_rabbit", 2
+    end
+
     it "should namespace mapped_mget" do
       client.expects(:process).with([[:mget, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"]]).returns(%w[ foo bar ])
       result = store.mapped_mget "rabbit", "white_rabbit"
