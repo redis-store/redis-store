@@ -7,8 +7,8 @@ require 'rubocop/rake_task'
 
 RuboCop::RakeTask.new :lint
 
-if !ENV["APPRAISAL_INITIALIZED"] && !ENV["TRAVIS"]
-  task :default do
-    sh "appraisal install && rake appraisal default"
-  end
-end
+# if !ENV["APPRAISAL_INITIALIZED"] && !ENV["CI"]
+#   task :default do
+#     sh "appraisal install && rake appraisal default"
+#   end
+# end
