@@ -38,7 +38,7 @@ class MockRedis
         @setnxes << a
       end
 
-      block.call
+      block.call(self)
     end
   end
   alias_method :pipelined, :multi
