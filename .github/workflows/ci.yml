@@ -1,0 +1,57 @@
+name: CI
+on: [push]
+concurrency:
+  group: ${{ github.ref }}
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby:
+          - '2.7'
+          - '3.0'
+          - '3.1'
+          - 'head'
+          - 'jruby'
+          - 'jruby-head'
+          - 'truffleruby'
+          - 'truffleruby-head'
+        gemfile:
+          - gemfiles/redis_4_0_x.gemfile
+          - gemfiles/redis_4_1_x.gemfile
+          - gemfiles/redis_4_x.gemfile
+    env:
+      BUNDLE_GEMFILE: ${{ github.workspace }}/${{ matrix.gemfile }}
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+      distributed1:
+        image: redis
+        ports:
+          - 6380:6380
+      distributed2:
+        image: redis
+        ports:
+          - 6381:6381
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - run: bundle exec rake
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: github/super-linter@v4
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: master
+          GITHUB_TOKEN: ${{ github.token }}
+          RUBY_CONFIG_FILE: .rubocop.yml
