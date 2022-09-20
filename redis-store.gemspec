@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.license       = 'MIT'
 
-  s.add_dependency 'redis', '>= 4', '< 5'
+  s.add_dependency 'redis', '>= 4', '< 6'
 
   s.add_development_dependency 'rake',     '>= 12.3.3'
   s.add_development_dependency 'bundler'
