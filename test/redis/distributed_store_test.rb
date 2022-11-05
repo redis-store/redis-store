@@ -19,7 +19,7 @@ describe "Redis::DistributedStore" do
     dmr = Redis::DistributedStore.new [ :host => "localhost", :port => "6380", :db => "1" ]
     dmr.ring.nodes.size == 1
     mr = dmr.ring.nodes.first
-    mr.to_s.must_equal("Redis Client connected to localhost:6380 against DB 1")
+    _(mr.to_s).must_equal("Redis Client connected to localhost:6380 against DB 1")
   end
 
   it "forces reconnection" do
@@ -32,11 +32,11 @@ describe "Redis::DistributedStore" do
 
   it "sets an object" do
     @dmr.set "rabbit", @white_rabbit
-    @dmr.get("rabbit").must_equal(@white_rabbit)
+    _(@dmr.get("rabbit")).must_equal(@white_rabbit)
   end
 
   it "gets an object" do
-    @dmr.get("rabbit").must_equal(@rabbit)
+    _(@dmr.get("rabbit")).must_equal(@rabbit)
   end
 
   it "mget" do
@@ -44,9 +44,9 @@ describe "Redis::DistributedStore" do
     begin
       @dmr.mget "rabbit", "rabbit2" do |rabbits|
         rabbit, rabbit2 = rabbits
-        rabbits.length.must_equal(2)
-        rabbit.must_equal(@rabbit)
-        rabbit2.must_equal(@white_rabbit)
+        _(rabbits.length).must_equal(2)
+        _(rabbit).must_equal(@rabbit)
+        _(rabbit2).must_equal(@white_rabbit)
       end
     rescue Redis::Distributed::CannotDistribute
       # Not supported on redis-rb < 4, and hence Ruby < 2.2.
@@ -57,9 +57,9 @@ describe "Redis::DistributedStore" do
     @dmr.set "rabbit2", @white_rabbit
     begin
       result = @dmr.mapped_mget("rabbit", "rabbit2")
-      result.keys.must_equal %w[ rabbit rabbit2 ]
-      result["rabbit"].must_equal @rabbit
-      result["rabbit2"].must_equal @white_rabbit
+      _(result.keys).must_equal %w[ rabbit rabbit2 ]
+      _(result["rabbit"]).must_equal @rabbit
+      _(result["rabbit2"]).must_equal @white_rabbit
     rescue Redis::Distributed::CannotDistribute
       # Not supported on redis-rb < 4, and hence Ruby < 2.2.
     end
@@ -70,7 +70,7 @@ describe "Redis::DistributedStore" do
                                     { :host => "localhost", :port => "6380", :db => 0 },
                                     { :host => "localhost", :port => "6381", :db => 0 }
                                 ], replicas: 1024
-    dmr.ring.replicas.must_equal 1024
+    _(dmr.ring.replicas).must_equal 1024
   end
 
   it "uses a custom ring object" do
@@ -79,8 +79,8 @@ describe "Redis::DistributedStore" do
                                           { :host => "localhost", :port => "6380", :db => 0 },
                                           { :host => "localhost", :port => "6381", :db => 0 }
                                       ], ring: my_ring
-    dmr.ring.must_equal my_ring
-    dmr.ring.nodes.length.must_equal 2
+    _(dmr.ring).must_equal my_ring
+    _(dmr.ring.nodes.length).must_equal 2
   end
 
   describe '#redis_version' do

@@ -30,7 +30,7 @@ describe "Redis::Store::Namespace" do
   end
 
   it "doesn't namespace a key which is already namespaced" do
-    @store.send(:interpolate, "#{@namespace}:rabbit").must_equal("#{@namespace}:rabbit")
+    _(@store.send(:interpolate, "#{@namespace}:rabbit")).must_equal("#{@namespace}:rabbit")
   end
 
   it "should only delete namespaced keys" do
@@ -38,26 +38,26 @@ describe "Redis::Store::Namespace" do
     @store.set 'def', 'fed'
 
     @store.flushdb
-    @store.get('def').must_be_nil
-    @default_store.get('abc').must_equal('cba')
+    _(@store.get('def')).must_be_nil
+    _(@default_store.get('abc')).must_equal('cba')
   end
 
   it 'should allow to change namespace on the fly' do
     @default_store.set 'abc', 'cba'
     @other_store.set 'foo', 'bar'
 
-    @default_store.keys.sort.must_equal ['abc', 'other:foo']
+    _(@default_store.keys.sort).must_equal ['abc', 'other:foo']
 
     @default_store.with_namespace(@other_namespace) do
-      @default_store.keys.must_equal ['foo']
-      @default_store.get('foo').must_equal('bar')
+      _(@default_store.keys).must_equal ['foo']
+      _(@default_store.get('foo')).must_equal('bar')
     end
   end
 
   it "should not try to delete missing namespaced keys" do
     empty_store = Redis::Store.new :namespace => 'empty'
     empty_store.flushdb
-    empty_store.keys.must_be_empty
+    _(empty_store.keys).must_be_empty
   end
 
   it "should work with dynamic namespace" do
@@ -74,7 +74,7 @@ describe "Redis::Store::Namespace" do
     r2 = dyn_store.get 'key'
     $ns = "ns1"
     r1 = dyn_store.get 'key'
-    r1.must_equal('x') && r2.must_equal('y') && r3.must_be_nil
+    _(r1).must_equal('x') && _(r2).must_equal('y') && _(r3).must_be_nil
   end
 
   it "namespaces setex and ttl" do
@@ -82,11 +82,11 @@ describe "Redis::Store::Namespace" do
     @other_store.flushdb
 
     @store.setex('foo', 30, 'bar')
-    @store.ttl('foo').must_be_close_to(30)
-    @store.get('foo').must_equal('bar')
+    _(@store.ttl('foo')).must_be_close_to(30)
+    _(@store.get('foo')).must_equal('bar')
 
-    @other_store.ttl('foo').must_equal(-2)
-    @other_store.get('foo').must_be_nil
+    _(@other_store.ttl('foo')).must_equal(-2)
+    _(@other_store.get('foo')).must_be_nil
   end
 
   describe 'method calls' do
@@ -120,7 +120,7 @@ describe "Redis::Store::Namespace" do
 
     it "should namespace keys" do
       store.set "rabbit", @rabbit
-      store.keys("rabb*").must_equal [ "rabbit" ]
+      _(store.keys("rabb*")).must_equal [ "rabbit" ]
     end
 
     it "should namespace scan when a pattern is given" do
@@ -131,7 +131,7 @@ describe "Redis::Store::Namespace" do
         cursor, matched_keys = store.scan(cursor, match: "rabb*")
         keys = keys.concat(matched_keys) unless matched_keys.empty?
       end until cursor == "0"
-      keys.must_equal [ "rabbit" ]
+      _(keys).must_equal [ "rabbit" ]
     end
 
     it "should namespace exists" do
@@ -152,16 +152,16 @@ describe "Redis::Store::Namespace" do
     it "should namespace mget" do
       client.expects(:call).with([:mget, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"]).returns(%w[ foo bar ])
       store.mget "rabbit", "white_rabbit" do |result|
-        result.must_equal(%w[ foo bar ])
+        _(result).must_equal(%w[ foo bar ])
       end
     end
 
     it "should namespace mapped_mget" do
       client.expects(:process).with([[:mget, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"]]).returns(%w[ foo bar ])
       result = store.mapped_mget "rabbit", "white_rabbit"
-      result.keys.must_equal %w[ rabbit white_rabbit ]
-      result["rabbit"].must_equal "foo"
-      result["white_rabbit"].must_equal "bar"
+      _(result.keys).must_equal %w[ rabbit white_rabbit ]
+      _(result["rabbit"]).must_equal "foo"
+      _(result["white_rabbit"]).must_equal "bar"
     end
 
     it "should namespace expire" do
@@ -271,14 +271,14 @@ describe "Redis::Store::Namespace" do
       store.hscan_each("rabbit") do |key|
         results << key
       end
-      results.must_equal(["key1"])
+      _(results).must_equal(["key1"])
     end
 
     it "should namespace hscan_each without block" do
       client.call([:hset, "#{@namespace}:rabbit", "key1", @rabbit])
       client.expects(:call).with([:hscan, "#{@namespace}:rabbit", 0]).returns(["0", ["key1"]])
       results = store.hscan_each("rabbit").to_a
-      results.must_equal(["key1"])
+      _(results).must_equal(["key1"])
     end
 
     it "should namespace zincrby" do
