@@ -2,9 +2,12 @@ name: CI
 on: [push]
 concurrency:
   group: ${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   test:
+    name: 'test (ruby: ${{ matrix.ruby }}, redis.rb: ${{ matrix.redis }})'
     runs-on: ubuntu-latest
+    continue-on-error: ${{ contains(matrix.ruby, 'head') }}
     strategy:
       fail-fast: false
       matrix:
@@ -12,17 +15,17 @@ jobs:
           - '2.7'
           - '3.0'
           - '3.1'
-          - 'head'
+          # - 'head'
           - 'jruby'
-          - 'jruby-head'
+          # - 'jruby-head'
           - 'truffleruby'
-          - 'truffleruby-head'
-        gemfile:
-          - gemfiles/redis_4_0_x.gemfile
-          - gemfiles/redis_4_1_x.gemfile
-          - gemfiles/redis_4_x.gemfile
+          # - 'truffleruby-head'
+        redis:
+          - 4_0_x
+          - 4_1_x
+          - 4_x
     env:
-      BUNDLE_GEMFILE: ${{ github.workspace }}/${{ matrix.gemfile }}
+      BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/redis_${{ matrix.redis }}.gemfile
     services:
       redis:
         image: redis
@@ -55,3 +58,4 @@ jobs:
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ github.token }}
           RUBY_CONFIG_FILE: .rubocop.yml
+          LINTER_RULES_PATH: /
