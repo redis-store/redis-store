@@ -66,14 +66,14 @@ describe MockTtlStore do
     describe 'without options' do
       it 'must call super with key and value' do
         redis.set(key, mock_value)
-        redis.has_set?(key, mock_value, nil).must_equal true
+        _(redis.has_set?(key, mock_value, nil)).must_equal true
       end
     end
 
     describe 'with options' do
       it 'must call setex with proper expiry and set raw to true' do
         redis.set(key, mock_value, options)
-        redis.has_setex?(key, options[:expire_after], mock_value, :raw => true).must_equal true
+        _(redis.has_setex?(key, options[:expire_after], mock_value, :raw => true)).must_equal true
       end
     end
 
@@ -81,7 +81,7 @@ describe MockTtlStore do
       it 'must call super with key and value and options' do
         set_options = { nx: true, ex: 3600 }
         redis.set(key, mock_value, set_options)
-        redis.has_set?(key, mock_value, set_options).must_equal true
+        _(redis.has_set?(key, mock_value, set_options)).must_equal true
       end
     end
   end
@@ -107,12 +107,12 @@ describe MockTtlStore do
 
       it 'must call setnx with key and value and set raw to true' do
         redis.setnx(key, mock_value, options)
-        redis.has_setnx?(key, mock_value, :raw => true).must_equal true
+        _(redis.has_setnx?(key, mock_value, :raw => true)).must_equal true
       end
 
       it 'must call expire' do
         redis.setnx(key, mock_value, options)
-        redis.has_expire?(key, options[:expire_after]).must_equal true
+        _(redis.has_expire?(key, options[:expire_after])).must_equal true
       end
 
       describe 'avoiding multi commands' do
@@ -125,12 +125,12 @@ describe MockTtlStore do
 
         it 'must call setnx with key and value and set raw to true' do
           redis.setnx(key, mock_value, options)
-          redis.has_setnx?(key, mock_value, :raw => true).must_equal true
+          _(redis.has_setnx?(key, mock_value, :raw => true)).must_equal true
         end
 
         it 'must call expire' do
           redis.setnx(key, mock_value, options)
-          redis.has_expire?(key, options[:expire_after]).must_equal true
+          _(redis.has_expire?(key, options[:expire_after])).must_equal true
         end
       end
 
@@ -144,12 +144,12 @@ describe MockTtlStore do
 
         it 'must call setnx with key and value and set raw to true' do
           redis.setnx(key, mock_value, options)
-          redis.has_setnx?(key, mock_value, :raw => true).must_equal true
+          _(redis.has_setnx?(key, mock_value, :raw => true)).must_equal true
         end
 
         it 'must call expire' do
           redis.setnx(key, mock_value, options)
-          redis.has_expire?(key, options[:expire_after]).must_equal true
+          _(redis.has_expire?(key, options[:expire_after])).must_equal true
         end
       end
     end

@@ -12,7 +12,7 @@ describe Redis::Store do
   end
 
   it "returns useful informations about the server" do
-    @store.to_s.must_equal("Redis Client connected to #{@client.host}:#{@client.port} against DB #{@client.db}")
+    _(@store.to_s).must_equal("Redis Client connected to #{@client.host}:#{@client.port} against DB #{@client.db}")
   end
 
   it "must force reconnection" do
@@ -41,15 +41,15 @@ describe Redis::Store do
 
         # without options no ex or nx will be set
         @store.del(key)
-        @store.set(key, mock_value, {}).must_equal 'OK'
-        @store.set(key, mock_value, {}).must_equal 'OK'
-        @store.ttl(key).must_equal -1
+        _(@store.set(key, mock_value, {})).must_equal 'OK'
+        _(@store.set(key, mock_value, {})).must_equal 'OK'
+        _(@store.ttl(key)).must_equal -1
 
         # with ex and nx options, the key can only be set once and a ttl will be set
         @store.del(key)
-        @store.set(key, mock_value, options).must_equal true
-        @store.set(key, mock_value, options).must_equal false
-        @store.ttl(key).must_equal 3600
+        _(@store.set(key, mock_value, options)).must_equal true
+        _(@store.set(key, mock_value, options)).must_equal false
+        _(@store.ttl(key)).must_equal 3600
       end
     end
   end
