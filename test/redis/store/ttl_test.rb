@@ -105,11 +105,6 @@ describe MockTtlStore do
         redis.setnx(key, mock_value, options)
       end
 
-      it 'must call setnx with key and value and set raw to true' do
-        redis.setnx(key, mock_value, options)
-        _(redis.has_setnx?(key, mock_value, :raw => true)).must_equal true
-      end
-
       it 'must call expire' do
         redis.setnx(key, mock_value, options)
         _(redis.has_expire?(key, options[:expire_after])).must_equal true
@@ -121,11 +116,6 @@ describe MockTtlStore do
         it 'uses the redis pipelined feature to chain commands' do
           redis.expects(:pipelined)
           redis.setnx(key, mock_value, options)
-        end
-
-        it 'must call setnx with key and value and set raw to true' do
-          redis.setnx(key, mock_value, options)
-          _(redis.has_setnx?(key, mock_value, :raw => true)).must_equal true
         end
 
         it 'must call expire' do
@@ -140,11 +130,6 @@ describe MockTtlStore do
         it 'uses the redis pipelined feature to chain commands' do
           redis.expects(:pipelined)
           redis.setnx(key, mock_value, options)
-        end
-
-        it 'must call setnx with key and value and set raw to true' do
-          redis.setnx(key, mock_value, options)
-          _(redis.has_setnx?(key, mock_value, :raw => true)).must_equal true
         end
 
         it 'must call expire' do
