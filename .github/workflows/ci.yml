@@ -1,7 +1,5 @@
 name: CI
-on:
-  push:
-    tags-ignore: [v*]
+on: [push]
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
