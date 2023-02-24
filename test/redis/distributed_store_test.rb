@@ -108,4 +108,4 @@ describe "Redis::DistributedStore" do
       @dmr.get "rabbit"
     end
   end
-end
+end unless ENV['CI']

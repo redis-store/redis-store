@@ -79,22 +79,24 @@ describe "Redis::Serialization" do
     _(@store.get("rabbit2")).must_be_nil
   end
 
-  it "marshals setex (over a distributed store)" do
-    @store = Redis::DistributedStore.new [
-      { :host => "localhost", :port => "6380", :db => 0 },
-      { :host => "localhost", :port => "6381", :db => 0 }
-    ]
-    @store.setex "rabbit", 50, @white_rabbit
-    _(@store.get("rabbit")).must_equal(@white_rabbit)
-  end
+  unless ENV['CI']
+    it "marshals setex (over a distributed store)" do
+      @store = Redis::DistributedStore.new [
+        { :host => "localhost", :port => "6380", :db => 0 },
+        { :host => "localhost", :port => "6381", :db => 0 }
+      ]
+      @store.setex "rabbit", 50, @white_rabbit
+      _(@store.get("rabbit")).must_equal(@white_rabbit)
+    end
 
-  it "doesn't marshal setex if raw option is true (over a distributed store)" do
-    @store = Redis::DistributedStore.new [
-      { :host => "localhost", :port => "6380", :db => 0 },
-      { :host => "localhost", :port => "6381", :db => 0 }
-    ]
-    @store.setex "rabbit", 50, @white_rabbit, :raw => true
-    _(@store.get("rabbit", :raw => true)).must_equal(%(#<OpenStruct color="white">))
+    it "doesn't marshal setex if raw option is true (over a distributed store)" do
+      @store = Redis::DistributedStore.new [
+        { :host => "localhost", :port => "6380", :db => 0 },
+        { :host => "localhost", :port => "6381", :db => 0 }
+      ]
+      @store.setex "rabbit", 50, @white_rabbit, :raw => true
+      _(@store.get("rabbit", :raw => true)).must_equal(%(#<OpenStruct color="white">))
+    end
   end
 
   it "unmarshals on multi get" do

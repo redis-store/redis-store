@@ -3,7 +3,7 @@ require 'test_helper'
 describe "Redis::Store::Namespace" do
   def setup
     @namespace = "theplaylist"
-    @store  = Redis::Store.new :namespace => @namespace, :serializer => nil
+    @store = Redis::Store.new :namespace => @namespace, :serializer => nil
     @client = @store.instance_variable_get(:@client)
     @rabbit = "bunny"
     @default_store = Redis::Store.new
