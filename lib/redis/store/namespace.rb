@@ -47,7 +47,7 @@ class Redis
         if match
           namespace(match) do |pattern|
             cursor, keys = super(cursor, match: pattern, **kwargs)
-            [ cursor, keys.map{ |key| strip_namespace(key) } ]
+            [ cursor, keys.map { |key| strip_namespace(key) } ]
           end
         else
           super(cursor, **kwargs)
