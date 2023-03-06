@@ -7,7 +7,8 @@ describe "Redis::Store::Factory" do
       it "instantiates Redis::Store" do
         store = Redis::Store::Factory.create
         _(store).must_be_kind_of(Redis::Store)
-        _(store.to_s).must_equal("Redis Client connected to 127.0.0.1:6379 against DB 0")
+        # `redis.rb` use different default host values in v4 & v5
+        _(store.to_s).must_match(%r{^Redis Client connected to (127.0.0.1|localhost):6379 against DB 0$})
       end
     end
 
@@ -24,7 +25,9 @@ describe "Redis::Store::Factory" do
 
       it "uses specified scheme" do
         store = Redis::Store::Factory.create :scheme => "rediss"
-        _(store.instance_variable_get(:@client).scheme).must_equal('rediss')
+        client = store.instance_variable_get(:@client)
+        # `redis-client` does NOT have `scheme`
+        client.method_exists?(:scheme) && _(client.scheme).must_equal('rediss')
       end
 
       it "uses specified path" do
@@ -39,12 +42,14 @@ describe "Redis::Store::Factory" do
 
       it "uses specified namespace" do
         store = Redis::Store::Factory.create :namespace => "theplaylist"
-        _(store.to_s).must_equal("Redis Client connected to 127.0.0.1:6379 against DB 0 with namespace theplaylist")
+        # `redis.rb` use different default host values in v4 & v5
+        _(store.to_s).must_match(%r{^Redis Client connected to (127.0.0.1|localhost):6379 against DB 0 with namespace theplaylist$})
       end
 
       it "uses specified key_prefix as namespace" do
         store = Redis::Store::Factory.create :key_prefix => "theplaylist"
-        _(store.to_s).must_equal("Redis Client connected to 127.0.0.1:6379 against DB 0 with namespace theplaylist")
+        # `redis.rb` use different default host values in v4 & v5
+        _(store.to_s).must_match(%r{^Redis Client connected to (127.0.0.1|localhost):6379 against DB 0 with namespace theplaylist$})
       end
 
       it "uses specified password" do
@@ -65,19 +70,22 @@ describe "Redis::Store::Factory" do
       it "disables serialization" do
         store = Redis::Store::Factory.create :serializer => nil
         _(store.instance_variable_get(:@serializer)).must_be_nil
-        _(store.instance_variable_get(:@options)[:raw]).must_equal(true)
+        # `raw` would be removed when `redis-client` is used
+        defined?(::RedisClient) || _(store.instance_variable_get(:@options)[:raw]).must_equal(true)
       end
 
       it "configures pluggable serialization backend" do
         store = Redis::Store::Factory.create :serializer => JSON
         _(store.instance_variable_get(:@serializer)).must_equal(JSON)
-        _(store.instance_variable_get(:@options)[:raw]).must_equal(false)
+        # `raw` would be removed when `redis-client` is used
+        defined?(::RedisClient) || _(store.instance_variable_get(:@options)[:raw]).must_equal(false)
       end
 
       describe "defaults" do
         it "defaults to localhost if no host specified" do
           store = Redis::Store::Factory.create
-          _(store.instance_variable_get(:@client).host).must_equal('127.0.0.1')
+          # `redis.rb` use different default host values in v4 & v5
+          _(store.instance_variable_get(:@client).host).must_match(%r{^127.0.0.1|localhost$})
         end
 
         it "defaults to 6379 if no port specified" do
@@ -87,7 +95,9 @@ describe "Redis::Store::Factory" do
 
         it "defaults to redis:// if no scheme specified" do
           store = Redis::Store::Factory.create
-          _(store.instance_variable_get(:@client).scheme).must_equal('redis')
+          client = store.instance_variable_get(:@client)
+          # `redis-client` does NOT have `scheme`
+          client.method_exists?(:scheme) && _(client.scheme).must_equal('redis')
         end
       end
 
@@ -103,13 +113,15 @@ describe "Redis::Store::Factory" do
         it "disables marshalling and provides deprecation warning" do
           store = Redis::Store::Factory.create :marshalling => false
           _(store.instance_variable_get(:@serializer)).must_be_nil
-          _(store.instance_variable_get(:@options)[:raw]).must_equal(true)
+          # `raw` would be removed when `redis-client` is used
+          defined?(::RedisClient) || _(store.instance_variable_get(:@options)[:raw]).must_equal(true)
         end
 
         it "enables marshalling but provides warning to use :serializer instead" do
           store = Redis::Store::Factory.create :marshalling => true
           _(store.instance_variable_get(:@serializer)).must_equal(Marshal)
-          _(store.instance_variable_get(:@options)[:raw]).must_equal(false)
+          # `raw` would be removed when `redis-client` is used
+          defined?(::RedisClient) || _(store.instance_variable_get(:@options)[:raw]).must_equal(false)
         end
 
         after do
@@ -144,12 +156,16 @@ describe "Redis::Store::Factory" do
 
       it "uses specified scheme" do
         store = Redis::Store::Factory.create "rediss://127.0.0.1:6380"
-        _(store.instance_variable_get(:@client).scheme).must_equal('rediss')
+        client = store.instance_variable_get(:@client)
+        # `redis-client` does NOT have `scheme`
+        client.method_exists?(:scheme) && _(client.scheme).must_equal('rediss')
       end
 
       it "correctly defaults to redis:// when relative scheme specified" do
         store = Redis::Store::Factory.create "//127.0.0.1:6379"
-        _(store.instance_variable_get(:@client).scheme).must_equal('redis')
+        client = store.instance_variable_get(:@client)
+        # `redis-client` does NOT have `scheme`
+        client.method_exists?(:scheme) && _(client.scheme).must_equal('redis')
       end
 
       it "uses specified path" do
@@ -249,7 +265,7 @@ describe "Redis::Store::Factory" do
       end
 
       it 'instantiates Redis::Store and sets namespace from String' do
-        store = Redis::Store::Factory.create "redis://127.0.0.1:6379/0/theplaylist", :expire_after => 5
+        store = Redis::Store::Factory.create "redis://127.0.0.1:6379/0/theplaylist"
         _(store.to_s).must_equal("Redis Client connected to 127.0.0.1:6379 against DB 0 with namespace theplaylist")
       end
     end

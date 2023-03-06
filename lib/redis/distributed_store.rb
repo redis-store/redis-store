@@ -7,6 +7,8 @@ class Redis
 
     def initialize(addresses, options = {})
       _extend_namespace options
+      # `@tag` introduced in `redis-rb` 5.0
+      @tag = options[:tag] || /^\{(.+?)\}/
       @ring = options[:ring] || Redis::HashRing.new([], options[:replicas] || Redis::HashRing::POINTS_PER_SERVER)
 
       addresses.each do |address|

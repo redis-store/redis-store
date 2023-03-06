@@ -220,8 +220,8 @@ describe "Redis::Store::Namespace" do
     end
 
     it "should namespace hincrbyfloat" do
-      client.expects(:call).with([:hincrby, "#{@namespace}:rabbit", "key", 1.5]).once
-      store.hincrby("rabbit", "key", 1.5)
+      client.expects(:call).with([:hincrbyfloat, "#{@namespace}:rabbit", "key", 1.5]).once
+      store.hincrbyfloat("rabbit", "key", 1.5)
     end
 
     it "should namespace hkeys" do
