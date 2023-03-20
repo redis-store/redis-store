@@ -163,7 +163,13 @@ describe "Redis::Store::Namespace" do
     end
 
     it "should namespace mapped_mget" do
-      client.expects(:process).with([[:mget, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"]]).returns(%w[ foo bar ])
+      if client.respond_to?(:process, true)
+        # Redis < 5.0 uses `#process`
+        client.expects(:process).with([[:mget, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"]]).returns(%w[ foo bar ])
+      else
+        # Redis 5.x calls `#ensure_connected` (private)
+        client.send(:ensure_connected).expects(:call).returns(%w[ foo bar ])
+      end
       result = store.mapped_mget "rabbit", "white_rabbit"
       _(result.keys).must_equal %w[ rabbit white_rabbit ]
       _(result["rabbit"]).must_equal "foo"
