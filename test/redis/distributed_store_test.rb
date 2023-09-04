@@ -17,7 +17,7 @@ describe "Redis::DistributedStore" do
 
   it "accepts connection params" do
     dmr = Redis::DistributedStore.new [ :host => "localhost", :port => "6380", :db => "1" ]
-    dmr.ring.nodes.size == 1
+    _(dmr.ring.nodes.size).must_equal(1)
     mr = dmr.ring.nodes.first
     _(mr.to_s).must_equal("Redis Client connected to localhost:6380 against DB 1")
   end

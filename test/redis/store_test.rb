@@ -43,7 +43,7 @@ describe Redis::Store do
         @store.del(key)
         _(@store.set(key, mock_value, {})).must_equal 'OK'
         _(@store.set(key, mock_value, {})).must_equal 'OK'
-        _(@store.ttl(key)).must_equal -1
+        _(@store.ttl(key)).must_equal(-1)
 
         # with ex and nx options, the key can only be set once and a ttl will be set
         @store.del(key)

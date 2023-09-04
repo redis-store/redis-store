@@ -1,7 +1,6 @@
 require 'bundler/setup'
 require 'rake'
 require 'bundler/gem_tasks'
-require 'redis-store/testing/tasks'
 require 'appraisal'
 require 'rubocop/rake_task'
 
@@ -11,4 +10,6 @@ if !ENV["APPRAISAL_INITIALIZED"] && !ENV["CI"]
   task :default do
     sh "appraisal install && rake appraisal default"
   end
+else
+  require 'redis-store/testing/tasks'
 end

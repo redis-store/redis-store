@@ -223,7 +223,7 @@ describe "Redis::Store::Namespace" do
 
     it "should namespace hexists" do
       client.expects(client_call_method_name).with([:hexists, "#{@namespace}:rabbit", "key"]).once
-      results = store.hexists("rabbit", "key")
+      store.hexists("rabbit", "key")
     end
 
     it "should namespace hincrby" do
