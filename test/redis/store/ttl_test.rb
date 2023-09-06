@@ -66,7 +66,7 @@ describe MockTtlStore do
     describe 'without options' do
       it 'must call super with key and value' do
         redis.set(key, mock_value)
-        _(redis.has_set?(key, mock_value, nil)).must_equal true
+        _(redis.has_set?(key, mock_value)).must_equal true
       end
     end
 
