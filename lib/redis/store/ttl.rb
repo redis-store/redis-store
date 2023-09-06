@@ -4,8 +4,10 @@ class Redis
       def set(key, value, options = nil)
         if ttl = expires_in(options)
           setex(key, ttl.to_i, value, :raw => true)
+        elsif options
+          super(key, value, **options)
         else
-          super(key, value, options)
+          super(key, value)
         end
       end
 
