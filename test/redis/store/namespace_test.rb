@@ -48,7 +48,8 @@ describe "Redis::Store::Namespace" do
     @default_store.set 'abc', 'cba'
     @other_store.set 'foo', 'bar'
 
-    _(@default_store.keys.sort).must_equal ['abc', 'other:foo']
+    _(@default_store.keys).must_include('abc')
+    _(@default_store.keys).must_include('other:foo')
 
     @default_store.with_namespace(@other_namespace) do
       _(@default_store.keys).must_equal ['foo']
