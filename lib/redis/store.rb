@@ -14,9 +14,13 @@ class Redis
     include Ttl, Interface, RedisVersion
 
     def initialize(options = {})
-      super
+      orig_options = options.dup
 
-      unless options[:marshalling].nil?
+      _remove_unsupported_options(options)
+      # The options here is updated
+      super(options)
+
+      unless orig_options[:marshalling].nil?
         puts %(
           DEPRECATED: You are passing the :marshalling option, which has been
           replaced with `serializer: Marshal` to support pluggable serialization
@@ -27,14 +31,15 @@ class Redis
         )
       end
 
-      @serializer = options.key?(:serializer) ? options[:serializer] : Marshal
+      @serializer = orig_options.key?(:serializer) ? orig_options.delete(:serializer) : Marshal
 
-      unless options[:marshalling].nil?
-        @serializer = options[:marshalling] ? Marshal : nil
+      unless orig_options[:marshalling].nil?
+        # `marshalling` only used here, might not be supported in `super`
+        @serializer = orig_options.delete(:marshalling) ? Marshal : nil
       end
 
-      _extend_marshalling options
-      _extend_namespace   options
+      _extend_marshalling
+      _extend_namespace orig_options
     end
 
     def reconnect
@@ -56,7 +61,19 @@ class Redis
     end
 
     private
-      def _extend_marshalling(options)
+      def _remove_unsupported_options(options)
+        return unless self.class.redis_client_defined?
+
+        # Unsupported keywords should be removed to avoid errors
+        # https://github.com/redis-rb/redis-client/blob/v0.13.0/lib/redis_client/config.rb#L21
+        options.delete(:raw)
+        options.delete(:serializer)
+        options.delete(:marshalling)
+        options.delete(:namespace)
+        options.delete(:scheme)
+      end
+
+      def _extend_marshalling
         extend Serialization unless @serializer.nil?
       end
 

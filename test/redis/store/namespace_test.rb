@@ -25,7 +25,9 @@ describe "Redis::Store::Namespace" do
   it "only decorates instances that need to be namespaced" do
     store  = Redis::Store.new
     client = store.instance_variable_get(:@client)
-    client.expects(:call).with([:get, "rabbit"])
+    # `call_v` used since redis-rb 5.0
+    client_call_method_name = client.respond_to?(:call_v) ? :call_v : :call
+    client.expects(client_call_method_name).with([:get, "rabbit"])
     store.get("rabbit")
   end
 
@@ -92,29 +94,33 @@ describe "Redis::Store::Namespace" do
   describe 'method calls' do
     let(:store) { Redis::Store.new :namespace => @namespace, :serializer => nil }
     let(:client) { store.instance_variable_get(:@client) }
+    let(:client_call_method_name) do
+      # `call_v` used since redis-rb 5.0
+      client.respond_to?(:call_v) ? :call_v : :call
+    end
 
     it "should namespace get" do
-      client.expects(:call).with([:get, "#{@namespace}:rabbit"]).once
+      client.expects(client_call_method_name).with([:get, "#{@namespace}:rabbit"]).once
       store.get("rabbit")
     end
 
     it "should namespace set" do
-      client.expects(:call).with([:set, "#{@namespace}:rabbit", @rabbit])
+      client.expects(client_call_method_name).with([:set, "#{@namespace}:rabbit", @rabbit])
       store.set "rabbit", @rabbit
     end
 
     it "should namespace setnx" do
-      client.expects(:call).with([:setnx, "#{@namespace}:rabbit", @rabbit])
+      client.expects(client_call_method_name).with([:setnx, "#{@namespace}:rabbit", @rabbit])
       store.setnx "rabbit", @rabbit
     end
 
     it "should namespace del with single key" do
-      client.expects(:call).with([:del, "#{@namespace}:rabbit"])
+      client.expects(client_call_method_name).with([:del, "#{@namespace}:rabbit"])
       store.del "rabbit"
     end
 
     it "should namespace del with multiple keys" do
-      client.expects(:call).with([:del, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"])
+      client.expects(client_call_method_name).with([:del, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"])
       store.del "rabbit", "white_rabbit"
     end
 
@@ -135,29 +141,35 @@ describe "Redis::Store::Namespace" do
     end
 
     it "should namespace exists" do
-      client.expects(:call).with([:exists, "#{@namespace}:rabbit"])
+      client.expects(client_call_method_name).with([:exists, "#{@namespace}:rabbit"])
       store.exists "rabbit"
     end
 
     it "should namespace incrby" do
-      client.expects(:call).with([:incrby, "#{@namespace}:counter", 1])
+      client.expects(client_call_method_name).with([:incrby, "#{@namespace}:counter", 1])
       store.incrby "counter", 1
     end
 
     it "should namespace decrby" do
-      client.expects(:call).with([:decrby, "#{@namespace}:counter", 1])
+      client.expects(client_call_method_name).with([:decrby, "#{@namespace}:counter", 1])
       store.decrby "counter", 1
     end
 
     it "should namespace mget" do
-      client.expects(:call).with([:mget, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"]).returns(%w[ foo bar ])
+      client.expects(client_call_method_name).with([:mget, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"]).returns(%w[ foo bar ])
       store.mget "rabbit", "white_rabbit" do |result|
         _(result).must_equal(%w[ foo bar ])
       end
     end
 
     it "should namespace mapped_mget" do
-      client.expects(:process).with([[:mget, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"]]).returns(%w[ foo bar ])
+      if client.respond_to?(:process, true)
+        # Redis < 5.0 uses `#process`
+        client.expects(:process).with([[:mget, "#{@namespace}:rabbit", "#{@namespace}:white_rabbit"]]).returns(%w[ foo bar ])
+      else
+        # Redis 5.x calls `#ensure_connected` (private)
+        client.send(:ensure_connected).expects(:call).returns(%w[ foo bar ])
+      end
       result = store.mapped_mget "rabbit", "white_rabbit"
       _(result.keys).must_equal %w[ rabbit white_rabbit ]
       _(result["rabbit"]).must_equal "foo"
@@ -165,108 +177,108 @@ describe "Redis::Store::Namespace" do
     end
 
     it "should namespace expire" do
-      client.expects(:call).with([:expire, "#{@namespace}:rabbit", 60]).once
+      client.expects(client_call_method_name).with([:expire, "#{@namespace}:rabbit", 60]).once
       store.expire("rabbit", 60)
     end
 
     it "should namespace ttl" do
-      client.expects(:call).with([:ttl, "#{@namespace}:rabbit"]).once
+      client.expects(client_call_method_name).with([:ttl, "#{@namespace}:rabbit"]).once
       store.ttl("rabbit")
     end
 
     it "should namespace watch" do
-      client.expects(:call).with([:watch, "#{@namespace}:rabbit"]).once
+      client.expects(client_call_method_name).with([:watch, "#{@namespace}:rabbit"]).once
       store.watch("rabbit")
     end
 
     it "wraps flushdb with appropriate KEYS * calls" do
-      client.expects(:call).with([:flushdb]).never
-      client.expects(:call).with([:keys, "#{@namespace}:*"]).once.returns(["rabbit"])
-      client.expects(:call).with([:del, "#{@namespace}:rabbit"]).once
+      client.expects(client_call_method_name).with([:flushdb]).never
+      client.expects(client_call_method_name).with([:keys, "#{@namespace}:*"]).once.returns(["rabbit"])
+      client.expects(client_call_method_name).with([:del, "#{@namespace}:rabbit"]).once
       store.flushdb
     end
 
     it "skips flushdb wrapping if the namespace is nil" do
-      client.expects(:call).with([:flushdb])
-      client.expects(:call).with([:keys]).never
+      client.expects(client_call_method_name).with([:flushdb])
+      client.expects(client_call_method_name).with([:keys]).never
       store.with_namespace(nil) do
         store.flushdb
       end
     end
 
     it "should namespace hdel" do
-      client.expects(:call).with([:hdel, "#{@namespace}:rabbit", "key1", "key2"]).once
+      client.expects(client_call_method_name).with([:hdel, "#{@namespace}:rabbit", "key1", "key2"]).once
       store.hdel("rabbit", "key1", "key2")
     end
 
     it "should namespace hget" do
-      client.expects(:call).with([:hget, "#{@namespace}:rabbit", "key"]).once
+      client.expects(client_call_method_name).with([:hget, "#{@namespace}:rabbit", "key"]).once
       store.hget("rabbit", "key")
     end
 
     it "should namespace hgetall" do
-      client.expects(:call).with([:hgetall, "#{@namespace}:rabbit"]).once
+      client.expects(client_call_method_name).with([:hgetall, "#{@namespace}:rabbit"]).once
       store.hgetall("rabbit")
     end
 
     it "should namespace hexists" do
-      client.expects(:call).with([:hexists, "#{@namespace}:rabbit", "key"]).once
+      client.expects(client_call_method_name).with([:hexists, "#{@namespace}:rabbit", "key"]).once
       results = store.hexists("rabbit", "key")
     end
 
     it "should namespace hincrby" do
-      client.expects(:call).with([:hincrby, "#{@namespace}:rabbit", "key", 1]).once
+      client.expects(client_call_method_name).with([:hincrby, "#{@namespace}:rabbit", "key", 1]).once
       store.hincrby("rabbit", "key", 1)
     end
 
     it "should namespace hincrbyfloat" do
-      client.expects(:call).with([:hincrby, "#{@namespace}:rabbit", "key", 1.5]).once
-      store.hincrby("rabbit", "key", 1.5)
+      client.expects(client_call_method_name).with([:hincrbyfloat, "#{@namespace}:rabbit", "key", 1.5]).once
+      store.hincrbyfloat("rabbit", "key", 1.5)
     end
 
     it "should namespace hkeys" do
-      client.expects(:call).with([:hkeys, "#{@namespace}:rabbit"])
+      client.expects(client_call_method_name).with([:hkeys, "#{@namespace}:rabbit"])
       store.hkeys("rabbit")
     end
 
     it "should namespace hlen" do
-      client.expects(:call).with([:hlen, "#{@namespace}:rabbit"])
+      client.expects(client_call_method_name).with([:hlen, "#{@namespace}:rabbit"])
       store.hlen("rabbit")
     end
 
     it "should namespace hmget" do
-      client.expects(:call).with([:hmget, "#{@namespace}:rabbit", "key1", "key2"])
+      client.expects(client_call_method_name).with([:hmget, "#{@namespace}:rabbit", "key1", "key2"])
       store.hmget("rabbit", "key1", "key2")
     end
 
     it "should namespace hmset" do
-      client.expects(:call).with([:hmset, "#{@namespace}:rabbit", "key", @rabbit])
+      client.expects(client_call_method_name).with([:hmset, "#{@namespace}:rabbit", "key", @rabbit])
       store.hmset("rabbit", "key", @rabbit)
     end
 
     it "should namespace hset" do
-      client.expects(:call).with([:hset, "#{@namespace}:rabbit", "key", @rabbit])
+      client.expects(client_call_method_name).with([:hset, "#{@namespace}:rabbit", "key", @rabbit])
       store.hset("rabbit", "key", @rabbit)
     end
 
     it "should namespace hsetnx" do
-      client.expects(:call).with([:hsetnx, "#{@namespace}:rabbit", "key", @rabbit])
+      client.expects(client_call_method_name).with([:hsetnx, "#{@namespace}:rabbit", "key", @rabbit])
       store.hsetnx("rabbit", "key", @rabbit)
     end
 
     it "should namespace hvals" do
-      client.expects(:call).with([:hvals, "#{@namespace}:rabbit"])
+      client.expects(client_call_method_name).with([:hvals, "#{@namespace}:rabbit"])
       store.hvals("rabbit")
     end
 
     it "should namespace hscan" do
-      client.expects(:call).with([:hscan, "#{@namespace}:rabbit", 0])
+      client.expects(client_call_method_name).with([:hscan, "#{@namespace}:rabbit", 0])
       store.hscan("rabbit", 0)
     end
 
     it "should namespace hscan_each with block" do
-      client.call([:hset, "#{@namespace}:rabbit", "key1", @rabbit])
-      client.expects(:call).with([:hscan, "#{@namespace}:rabbit", 0]).returns(["0", ["key1"]])
+      client.public_send(client_call_method_name, [:hset, "#{@namespace}:rabbit", "key1", @rabbit])
+      client.expects(client_call_method_name).with([:hscan, "#{@namespace}:rabbit", 0]).returns(["0", ["key1"]])
       results = []
       store.hscan_each("rabbit") do |key|
         results << key
@@ -275,29 +287,29 @@ describe "Redis::Store::Namespace" do
     end
 
     it "should namespace hscan_each without block" do
-      client.call([:hset, "#{@namespace}:rabbit", "key1", @rabbit])
-      client.expects(:call).with([:hscan, "#{@namespace}:rabbit", 0]).returns(["0", ["key1"]])
+      client.public_send(client_call_method_name, [:hset, "#{@namespace}:rabbit", "key1", @rabbit])
+      client.expects(client_call_method_name).with([:hscan, "#{@namespace}:rabbit", 0]).returns(["0", ["key1"]])
       results = store.hscan_each("rabbit").to_a
       _(results).must_equal(["key1"])
     end
 
     it "should namespace zincrby" do
-      client.expects(:call).with([:zincrby, "#{@namespace}:rabbit", 1.0, "member"])
+      client.expects(client_call_method_name).with([:zincrby, "#{@namespace}:rabbit", 1.0, "member"])
       store.zincrby("rabbit", 1.0, "member")
     end
 
     it "should namespace zscore" do
-      client.expects(:call).with([:zscore, "#{@namespace}:rabbit", "member"])
+      client.expects(client_call_method_name).with([:zscore, "#{@namespace}:rabbit", "member"])
       store.zscore("rabbit", "member")
     end
 
     it "should namespace zadd" do
-      client.expects(:call).with([:zadd, "#{@namespace}:rabbit", 1.0, "member"])
+      client.expects(client_call_method_name).with([:zadd, "#{@namespace}:rabbit", 1.0, "member"])
       store.zadd("rabbit", 1.0, "member")
     end
 
     it "should namespace zrem" do
-      client.expects(:call).with([:zrem, "#{@namespace}:rabbit", "member"])
+      client.expects(client_call_method_name).with([:zrem, "#{@namespace}:rabbit", "member"])
       store.zrem("rabbit", "member")
     end
   end

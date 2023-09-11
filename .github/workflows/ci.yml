@@ -1,5 +1,6 @@
 name: CI
 on:
+  pull_request:
   push:
     branches-ignore: [master]
     tags-ignore: [v*]
@@ -27,6 +28,7 @@ jobs:
           - 4_0_x
           - 4_1_x
           - 4_x
+          - 5_x
     env:
       BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/redis_${{ matrix.redis }}.gemfile
     services:
