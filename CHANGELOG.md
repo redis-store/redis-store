@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.10.0 and future
+
+As at 1.10 and above, changelog information will be on this project's releases page:
+
+https://github.com/redis-store/redis-store/releases
+
+
 ## 1.9.0
 
 Breaking Changes
