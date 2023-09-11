@@ -1,9 +1,8 @@
 require 'bundler/setup'
 require 'minitest/autorun'
-require 'mocha/setup'
+require 'mocha/minitest'
 require 'redis'
 require 'redis-store'
-require 'pry'
 
 $DEBUG = ENV["DEBUG"] === "true"
 

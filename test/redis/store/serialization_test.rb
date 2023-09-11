@@ -29,7 +29,7 @@ describe "Redis::Serialization" do
     _(@store.get("rabbit2")).must_equal(@rabbit)
   end
 
-  if RUBY_VERSION.match /1\.9/
+  if RUBY_VERSION.match(/1\.9/)
     it "doesn't unmarshal on get if raw option is true" do
       _(@store.get("rabbit", :raw => true)).must_equal("\x04\bU:\x0FOpenStruct{\x06:\tnameI\"\nbunny\x06:\x06EF")
     end
@@ -117,7 +117,7 @@ describe "Redis::Serialization" do
     _(result["rabbit2"]).must_equal @white_rabbit
   end
 
-  if RUBY_VERSION.match /1\.9/
+  if RUBY_VERSION.match(/1\.9/)
     it "doesn't unmarshal on multi get if raw option is true" do
       @store.set "rabbit2", @white_rabbit
       @store.mget "rabbit", "rabbit2", :raw => true do |rabbit, rabbit2|

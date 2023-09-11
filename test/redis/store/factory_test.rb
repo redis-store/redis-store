@@ -27,7 +27,7 @@ describe "Redis::Store::Factory" do
         store = Redis::Store::Factory.create :scheme => "rediss"
         client = store.instance_variable_get(:@client)
         # `redis-client` does NOT have `scheme`
-        client.method_exists?(:scheme) && _(client.scheme).must_equal('rediss')
+        client.respond_to?(:scheme) && _(client.scheme).must_equal('rediss')
       end
 
       it "uses specified path" do
@@ -97,7 +97,7 @@ describe "Redis::Store::Factory" do
           store = Redis::Store::Factory.create
           client = store.instance_variable_get(:@client)
           # `redis-client` does NOT have `scheme`
-          client.method_exists?(:scheme) && _(client.scheme).must_equal('redis')
+          client.respond_to?(:scheme) && _(client.scheme).must_equal('redis')
         end
       end
 
@@ -158,14 +158,14 @@ describe "Redis::Store::Factory" do
         store = Redis::Store::Factory.create "rediss://127.0.0.1:6380"
         client = store.instance_variable_get(:@client)
         # `redis-client` does NOT have `scheme`
-        client.method_exists?(:scheme) && _(client.scheme).must_equal('rediss')
+        client.respond_to?(:scheme) && _(client.scheme).must_equal('rediss')
       end
 
       it "correctly defaults to redis:// when relative scheme specified" do
         store = Redis::Store::Factory.create "//127.0.0.1:6379"
         client = store.instance_variable_get(:@client)
         # `redis-client` does NOT have `scheme`
-        client.method_exists?(:scheme) && _(client.scheme).must_equal('redis')
+        client.respond_to?(:scheme) && _(client.scheme).must_equal('redis')
       end
 
       it "uses specified path" do
@@ -231,7 +231,7 @@ describe "Redis::Store::Factory" do
 
     describe 'when given host Hash and options Hash' do
       it 'instantiates Redis::Store and merges options' do
-        store = Redis::Store::Factory.create(
+        Redis::Store::Factory.create(
           { :host => '127.0.0.1', :port => '6379' },
           { :namespace => 'theplaylist' }
         )
