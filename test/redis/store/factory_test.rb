@@ -147,6 +147,8 @@ describe "Redis::Store::Factory" do
       it "uses specified host" do
         store = Redis::Store::Factory.create "redis://127.0.0.1"
         _(store.to_s).must_equal("Redis Client connected to 127.0.0.1:6379 against DB 0")
+        client = store.instance_variable_get(:@client)
+        assert_equal(false, client.options[:ssl])
       end
 
       it "uses specified port" do
@@ -159,6 +161,7 @@ describe "Redis::Store::Factory" do
         client = store.instance_variable_get(:@client)
         # `redis-client` does NOT have `scheme`
         client.respond_to?(:scheme) && _(client.scheme).must_equal('rediss')
+        assert_equal(true, client.options[:ssl])
       end
 
       it "correctly defaults to redis:// when relative scheme specified" do
