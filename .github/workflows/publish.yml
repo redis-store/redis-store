@@ -15,7 +15,7 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.3"
-          bundle-cache: true
+          bundler-cache: true
       - run: |
           mkdir -p ~/.gem
           cat << EOF > ~/.gem/credentials
