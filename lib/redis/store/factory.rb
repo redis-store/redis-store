@@ -78,7 +78,8 @@ class Redis
             :scheme   => uri.scheme,
             :host     => uri.hostname,
             :port     => uri.port || DEFAULT_PORT,
-            :password => uri.password.nil? ? nil : CGI.unescape(uri.password.to_s)
+            :password => uri.password.nil? ? nil : CGI.unescape(uri.password.to_s),
+            :ssl      => uri.scheme == 'rediss'
           }
 
           options[:db]        = db.to_i   if db
