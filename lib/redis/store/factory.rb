@@ -84,6 +84,7 @@ class Redis
 
           options[:db]        = db.to_i   if db
           options[:namespace] = namespace if namespace
+          options[:username]  = uri.user if uri.user
         end
         if uri.query
           query = Hash[URI.decode_www_form(uri.query)]
