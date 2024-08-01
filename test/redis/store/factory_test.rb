@@ -213,6 +213,12 @@ describe "Redis::Store::Factory" do
       end
 
       if Gem::Version.new(Redis::VERSION) >= Gem::Version.new("4.3.0")
+        it "uses specified path with username and password" do
+          store = Redis::Store::Factory.create "unix://test-user:secret@/var/run/redis.sock"
+          _(store.instance_variable_get(:@client).username).must_equal("test-user")
+          _(store.instance_variable_get(:@client).password).must_equal("secret")
+        end
+
         it "uses specified username and password" do
           store = Redis::Store::Factory.create "redis://test-user:secret@127.0.0.1:6379/0/theplaylist"
           _(store.instance_variable_get(:@client).username).must_equal("test-user")
