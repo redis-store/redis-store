@@ -224,6 +224,14 @@ describe "Redis::Store::Factory" do
           _(store.instance_variable_get(:@client).username).must_equal("test-user")
           _(store.instance_variable_get(:@client).password).must_equal("secret")
         end
+
+        it "uses a default username" do
+          store = Redis::Store::Factory.create "redis://:secret@127.0.0.1:6379/0/theplaylist"
+          username = Gem::Version.new(Redis::VERSION) >= Gem::Version.new("5.0") ? "default" : nil
+
+          _(store.instance_variable_get(:@client).username).must_equal(username)
+          _(store.instance_variable_get(:@client).password).must_equal("secret")
+        end
       end
 
       it 'uses specified password with special characters' do

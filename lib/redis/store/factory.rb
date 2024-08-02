@@ -85,7 +85,10 @@ class Redis
           options[:namespace] = namespace if namespace
         end
 
-        options[:username] = uri.user if uri.user
+        if uri.user && !uri.user.empty?
+          options[:username] = uri.user
+        end
+
         options[:password] = CGI.unescape(uri.password.to_s) if uri.password
 
         if uri.query
