@@ -78,13 +78,16 @@ class Redis
             :scheme   => uri.scheme,
             :host     => uri.hostname,
             :port     => uri.port || DEFAULT_PORT,
-            :password => uri.password.nil? ? nil : CGI.unescape(uri.password.to_s),
             :ssl      => uri.scheme == 'rediss'
           }
 
           options[:db]        = db.to_i   if db
           options[:namespace] = namespace if namespace
         end
+
+        options[:username] = uri.user if uri.user
+        options[:password] = CGI.unescape(uri.password.to_s) if uri.password
+
         if uri.query
           query = Hash[URI.decode_www_form(uri.query)]
           query.each do |(key, value)|

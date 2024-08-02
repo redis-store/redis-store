@@ -71,6 +71,8 @@ class Redis
         options.delete(:marshalling)
         options.delete(:namespace)
         options.delete(:scheme)
+        # Redis ACL support added in https://github.com/redis/redis-rb/pull/967
+        options.delete(:username) unless Gem::Version.new(Redis::VERSION) >= Gem::Version.new("4.3.0")
       end
 
       def _extend_marshalling
