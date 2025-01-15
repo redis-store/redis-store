@@ -29,5 +29,9 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'appraisal', '~> 2.0'
   s.add_development_dependency 'rubocop', '~> 0.54'
 
-  s.metadata['changelog_uri'] = 'https://github.com/redis-store/redis-store/releases'
+  s.metadata = {
+    'bug_tracker_uri'   => 'https://github.com/redis-store/redis-store/issues',
+    'changelog_uri'     => 'https://github.com/redis-store/redis-store/releases',
+    'source_code_uri'   => 'https://github.com/redis-store/redis-store'
+  }
 end
