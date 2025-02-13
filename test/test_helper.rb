@@ -3,6 +3,7 @@ require 'minitest/autorun'
 require 'mocha/minitest'
 require 'redis'
 require 'redis-store'
+require 'ostruct'
 
 $DEBUG = ENV["DEBUG"] === "true"
 
