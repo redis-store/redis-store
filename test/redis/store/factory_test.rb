@@ -229,7 +229,11 @@ describe "Redis::Store::Factory" do
           store = Redis::Store::Factory.create "redis://:secret@127.0.0.1:6379/0/theplaylist"
           username = Gem::Version.new(Redis::VERSION) >= Gem::Version.new("5.0") ? "default" : nil
 
-          _(store.instance_variable_get(:@client).username).must_equal(username)
+          if username.nil?
+            _(store.instance_variable_get(:@client).username).must_be_nil
+          else
+            _(store.instance_variable_get(:@client).username).must_equal(username)
+          end
           _(store.instance_variable_get(:@client).password).must_equal("secret")
         end
       end
