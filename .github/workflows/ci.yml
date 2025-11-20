@@ -36,15 +36,15 @@ jobs:
       BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/redis_${{ matrix.redis }}.gemfile
     services:
       redis:
-        image: redis
+        image: redis:7
         ports:
           - 6379:6379
       distributed1:
-        image: redis
+        image: redis:7
         ports:
           - 6380:6380
       distributed2:
-        image: redis
+        image: redis:7
         ports:
           - 6381:6381
     steps:
