@@ -32,6 +32,12 @@ jobs:
           - 4_1_x
           - 4_x
           - 5_x
+        exclude:
+          - ruby: "jruby"
+            redis: 5_x
+        include:
+          - ruby: "jruby-9.4.14.0"
+            redis: 5_x
     env:
       BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/redis_${{ matrix.redis }}.gemfile
     services:
