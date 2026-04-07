@@ -12,8 +12,8 @@ Gem::Specification.new do |s|
   s.summary     = 'Redis stores for Ruby frameworks'
   s.description = 'Namespaced Rack::Session, Rack::Cache, I18n and cache Redis stores for Ruby web frameworks.'
 
-  s.files         = `git ls-files`.split("\n")
-  s.require_paths = ["lib"]
+  s.files         = `git ls-files lib`.split($/) + ['CHANGELOG.md', 'MIT-LICENSE', 'README.md']
+  s.require_paths = ['lib']
   s.license       = 'MIT'
 
   s.add_dependency 'redis', '>= 4', '< 6'
