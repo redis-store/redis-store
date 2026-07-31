@@ -33,6 +33,15 @@ jobs:
           - 4_1_x
           - 4_x
           - 5_x
+          - 6_x
+        exclude:
+          # redis-rb 6.x requires Ruby >= 3.2
+          - ruby: "2.7"
+            redis: 6_x
+          - ruby: "3.0"
+            redis: 6_x
+          - ruby: "3.1"
+            redis: 6_x
     env:
       BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/redis_${{ matrix.redis }}.gemfile
     services:
