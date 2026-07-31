@@ -17,3 +17,7 @@ end
 appraise "redis_5_x" do
   gem "redis", "~> 5.0"
 end
+
+appraise "redis_6_x" do
+  gem "redis", "~> 6.0"
+end
